@@ -46,6 +46,7 @@ export interface AgentTraceItem {
 }
 
 export interface ParseResponse {
+  candidate_id?: string | null;
   parsed_data: ParsedData;
   match_score: number;
   job_description: JobDescription;
@@ -65,4 +66,64 @@ export interface AgentNodeState {
   parser: AgentStatus;
   normalizer: AgentStatus;
   matcher: AgentStatus;
+}
+
+/* ── Taxonomy Types ──────────────────────────────────────── */
+
+export interface SubcategoryOut {
+  name: string;
+  skill_count: number;
+  skills?: string[];
+}
+
+export interface CategoryOut {
+  name: string;
+  subcategories: SubcategoryOut[];
+}
+
+export interface TaxonomyResponse {
+  total: number;
+  categories: CategoryOut[];
+}
+
+export interface SkillDetailResponse {
+  canonical: string;
+  category: string;
+  subcategory: string;
+  synonyms: string[];
+  related_skills: string[];
+}
+
+/* ── Comparison Types ────────────────────────────────────── */
+
+export interface CandidateSummary {
+  candidate_id: string;
+  name: string;
+  overall_score: number;
+  matched_skills: string[];
+  missing_skills: string[];
+  experience_years: number;
+  education: string;
+}
+
+export interface ComparisonResult {
+  winner: string;
+  score_diff: number;
+  skills_only_in_1: string[];
+  skills_only_in_2: string[];
+  shared_skills: string[];
+  recommendation: string;
+}
+
+export interface CompareResponse {
+  job_title: string;
+  candidates: CandidateSummary[];
+  comparison: ComparisonResult;
+}
+
+export interface StoredCandidate {
+  id: string;
+  name: string | null;
+  email: string | null;
+  created_at: string;
 }
