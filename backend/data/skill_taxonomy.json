@@ -1,0 +1,1013 @@
+{
+  "Technical Skills": {
+    "Programming Languages": [
+      "Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#", "Go", "Rust",
+      "Kotlin", "Swift", "Ruby", "PHP", "Scala", "R", "MATLAB", "Julia", "Perl",
+      "Lua", "Haskell", "Erlang", "Elixir", "Clojure", "F#", "Groovy", "Dart",
+      "Objective-C", "Bash", "PowerShell", "Fish Shell", "Zsh", "COBOL", "Fortran",
+      "Assembly", "PL/SQL", "T-SQL", "Prolog", "Lisp", "Common Lisp", "Scheme",
+      "OCaml", "Nim", "Crystal", "Zig", "V Language", "Solidity", "Vyper",
+      "Move", "WebAssembly", "VHDL", "Verilog", "SystemVerilog", "Ada",
+      "Pascal", "Delphi", "BASIC", "Visual Basic", "VBA", "ABAP", "RPG",
+      "ColdFusion", "Tcl", "Racket", "Idris", "Agda", "Lean", "Coq",
+      "D", "Smalltalk", "ML", "Standard ML", "Forth"
+    ],
+    "Machine Learning & AI Frameworks": [
+      "TensorFlow", "PyTorch", "Scikit-learn", "Keras", "XGBoost", "LightGBM",
+      "CatBoost", "MXNet", "JAX", "Flax", "Haiku", "Optax", "Trax",
+      "Hugging Face Transformers", "Hugging Face Datasets", "Hugging Face Accelerate",
+      "ONNX", "ONNX Runtime", "TensorRT", "TensorFlow Lite", "CoreML", "OpenVINO",
+      "DeepSpeed", "Megatron-LM", "FairScale", "Apex", "bitsandbytes",
+      "PEFT", "LoRA", "QLoRA", "Adapters", "LLaMA.cpp", "GGUF", "vLLM",
+      "Text Generation Inference", "Ollama", "LM Studio", "llama-cpp-python",
+      "Langchain", "LlamaIndex", "LangGraph", "CrewAI", "AutoGen", "AutoGPT",
+      "DSPy", "Guidance", "Outlines", "Haystack", "Semantic Kernel",
+      "Sentence Transformers", "FAISS", "Annoy", "HNSW", "ScaNN",
+      "Ray", "Ray Tune", "Ray Train", "Ray Serve",
+      "Optuna", "Hyperopt", "NNI", "Ax",
+      "Weights & Biases", "MLflow", "DVC", "ClearML", "Neptune.ai", "Comet.ml",
+      "Great Expectations", "Pandera", "Evidently AI", "Alibi Detect",
+      "Shapley Values", "LIME", "SHAP", "Captum", "InterpretML"
+    ],
+    "LLM & Generative AI": [
+      "GPT-4", "GPT-4o", "GPT-3.5 Turbo", "GPT-4 Vision", "o1", "o3",
+      "LLaMA 2", "LLaMA 3", "Mistral 7B", "Mixtral 8x7B", "Phi-2", "Phi-3",
+      "Gemma", "Gemma 2", "Falcon", "MPT", "BLOOM", "OPT", "FLAN-T5",
+      "Claude 3 Opus", "Claude 3 Sonnet", "Claude 3 Haiku", "Claude 3.5 Sonnet",
+      "Gemini Pro", "Gemini Ultra", "Gemini Flash", "Gemini 1.5",
+      "Amazon Titan", "Cohere Command", "Cohere Embed", "AI21 Jurassic",
+      "Stable Diffusion", "SDXL", "DALL-E 3", "Midjourney", "Imagen",
+      "Whisper", "CLIP", "BLIP", "BLIP-2", "LLaVA", "Flamingo",
+      "RAG", "ReAct", "Chain of Thought", "Few-Shot Prompting", "Zero-Shot Prompting",
+      "Prompt Engineering", "Prompt Chaining", "Function Calling", "Tool Use",
+      "Fine-tuning", "RLHF", "RLAIF", "DPO", "PPO", "Constitutional AI",
+      "OpenAI API", "Anthropic API", "Cohere API", "Replicate API",
+      "Together AI", "Groq", "Perplexity API", "Hugging Face Inference API",
+      "Azure OpenAI", "Vertex AI Gemini", "Amazon Bedrock", "Ollama API"
+    ],
+    "Databases - Relational": [
+      "PostgreSQL", "MySQL", "SQLite", "MariaDB", "Oracle Database",
+      "Microsoft SQL Server", "IBM DB2", "Sybase", "Firebird", "InterBase",
+      "Amazon Aurora", "Amazon RDS", "Google Cloud SQL", "Azure SQL Database",
+      "PlanetScale", "Neon", "CockroachDB", "TiDB", "YugabyteDB",
+      "Vitess", "Citus", "TimescaleDB", "Greenplum", "AlloyDB"
+    ],
+    "Databases - NoSQL": [
+      "MongoDB", "CouchDB", "CouchBase", "Firebase Realtime Database",
+      "Amazon DynamoDB", "Google Firestore", "Cassandra", "HBase",
+      "ScyllaDB", "Bigtable", "Redis", "Memcached", "Hazelcast",
+      "DragonflyDB", "KeyDB", "Aerospike", "Riak", "Voldemort",
+      "RethinkDB", "ArangoDB", "OrientDB", "Fauna", "PouchDB",
+      "Realm", "ObjectBox", "RavenDB", "LiteDB"
+    ],
+    "Databases - Vector & Search": [
+      "ChromaDB", "Pinecone", "Weaviate", "Qdrant", "Milvus",
+      "Zilliz", "LanceDB", "Marqo", "Vespa", "Vald",
+      "pgvector", "Redis Vector Search", "Elasticsearch Vector",
+      "Elasticsearch", "OpenSearch", "Solr", "Meilisearch",
+      "Typesense", "Algolia", "Manticore Search", "Zincsearch",
+      "Quickwit", "Tantivy", "Bleve"
+    ],
+    "Databases - Data Warehouses": [
+      "Snowflake", "Google BigQuery", "Amazon Redshift", "Azure Synapse Analytics",
+      "Databricks", "Apache Hive", "ClickHouse", "Apache Druid",
+      "Presto", "Trino", "Apache Impala", "Vertica", "Teradata",
+      "Netezza", "Amazon Athena", "Firebolt", "DuckDB", "Apache Pinot",
+      "StarRocks", "Doris", "TiFlash", "Delta Lake", "Apache Iceberg", "Apache Hudi"
+    ],
+    "Databases - Time Series & Streaming": [
+      "InfluxDB", "TimescaleDB", "Prometheus", "VictoriaMetrics",
+      "Questdb", "TDengine", "KDB+", "OpenTSDB", "Graphite",
+      "Apache Kafka", "AWS Kinesis", "Google Pub/Sub", "Azure Event Hubs",
+      "Apache Pulsar", "NATS", "RabbitMQ", "ActiveMQ", "Kafka Streams", "KSQL"
+    ],
+    "Cloud - AWS Services": [
+      "EC2", "ECS", "EKS", "Lambda", "Fargate", "Elastic Beanstalk",
+      "S3", "EBS", "EFS", "Glacier", "Storage Gateway",
+      "RDS", "DynamoDB", "ElastiCache", "Redshift", "Aurora", "Neptune",
+      "SQS", "SNS", "SES", "EventBridge", "Step Functions",
+      "API Gateway", "CloudFront", "Route 53", "VPC", "Direct Connect",
+      "IAM", "Cognito", "Secrets Manager", "KMS", "WAF", "Shield",
+      "CloudWatch", "CloudTrail", "X-Ray", "Config", "GuardDuty",
+      "SageMaker", "Bedrock", "Rekognition", "Comprehend", "Translate",
+      "CodePipeline", "CodeBuild", "CodeDeploy", "CodeCommit",
+      "Glue", "EMR", "Athena", "Lake Formation", "Data Pipeline",
+      "Amplify", "AppSync", "Pinpoint", "Chime", "Connect",
+      "CloudFormation", "CDK", "SAM", "Systems Manager", "Trusted Advisor"
+    ],
+    "Cloud - GCP Services": [
+      "Compute Engine", "Google Kubernetes Engine", "Cloud Run", "App Engine",
+      "Cloud Functions", "Cloud Storage", "Persistent Disk", "Filestore",
+      "Cloud SQL", "Firestore", "Bigtable", "Spanner", "BigQuery",
+      "Cloud Pub/Sub", "Cloud Tasks", "Cloud Scheduler", "Dataflow",
+      "Dataproc", "Composer", "Cloud API Gateway", "Cloud Endpoints",
+      "Cloud Load Balancing", "Cloud DNS", "Cloud CDN", "VPC",
+      "Cloud IAM", "Secret Manager", "Cloud KMS", "Security Command Center",
+      "Cloud Monitoring", "Cloud Logging", "Cloud Trace", "Error Reporting",
+      "Vertex AI", "AutoML", "Vision AI", "Natural Language AI", "Translation AI",
+      "Firebase", "Cloud Build", "Artifact Registry", "Cloud Deploy"
+    ],
+    "Cloud - Azure Services": [
+      "Virtual Machines", "AKS", "Container Instances", "App Service",
+      "Azure Functions", "Azure Blob Storage", "Azure Files", "Azure Disks",
+      "Azure SQL Database", "Cosmos DB", "Azure Cache for Redis", "Synapse Analytics",
+      "Service Bus", "Event Grid", "Event Hubs", "Logic Apps",
+      "API Management", "Azure CDN", "Azure DNS", "Virtual Network",
+      "Azure Active Directory", "Key Vault", "Azure Policy", "Defender for Cloud",
+      "Azure Monitor", "Log Analytics", "Application Insights",
+      "Azure OpenAI", "Cognitive Services", "Azure ML", "Bot Service",
+      "Azure DevOps", "Azure Pipelines", "Azure Repos", "Azure Artifacts",
+      "Azure Data Factory", "Azure Databricks", "HDInsight",
+      "Azure Kubernetes Fleet", "Azure Arc", "Azure Stack"
+    ],
+    "Containers & Orchestration": [
+      "Docker", "Docker Compose", "Docker Swarm", "Podman", "Buildah",
+      "Skopeo", "Kaniko", "BuildKit", "containerd", "CRI-O", "Lima", "Colima",
+      "Kubernetes", "Helm", "Kustomize", "Argo CD", "Flux CD",
+      "Rancher", "OpenShift", "k3s", "k0s", "microk8s", "Kind", "minikube",
+      "Argo Workflows", "Tekton", "KEDA", "Knative", "Dapr",
+      "Istio", "Linkerd", "Consul", "Envoy", "Traefik",
+      "OPA", "Kyverno", "Falco", "Trivy", "Snyk Container",
+      "Cert-Manager", "ExternalDNS", "Cluster Autoscaler", "VPA", "HPA"
+    ],
+    "CI/CD & GitOps": [
+      "Jenkins", "GitLab CI/CD", "GitHub Actions", "CircleCI", "Travis CI",
+      "TeamCity", "Bamboo", "Drone CI", "Tekton", "Spinnaker",
+      "AWS CodePipeline", "AWS CodeBuild", "AWS CodeDeploy",
+      "Azure DevOps Pipelines", "Azure DevOps", "Bitbucket Pipelines",
+      "Semaphore CI", "Buildkite", "Concourse CI", "GoCD",
+      "Argo CD", "Flux CD", "Spinnaker", "Weave GitOps",
+      "SonarQube", "CodeClimate", "Coveralls", "Codecov", "DeepSource",
+      "Dependabot", "Renovate", "WhiteSource", "Snyk", "Trivy"
+    ],
+    "Infrastructure as Code": [
+      "Terraform", "OpenTofu", "Pulumi", "AWS CloudFormation", "AWS CDK",
+      "Azure ARM Templates", "Azure Bicep", "Google Cloud Deployment Manager",
+      "Ansible", "Chef", "Puppet", "SaltStack",
+      "Packer", "Vagrant", "Crossplane", "Cluster API",
+      "Atlantis", "Terragrunt", "Terramate", "env0",
+      "AWS SAM", "Serverless Framework", "SST", "Wing"
+    ],
+    "Web Frameworks - Python": [
+      "FastAPI", "Django", "Django REST Framework", "Flask", "Tornado",
+      "Starlette", "Litestar", "Sanic", "Bottle", "Falcon", "Quart",
+      "aiohttp", "Blacksheep", "Robyn", "Masonite", "Pyramid", "Twisted",
+      "Nameko", "Connexion", "APIFlask"
+    ],
+    "Web Frameworks - JavaScript & Node": [
+      "Express.js", "NestJS", "Fastify", "Koa", "Hapi", "AdonisJS",
+      "Strapi", "KeystoneJS", "Feathers.js", "LoopBack", "Sails.js",
+      "Meteor", "Moleculer", "Tsoa", "Elysia", "Hono", "Bun HTTP"
+    ],
+    "Web Frameworks - Other Languages": [
+      "Ruby on Rails", "Sinatra", "Hanami", "Roda",
+      "Spring Boot", "Spring MVC", "Spring WebFlux", "Micronaut", "Quarkus",
+      "Helidon", "Ktor", "Vert.x", "Play Framework",
+      "Laravel", "Symfony", "CodeIgniter", "Phalcon", "Yii", "Slim", "Lumen",
+      "Phoenix", "Plug", "Cowboy",
+      "Gin", "Echo", "Fiber", "Chi", "Beego", "Buffalo",
+      "Actix-web", "Axum", "Rocket", "Warp",
+      "ASP.NET Core", "Blazor Server", "Blazor WASM", "Minimal APIs"
+    ],
+    "Frontend Frameworks & Libraries": [
+      "React", "Vue.js", "Svelte", "Angular", "Solid.js", "Qwik",
+      "Preact", "Lit", "Alpine.js", "htmx", "Stimulus",
+      "Next.js", "Nuxt.js", "SvelteKit", "Remix", "Astro", "Gatsby",
+      "Eleventy", "Hugo", "Jekyll", "VitePress", "Docusaurus",
+      "React Native", "Expo", "Flutter", "Ionic", "Capacitor", "NativeScript",
+      "Electron", "Tauri", "Wails", "Neutralinojs"
+    ],
+    "Frontend State Management": [
+      "Redux", "Redux Toolkit", "Zustand", "Jotai", "Recoil", "Valtio",
+      "MobX", "Effector", "XState", "Nanostores",
+      "Vuex", "Pinia",
+      "NGRX", "NGXS", "Akita",
+      "TanStack Query", "SWR", "Apollo Client", "Relay", "URQL"
+    ],
+    "CSS Frameworks & Preprocessors": [
+      "Tailwind CSS", "Bootstrap", "Bulma", "Foundation", "Materialize",
+      "Semantic UI", "UIkit", "Tachyons", "PureCSS", "Milligram",
+      "Material UI (MUI)", "Ant Design", "Chakra UI", "Radix UI",
+      "shadcn/ui", "Headless UI", "Mantine", "NextUI", "Park UI",
+      "Styled Components", "Emotion", "CSS Modules", "vanilla-extract",
+      "Stitches", "Linaria", "Goober",
+      "Sass", "Less", "Stylus", "PostCSS",
+      "CSS Grid", "CSS Flexbox", "CSS Variables", "CSS Animations", "CSS Transitions"
+    ],
+    "Build Tools & Bundlers": [
+      "Webpack", "Vite", "Rollup", "esbuild", "Parcel", "Turbopack",
+      "Bun", "SWC", "Babel", "tsc", "Biome", "Rome",
+      "ESLint", "Prettier", "Stylelint", "Oxlint",
+      "Nx", "Turborepo", "Lerna", "Rush", "Moon",
+      "Bazel", "Buck2", "Pants", "Please", "Gradle", "Maven",
+      "Make", "CMake", "Meson", "Ninja"
+    ],
+    "Package Managers": [
+      "npm", "Yarn", "pnpm", "Bun", "pip", "Poetry", "Pipenv", "uv",
+      "Conda", "Mamba", "Pixi", "Nix", "Homebrew",
+      "Cargo", "Go Modules", "Maven Central", "Gradle", "sbt",
+      "Composer", "NuGet", "Hex", "Mix", "Bundler", "RubyGems",
+      "APT", "RPM", "Pacman", "Homebrew", "Chocolatey", "Scoop", "WinGet"
+    ],
+    "Testing Frameworks": [
+      "pytest", "unittest", "nose2", "doctest", "hypothesis", "Testify (Go)",
+      "Jest", "Vitest", "Mocha", "Jasmine", "Karma", "AVA", "Tape", "QUnit",
+      "Cypress", "Playwright", "Selenium", "Puppeteer", "WebdriverIO",
+      "TestCafe", "Nightwatch", "Webdriver.io", "Helium", "Pylenium",
+      "Locust", "k6", "Artillery", "JMeter", "Gatling", "Vegeta", "Wrk",
+      "PHPUnit", "JUnit 5", "TestNG", "NUnit", "xUnit.net", "MSTest",
+      "RSpec", "Minitest", "MiniTest", "Cucumber", "Behave", "SpecFlow",
+      "Robot Framework", "Gauge", "Karate",
+      "SoapUI", "Pact", "WireMock", "Hoverfly", "Mockito", "PowerMock",
+      "Sinon.js", "Nock", "MSW", "factory_boy", "Faker", "Bogus",
+      "coverage.py", "Istanbul/nyc", "Jest Coverage", "Cobertura",
+      "Percy", "Applitools", "Chromatic", "BackstopJS",
+      "Storybook", "Ladle", "Histoire"
+    ],
+    "APIs & Protocols": [
+      "REST API", "GraphQL", "gRPC", "tRPC", "WebSocket",
+      "WebRTC", "Server-Sent Events", "Long Polling",
+      "OpenAPI 3.0", "Swagger", "AsyncAPI", "JSON Schema",
+      "Postman", "Insomnia", "Bruno", "HTTPie", "cURL",
+      "OAuth 2.0", "JWT", "SAML 2.0", "OpenID Connect", "LDAP", "SCIM",
+      "API Gateway", "Kong", "Tyk", "Apigee", "AWS API Gateway",
+      "MuleSoft", "Zapier", "n8n", "Make", "Airbyte", "Fivetran",
+      "MQTT", "AMQP", "STOMP", "CoAP", "XMPP", "WebHooks",
+      "JSON-RPC", "XML-RPC", "SOAP", "WSDL"
+    ],
+    "Mobile Development": [
+      "iOS", "Android", "React Native", "Flutter", "Expo", "Ionic",
+      "Capacitor", "NativeScript", "Xamarin", ".NET MAUI",
+      "Swift", "SwiftUI", "UIKit", "Combine", "Core Data", "WidgetKit",
+      "Kotlin", "Jetpack Compose", "Android SDK", "Room", "Retrofit", "Coroutines",
+      "Objective-C", "Xcode", "Android Studio", "IntelliJ IDEA",
+      "Firebase", "Supabase", "Realm", "SQLite (Mobile)",
+      "RevenueCat", "Adapty", "Qonversion",
+      "App Store Connect", "Google Play Console", "TestFlight", "Firebase App Distribution",
+      "Fastlane", "Bitrise", "AppCenter", "Codemagic"
+    ],
+    "Game Development": [
+      "Unity", "Unreal Engine", "Godot", "GameMaker", "Pygame", "Phaser",
+      "LÖVE2D", "Defold", "Bevy", "Cocos2d", "libGDX",
+      "C++ (Game Dev)", "Blueprints (UE)", "GDScript",
+      "HLSL", "GLSL", "Metal Shading Language", "WGSL",
+      "OpenGL", "Vulkan", "DirectX", "Metal", "WebGPU",
+      "Blender (Game Assets)", "Maya (Game Assets)", "Substance Painter",
+      "FMOD", "Wwise", "Steam SDK", "Epic Online Services",
+      "Photon", "Mirror (Networking)", "Firebase Game Services"
+    ],
+    "Blockchain & Web3": [
+      "Solidity", "Vyper", "Move", "Rust (Solana)", "Cairo (StarkNet)",
+      "Ethereum", "Polygon", "Solana", "Avalanche", "BNB Chain",
+      "Arbitrum", "Optimism", "Base", "zkSync", "StarkNet",
+      "Hardhat", "Foundry", "Truffle", "Brownie", "Anchor",
+      "Ethers.js", "Web3.js", "Viem", "wagmi", "RainbowKit",
+      "MetaMask", "WalletConnect", "Gnosis Safe",
+      "OpenZeppelin", "Uniswap V3", "Aave", "Compound",
+      "IPFS", "Arweave", "Filecoin", "The Graph",
+      "Chainlink", "Pyth Network", "Band Protocol",
+      "NFT", "ERC-20", "ERC-721", "ERC-1155", "ERC-4337",
+      "DeFi", "DAO", "AMM", "Yield Farming", "Staking", "Bridge"
+    ],
+    "Embedded Systems & IoT": [
+      "Arduino", "Raspberry Pi", "ESP32", "ESP8266", "STM32", "Teensy",
+      "RISC-V", "ARM Cortex", "PIC Microcontroller", "AVR",
+      "RTOS", "FreeRTOS", "Zephyr RTOS", "Mbed OS", "ThreadX",
+      "C for Embedded", "C++ for Embedded", "Rust for Embedded",
+      "UART", "SPI", "I2C", "CAN Bus", "RS-485", "Modbus",
+      "PLC", "SCADA", "HMI", "OPC-UA", "MQTT (IoT)",
+      "AWS IoT", "Azure IoT Hub", "Google Cloud IoT",
+      "Zigbee", "Z-Wave", "LoRa", "LoRaWAN", "NB-IoT", "LTE-M",
+      "Bluetooth LE", "Thread", "Matter",
+      "KiCad", "Altium Designer", "Eagle PCB", "LTspice",
+      "OpenWRT", "Yocto Project", "Buildroot"
+    ],
+    "Version Control & Collaboration": [
+      "Git", "GitHub", "GitLab", "Bitbucket", "Azure Repos",
+      "SVN", "Mercurial", "Perforce",
+      "Git Flow", "GitHub Flow", "Trunk-Based Development", "Feature Flags",
+      "Pull Requests", "Code Review", "Pair Programming",
+      "GitHub Copilot", "GitLens", "Conventional Commits", "Semantic Versioning",
+      "GitHub Projects", "GitHub Discussions", "GitLab Issues"
+    ],
+    "Code Quality & Analysis": [
+      "SonarQube", "SonarCloud", "CodeClimate", "DeepSource", "Codacy",
+      "ESLint", "Pylint", "Flake8", "Ruff", "Bandit", "Mypy",
+      "Black", "isort", "Prettier", "Biome",
+      "Semgrep", "CodeQL", "Snyk Code", "Checkmarx", "Veracode",
+      "OWASP Dependency-Check", "Dependabot", "Renovate",
+      "Complexity Analysis", "Code Coverage", "Technical Debt",
+      "Architecture Decision Records", "Documentation Generation"
+    ]
+  },
+  "Data Science & Analytics": {
+    "Data Processing & ETL": [
+      "Pandas", "NumPy", "Polars", "Dask", "Vaex", "cuDF (RAPIDS)",
+      "Apache Spark", "PySpark", "Hadoop MapReduce", "Apache Flink",
+      "Apache Beam", "Apache NiFi", "StreamSets",
+      "dbt", "dbt Cloud", "dbt Core", "SQLMesh",
+      "Airbyte", "Fivetran", "Stitch", "Talend", "Informatica",
+      "AWS Glue", "Azure Data Factory", "Google Dataflow", "Apache Camel",
+      "Debezium", "Apache Kafka", "Kafka Streams",
+      "Petl", "Bonobo", "Singer", "Meltano",
+      "Great Expectations", "Pandera", "Pydantic (Data Validation)",
+      "Apache Arrow", "Parquet", "Avro", "ORC", "Protobuf"
+    ],
+    "Data Visualization": [
+      "Matplotlib", "Seaborn", "Plotly", "Plotly Dash", "Bokeh",
+      "Altair", "Vega-Lite", "D3.js", "Observable Plot", "Chart.js",
+      "Recharts", "Victory", "Nivo", "ECharts", "Highcharts",
+      "Tableau", "Power BI", "Looker", "Looker Studio", "Mode Analytics",
+      "Metabase", "Apache Superset", "Redash", "Grafana", "Kibana",
+      "Streamlit", "Gradio", "Panel", "Voila", "Mercury",
+      "Flourish", "Datawrapper", "RAWGraphs", "Gephi",
+      "Kepler.gl", "Deck.gl", "MapboxGL", "Leaflet.js"
+    ],
+    "Statistical Analysis": [
+      "R", "SPSS", "SAS", "STATA", "Minitab", "JMP", "Mathematica",
+      "Hypothesis Testing", "A/B Testing", "Multivariate Testing",
+      "ANOVA", "MANOVA", "t-Test", "Chi-Square Test", "Mann-Whitney U",
+      "Linear Regression", "Logistic Regression", "Poisson Regression",
+      "Time Series Analysis", "ARIMA", "SARIMA", "Prophet", "LSTM for TS",
+      "Survival Analysis", "Kaplan-Meier", "Cox Regression",
+      "Bayesian Statistics", "MCMC", "Variational Inference",
+      "Factor Analysis", "PCA", "ICA", "t-SNE", "UMAP",
+      "Cluster Analysis", "K-Means", "DBSCAN", "Hierarchical Clustering",
+      "Bootstrap", "Jackknife", "Permutation Tests",
+      "Causal Inference", "Difference-in-Differences", "Instrumental Variables",
+      "Econometrics", "Panel Data Analysis", "Mixed Models"
+    ],
+    "Natural Language Processing": [
+      "spaCy", "NLTK", "Gensim", "TextBlob", "Stanza", "Flair",
+      "Named Entity Recognition (NER)", "Part-of-Speech Tagging",
+      "Dependency Parsing", "Coreference Resolution", "Semantic Role Labeling",
+      "Text Classification", "Sentiment Analysis", "Topic Modeling",
+      "LDA", "NMF", "BERTopic", "Top2Vec",
+      "Text Summarization", "Machine Translation", "Question Answering",
+      "Information Extraction", "Relation Extraction",
+      "Word2Vec", "GloVe", "FastText", "ELMo",
+      "BERT", "RoBERTa", "DistilBERT", "ALBERT", "XLNet", "T5", "BART",
+      "Embedding Models", "Cross-Encoder", "Bi-Encoder",
+      "Semantic Search", "Dense Retrieval", "Sparse Retrieval",
+      "Tokenization", "BPE", "WordPiece", "SentencePiece",
+      "Speech Recognition", "Text-to-Speech", "Speaker Diarization"
+    ],
+    "Computer Vision": [
+      "OpenCV", "PIL/Pillow", "scikit-image", "Albumentations", "imgaug",
+      "torchvision", "timm", "MMDetection", "Detectron2", "MMSegmentation",
+      "YOLO", "YOLOv8", "YOLOv9", "DINO", "SAM", "Grounding DINO",
+      "ResNet", "EfficientNet", "MobileNet", "ViT", "Swin Transformer",
+      "Image Classification", "Object Detection", "Instance Segmentation",
+      "Semantic Segmentation", "Panoptic Segmentation", "Pose Estimation",
+      "Depth Estimation", "Optical Flow", "Video Understanding",
+      "Face Detection", "Face Recognition", "FaceNet", "DeepFace", "InsightFace",
+      "OCR", "Tesseract", "EasyOCR", "PaddleOCR", "TrOCR",
+      "GAN", "DCGAN", "StyleGAN", "CycleGAN", "Pix2Pix",
+      "VAE", "Diffusion Models", "ControlNet", "IP-Adapter",
+      "3D Vision", "NeRF", "3D Gaussian Splatting", "Open3D",
+      "CLIP", "BLIP", "BLIP-2", "LLaVA", "Moondream"
+    ],
+    "MLOps & Model Serving": [
+      "MLflow", "Kubeflow", "Kubeflow Pipelines", "Vertex AI Pipelines",
+      "SageMaker Pipelines", "Azure ML Pipelines", "ZenML",
+      "Airflow", "Prefect", "Dagster", "Luigi", "Kedro",
+      "BentoML", "Seldon Core", "KServe", "TorchServe",
+      "TensorFlow Serving", "Ray Serve", "Triton Inference Server",
+      "FastAPI (Model Serving)", "Gradio", "Streamlit",
+      "DVC", "ClearML", "Neptune.ai", "Comet.ml",
+      "Feature Store", "Feast", "Tecton", "Hopsworks",
+      "Data Version Control", "Model Registry", "Model Cards",
+      "A/B Testing (ML)", "Shadow Deployment", "Canary Deployment",
+      "Evidently AI", "Alibi Detect", "Arize AI", "WhyLabs",
+      "Model Explainability", "SHAP", "LIME", "Captum"
+    ],
+    "Business Intelligence": [
+      "Tableau", "Power BI", "Looker", "Qlik Sense", "MicroStrategy",
+      "SAP BusinessObjects", "IBM Cognos", "Oracle BI",
+      "Metabase", "Apache Superset", "Redash", "Lightdash", "Cube.js",
+      "dbt", "Datahub", "Apache Atlas", "Collibra", "Alation",
+      "OLAP", "Cube", "Pivot Tables", "Data Mart", "Data Lake", "Data Lakehouse",
+      "KPI Development", "Dashboard Design", "Executive Reporting",
+      "SQL (Analytics)", "Window Functions", "CTEs", "Stored Procedures",
+      "ETL Design", "Data Modeling", "Star Schema", "Snowflake Schema", "Data Vault"
+    ],
+    "Data Governance & Quality": [
+      "Data Catalog", "Apache Atlas", "DataHub", "Collibra", "Alation",
+      "Great Expectations", "Deequ", "Soda", "Monte Carlo", "Bigeye",
+      "Data Lineage", "Data Dictionary", "Metadata Management",
+      "Master Data Management", "Data Stewardship", "Data Ownership",
+      "GDPR Compliance (Data)", "Data Anonymization", "Data Masking",
+      "Data Retention Policy", "Data Classification", "Data Security"
+    ]
+  },
+  "DevOps & Infrastructure": {
+    "Networking": [
+      "TCP/IP", "UDP", "DNS", "DHCP", "HTTP/HTTPS", "TLS/SSL", "mTLS",
+      "VPN", "IPSec", "WireGuard", "OpenVPN",
+      "Load Balancing", "CDN", "Anycast", "BGP", "OSPF", "IS-IS",
+      "VLAN", "VPC", "NAT", "Firewall", "WAF", "DDoS Protection",
+      "SDN", "NFV", "MPLS", "SD-WAN",
+      "Nginx", "Apache HTTP Server", "HAProxy", "Traefik", "Caddy",
+      "Envoy", "Consul Connect", "AWS ELB", "GCP Load Balancer", "Azure LB",
+      "Cloudflare", "AWS CloudFront", "Fastly", "Akamai"
+    ],
+    "Operating Systems": [
+      "Linux", "Ubuntu", "Debian", "CentOS", "RHEL", "Fedora",
+      "Arch Linux", "Alpine Linux", "NixOS", "Gentoo",
+      "Windows Server", "macOS Server", "FreeBSD", "OpenBSD", "NetBSD",
+      "Solaris", "AIX", "HP-UX",
+      "Kernel Tuning", "systemd", "cgroups", "Namespaces",
+      "Shell Scripting", "Bash", "Zsh", "Fish", "PowerShell (Linux)"
+    ],
+    "Monitoring & Observability": [
+      "Prometheus", "Grafana", "Alertmanager", "Thanos", "Cortex",
+      "Datadog", "New Relic", "Dynatrace", "AppDynamics", "Elastic APM",
+      "Honeycomb", "Lightstep", "SigNoz", "Uptrace",
+      "OpenTelemetry", "Jaeger", "Zipkin", "Tempo", "Loki",
+      "ELK Stack", "Elasticsearch", "Logstash", "Kibana", "Filebeat",
+      "Splunk", "SumoLogic", "Loggly", "Papertrail",
+      "AWS CloudWatch", "Azure Monitor", "GCP Cloud Monitoring",
+      "PagerDuty", "OpsGenie", "VictorOps", "Statuspage", "Better Uptime",
+      "Pingdom", "Uptime Robot", "Checkly", "Runscope",
+      "k6", "Grafana k6", "Load Testing", "APM"
+    ],
+    "Storage & Backup": [
+      "NFS", "SMB/CIFS", "iSCSI", "Fibre Channel", "NVMe-oF",
+      "Ceph", "GlusterFS", "Longhorn", "Rook", "OpenEBS",
+      "AWS S3", "AWS EBS", "AWS EFS", "AWS FSx",
+      "Google Cloud Storage", "Azure Blob Storage", "Azure Files",
+      "Backblaze B2", "MinIO", "WASABI",
+      "RAID", "LVM", "ZFS", "Btrfs", "XFS", "ext4",
+      "rsync", "Velero", "Restic", "Borg", "Duplicati", "Bacula"
+    ],
+    "Service Mesh & API Management": [
+      "Istio", "Linkerd", "Consul", "AWS App Mesh", "Kuma",
+      "Envoy", "gRPC (Service Mesh)", "mTLS",
+      "Kong", "Tyk", "Apigee", "AWS API Gateway", "Azure APIM",
+      "MuleSoft", "Traefik", "Nginx Plus", "HAProxy (Enterprise)"
+    ],
+    "Site Reliability Engineering": [
+      "SLO", "SLI", "SLA", "Error Budget", "Toil Reduction",
+      "Runbooks", "Playbooks", "Incident Management", "Post-Mortem",
+      "Chaos Engineering", "Chaos Monkey", "Gremlin", "LitmusChaos",
+      "GameDay", "Disaster Recovery", "RTO", "RPO",
+      "Capacity Planning", "Performance Engineering", "Reliability",
+      "On-Call", "PagerDuty", "Escalation Policy", "Runbook Automation"
+    ],
+    "Cloud Security": [
+      "Cloud Security Posture Management (CSPM)", "Prisma Cloud", "Wiz", "Orca Security",
+      "AWS Security Hub", "AWS GuardDuty", "AWS Config",
+      "Azure Defender", "GCP Security Command Center",
+      "HashiCorp Vault", "AWS Secrets Manager", "GCP Secret Manager",
+      "CSPM", "CWPP", "CNAPP", "CIEM",
+      "Zero Trust Network Access (ZTNA)", "BeyondCorp", "Cloudflare Access",
+      "Container Security", "Image Scanning", "Runtime Security",
+      "Infrastructure Drift Detection", "Policy as Code"
+    ]
+  },
+  "Security & Compliance": {
+    "Application Security": [
+      "OWASP Top 10", "SQL Injection", "Cross-Site Scripting (XSS)",
+      "CSRF", "SSRF", "XML External Entity (XXE)", "Remote Code Execution",
+      "Insecure Deserialization", "Broken Authentication",
+      "Broken Access Control", "Security Misconfiguration",
+      "Sensitive Data Exposure", "Using Components with Known Vulnerabilities",
+      "Insufficient Logging & Monitoring", "Directory Traversal",
+      "Command Injection", "LDAP Injection", "XML Injection",
+      "Input Validation", "Output Encoding", "Parameterized Queries",
+      "Security Headers", "Content Security Policy", "HSTS", "SameSite Cookies",
+      "Subresource Integrity", "CORS", "COEP", "COOP",
+      "SDL", "Threat Modeling", "STRIDE", "PASTA", "DREAD",
+      "Secure SDLC", "SAST", "DAST", "IAST", "SCA",
+      "Semgrep", "CodeQL", "Checkmarx", "Fortify", "Veracode"
+    ],
+    "Network Security": [
+      "Firewall", "IDS", "IPS", "WAF", "SIEM", "SOC",
+      "Network Segmentation", "DMZ", "Bastion Host", "Jump Server",
+      "VPN", "SD-WAN security", "Zero Trust", "ZTNA", "SASE",
+      "Snort", "Suricata", "Zeek", "Wireshark", "tcpdump",
+      "Nmap", "Masscan", "Shodan", "Censys",
+      "DLP", "CASB", "Email Security", "SPF", "DKIM", "DMARC",
+      "DNS Security", "DNSSEC", "DNS Filtering"
+    ],
+    "Security Tools & Penetration Testing": [
+      "Burp Suite", "OWASP ZAP", "Nikto", "SQLMap", "Hydra",
+      "John the Ripper", "Hashcat", "Aircrack-ng", "Metasploit",
+      "Nessus", "Qualys", "Rapid7 InsightVM", "OpenVAS",
+      "Maltego", "Recon-ng", "theHarvester", "Amass", "Subfinder",
+      "ffuf", "Gobuster", "Dirsearch", "Feroxbuster",
+      "Nuclei", "ProjectDiscovery", "Katana", "Httpx",
+      "Volatility", "Autopsy", "FTK Imager", "Cellebrite", "Axiom",
+      "YARA", "ClamAV", "OSSEC", "Wazuh", "Velociraptor",
+      "Kali Linux", "Parrot OS", "BlackArch", "Commix"
+    ],
+    "Cryptography & Identity": [
+      "AES", "RSA", "ECC", "Ed25519", "X25519", "ChaCha20",
+      "SHA-256", "SHA-3", "BLAKE3", "Argon2", "bcrypt", "scrypt",
+      "HMAC", "TLS 1.3", "Certificate Transparency", "HPKE",
+      "PKI", "X.509 Certificates", "Let's Encrypt", "ACME Protocol",
+      "HSM", "TPM", "Key Management Service",
+      "IAM", "RBAC", "ABAC", "PBAC", "ReBAC",
+      "OAuth 2.0", "OIDC", "SAML", "Active Directory", "LDAP",
+      "SSO", "MFA", "FIDO2", "WebAuthn", "TOTP", "HOTP",
+      "PAM", "CyberArk", "HashiCorp Vault", "Zero Knowledge Proof",
+      "Homomorphic Encryption", "Secure MPC", "Secret Sharing"
+    ],
+    "Compliance Frameworks": [
+      "ISO 27001", "ISO 27017", "ISO 27018", "ISO 22301",
+      "SOC 2 Type I", "SOC 2 Type II", "SOC 3",
+      "PCI DSS", "PCI DSS v4.0",
+      "HIPAA", "HITECH", "HL7 Security",
+      "GDPR", "CCPA", "LGPD", "PDPA", "PIPL",
+      "FedRAMP", "FISMA", "DFARS", "CMMC",
+      "NIST CSF", "NIST SP 800-53", "CIS Controls", "CIS Benchmarks",
+      "COBIT", "ITIL", "CSA STAR", "FIPS 140-2", "FIPS 140-3",
+      "SOX", "FINRA", "Basel III", "Dodd-Frank", "MiFID II", "DORA",
+      "AI Act", "NIST AI RMF", "ISO 42001"
+    ],
+    "Threat Intelligence & Incident Response": [
+      "Threat Intelligence", "MITRE ATT&CK", "MITRE D3FEND", "CTI",
+      "IOC", "IOA", "TTPs", "Kill Chain", "Diamond Model",
+      "Malware Analysis", "Reverse Engineering", "IDA Pro", "Ghidra",
+      "Binary Ninja", "Radare2", "x64dbg", "OllyDbg",
+      "DFIR", "Digital Forensics", "Memory Forensics", "Network Forensics",
+      "SOAR", "IBM QRadar", "Splunk SOAR", "Palo Alto XSOAR",
+      "SIEM", "Sentinel", "Chronicle (GCP)", "Elastic SIEM",
+      "Red Team", "Blue Team", "Purple Team", "Bug Bounty",
+      "CVE", "CVSS", "NVD", "Exploit Development", "CTF"
+    ]
+  },
+  "Design & UX": {
+    "Design Tools": [
+      "Figma", "FigJam", "Sketch", "Adobe XD", "InVision", "Zeplin",
+      "Marvel", "Axure RP", "Balsamiq", "Justinmind",
+      "Principle", "Framer", "ProtoPie", "Origami Studio",
+      "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects",
+      "Adobe InDesign", "Adobe Premiere Pro", "Adobe Lightroom",
+      "Affinity Designer", "Affinity Photo", "Affinity Publisher",
+      "GIMP", "Inkscape", "Penpot",
+      "Blender", "Cinema 4D", "Maya", "3ds Max", "ZBrush",
+      "Substance Painter", "Substance Designer",
+      "Spline", "Rive", "LottieFiles", "Haiku Animator",
+      "Webflow", "Framer Sites", "Wix", "Squarespace"
+    ],
+    "UX Research Methods": [
+      "User Research", "Usability Testing", "Moderated Testing", "Unmoderated Testing",
+      "User Interviews", "Contextual Inquiry", "Ethnography",
+      "Card Sorting", "Tree Testing", "First Click Testing",
+      "Eye Tracking", "Heat Maps", "Session Recording",
+      "Surveys", "Questionnaires", "NPS", "CSAT", "SUS Score",
+      "Heuristic Evaluation", "Cognitive Walkthrough", "Expert Review",
+      "A/B Testing", "Multivariate Testing", "Feature Flags",
+      "User Journey Mapping", "Empathy Mapping", "Persona Creation",
+      "Jobs To Be Done", "Affinity Mapping", "Thematic Analysis",
+      "Quantitative UX", "Analytics-Driven UX", "Diary Studies"
+    ],
+    "UI Design Principles": [
+      "Visual Hierarchy", "Layout & Composition", "Grid Systems",
+      "Typography", "Color Theory", "Color Contrast", "Accessibility (WCAG 2.1)",
+      "ARIA", "Screen Reader Compatibility", "Keyboard Navigation",
+      "Gestalt Principles", "F-Pattern", "Z-Pattern",
+      "Material Design", "Human Interface Guidelines (HIG)", "Fluent Design",
+      "Atomic Design", "Design Systems", "Component Libraries",
+      "Responsive Design", "Mobile-First Design", "Adaptive Design",
+      "Dark Mode Design", "High Contrast Mode", "Motion Design",
+      "Microinteractions", "Animation Principles", "Informational Architecture"
+    ],
+    "Frontend Styling (Designer)": [
+      "CSS", "CSS Grid", "Flexbox", "CSS Variables", "CSS Animations",
+      "Sass", "Less", "PostCSS",
+      "Tailwind CSS", "Bootstrap", "Material UI", "Ant Design",
+      "Chakra UI", "Radix UI", "shadcn/ui", "Headless UI",
+      "Styled Components", "Emotion", "CSS Modules",
+      "Storybook", "Chromatic", "Style Dictionary", "Design Tokens"
+    ],
+    "Motion & Interaction Design": [
+      "Lottie Animations", "Rive", "Framer Motion", "GSAP", "Three.js",
+      "React Spring", "Motion One", "Auto Animate",
+      "WebGL", "WebGPU", "Canvas API", "SVG Animation",
+      "Micro-interactions", "Scroll Animations", "Page Transitions",
+      "Skeleton Loading", "Progressive Disclosure",
+      "Gesture Recognition", "Touch Interactions", "Haptic Feedback"
+    ]
+  },
+  "Project Management": {
+    "Methodologies & Frameworks": [
+      "Agile", "Scrum", "Kanban", "SAFe (Scaled Agile Framework)",
+      "LeSS (Large-Scale Scrum)", "Nexus", "Spotify Model",
+      "Extreme Programming (XP)", "Crystal", "DSDM",
+      "Feature Driven Development", "Lean Software Development",
+      "Six Sigma", "DMAIC", "Lean Six Sigma",
+      "PRINCE2", "PMBOK", "IPMA", "Waterfall", "Hybrid Agile",
+      "Critical Path Method (CPM)", "PERT", "Critical Chain PM",
+      "OKRs", "V2MOM", "Hoshin Kanri", "EOS / Traction"
+    ],
+    "Project Management Tools": [
+      "Jira", "Jira Advanced Roadmaps", "Linear", "Asana", "Monday.com",
+      "ClickUp", "Notion", "Trello", "Basecamp", "Wrike",
+      "Smartsheet", "Microsoft Project", "Confluence", "Shortcut",
+      "Height", "Plane", "Raci Charts", "Gantt Charts",
+      "Productboard", "Aha!", "Roadmunk", "ProdPad",
+      "Miro", "Mural", "FigJam", "Lucidchart", "draw.io", "Whimsical",
+      "Retrium", "EasyRetro", "FunRetro", "Parabol",
+      "Range", "Standuply", "Geekbot", "DailyBot",
+      "Clockify", "Toggl", "Harvest", "Everhour"
+    ],
+    "PM Skills & Practices": [
+      "Stakeholder Management", "Requirements Gathering", "Scope Management",
+      "Sprint Planning", "Sprint Review", "Sprint Retrospective",
+      "Backlog Refinement", "Story Point Estimation", "Planning Poker",
+      "Release Planning", "Roadmap Planning", "PI Planning (SAFe)",
+      "Risk Management", "Issue Tracking", "Dependency Management",
+      "Change Management", "Impact Assessment", "Change Control",
+      "Resource Planning", "Capacity Planning", "Workforce Planning",
+      "Budget Management", "CAPEX/OPEX", "Earned Value Management",
+      "Vendor Management", "Contract Management", "SLA Management",
+      "War Room", "Post-Mortem", "Knowledge Management",
+      "Executive Communication", "Status Reporting", "KPIs"
+    ],
+    "Certifications & Standards": [
+      "PMP (PMI)", "PMI-ACP", "CAPM", "PgMP", "PfMP",
+      "CSM (Certified Scrum Master)", "CSPO", "CSP", "CSD",
+      "SAFe Agilist", "SAFe POPM", "SAFe Scrum Master",
+      "PRINCE2 Foundation", "PRINCE2 Practitioner",
+      "ITIL 4 Foundation", "ITIL 4 Managing Professional",
+      "COBIT 5", "COBIT 2019",
+      "Lean Six Sigma Green Belt", "Lean Six Sigma Black Belt",
+      "MSP", "MoP", "P3O", "MoV"
+    ]
+  },
+  "Marketing & Growth": {
+    "Digital Marketing": [
+      "SEO", "On-Page SEO", "Off-Page SEO", "Technical SEO",
+      "SEM", "PPC", "Google Ads", "Meta Ads", "LinkedIn Ads",
+      "Twitter/X Ads", "TikTok Ads", "Pinterest Ads", "Snapchat Ads",
+      "Display Advertising", "Programmatic Advertising", "RTB",
+      "DSP", "SSP", "DMP", "CDP",
+      "Marketing Automation", "HubSpot", "Marketo", "Pardot",
+      "ActiveCampaign", "Klaviyo", "Braze", "Iterable", "Salesforce Marketing Cloud",
+      "Mailchimp", "Campaign Monitor", "Drip",
+      "SMS Marketing", "Push Notifications", "WhatsApp Marketing",
+      "Affiliate Marketing", "Influencer Marketing", "Referral Marketing"
+    ],
+    "Analytics & Measurement": [
+      "Google Analytics 4", "Adobe Analytics", "Mixpanel", "Amplitude",
+      "Heap", "FullStory", "Hotjar", "Crazy Egg", "Lucky Orange",
+      "Segment", "mParticle", "Snowplow", "RudderStack", "PostHog",
+      "Google Tag Manager", "Tealium", "LaunchDarkly", "Statsig",
+      "Optimizely", "VWO", "AB Tasty", "Convert", "Monetate",
+      "Google Search Console", "Ahrefs", "SEMrush", "Moz", "Majestic",
+      "Screaming Frog", "Sitebulb", "Core Web Vitals", "PageSpeed Insights",
+      "SimilarWeb", "SpyFu", "iSpionage", "AdBeat"
+    ],
+    "Content & SEO": [
+      "Content Strategy", "Content Marketing", "Content Calendar",
+      "Copywriting", "UX Writing", "Technical Writing", "Ghostwriting",
+      "SEO Copywriting", "Blog Posts", "Long-form Content", "Thought Leadership",
+      "Video Marketing", "YouTube SEO", "Video Scripts", "Podcast Production",
+      "Infographics", "Visual Content", "Interactive Content",
+      "Link Building", "Guest Posting", "Digital PR", "Brand Mentions",
+      "Schema Markup", "Structured Data", "Rich Snippets",
+      "E-E-A-T", "Topical Authority", "Semantic SEO", "Entity SEO",
+      "Local SEO", "Google Business Profile", "Citation Building",
+      "International SEO", "Hreflang", "E-commerce SEO"
+    ],
+    "CRM & Sales Enablement": [
+      "Salesforce CRM", "HubSpot CRM", "Pipedrive", "Zoho CRM",
+      "Microsoft Dynamics 365", "Freshsales", "Close.io", "Copper",
+      "Zendesk Sell", "Outreach", "SalesLoft", "Apollo.io",
+      "LinkedIn Sales Navigator", "ZoomInfo", "Seamless.ai", "Clay",
+      "Gong", "Chorus", "Clari", "Revenue Grid",
+      "DocuSign", "PandaDoc", "Proposify",
+      "Zendesk", "Freshdesk", "Intercom", "Drift", "Crisp"
+    ],
+    "Growth Hacking & PLG": [
+      "Product-Led Growth", "Growth Loops", "Viral Coefficients",
+      "Acquisition Channels", "Retention Analysis", "Churn Prediction",
+      "Cohort Analysis", "Funnel Optimization", "Conversion Rate Optimization",
+      "Landing Page Optimization", "Lead Generation", "Lead Scoring",
+      "Go-to-Market Strategy", "ICP Definition", "Market Segmentation",
+      "Account-Based Marketing", "Demand Generation",
+      "Customer Lifecycle Marketing", "Win-Back Campaigns",
+      "Community Building", "Developer Marketing", "Open Source Marketing"
+    ]
+  },
+  "Business & Strategy": {
+    "Financial Analysis": [
+      "Financial Modeling", "DCF Analysis", "LBO Modeling", "M&A Analysis",
+      "Comparable Company Analysis", "Precedent Transaction Analysis",
+      "Sensitivity Analysis", "Scenario Analysis", "Monte Carlo Simulation",
+      "P&L Management", "Income Statement", "Balance Sheet", "Cash Flow Statement",
+      "GAAP", "IFRS", "Revenue Recognition", "Deferred Revenue",
+      "Budgeting", "Forecasting", "Rolling Forecasts", "Zero-Based Budgeting",
+      "Unit Economics", "CAC", "LTV", "LTV:CAC Ratio", "Payback Period",
+      "Gross Margin", "EBITDA", "Net Margin", "ROI", "ROE", "ROIC",
+      "Working Capital Management", "Treasury Management", "FX Risk"
+    ],
+    "Business Strategy": [
+      "Business Strategy", "Corporate Strategy", "Competitive Analysis",
+      "Porter's Five Forces", "SWOT Analysis", "BCG Matrix", "GE-McKinsey Matrix",
+      "Ansoff Matrix", "Blue Ocean Strategy", "Value Chain Analysis",
+      "Business Model Canvas", "Lean Canvas", "Platform Strategy",
+      "Ecosystem Strategy", "Network Effects", "Moats",
+      "Market Research", "Market Sizing", "TAM/SAM/SOM",
+      "Go-to-Market Strategy", "Product-Market Fit", "Value Proposition",
+      "Pricing Strategy", "Revenue Models", "Subscription Economics",
+      "M&A Strategy", "Due Diligence", "Post-Merger Integration"
+    ],
+    "Operations Management": [
+      "Supply Chain Management", "Logistics", "Procurement", "Sourcing",
+      "Vendor Management", "Inventory Management", "Warehouse Management",
+      "Demand Planning", "Sales & Operations Planning (S&OP)",
+      "Quality Management", "ISO 9001", "TQM", "Six Sigma Operations",
+      "Process Improvement", "Lean Manufacturing", "Kaizen", "Value Stream Mapping",
+      "Business Process Reengineering", "Process Mining",
+      "ERP Systems", "SAP", "Oracle ERP", "Microsoft Dynamics 365",
+      "NetSuite", "Epicor", "Sage", "Infor", "IFS"
+    ],
+    "Sales & Business Development": [
+      "B2B Sales", "B2C Sales", "Enterprise Sales", "SMB Sales",
+      "Inside Sales", "Field Sales", "Channel Sales", "Partner Sales",
+      "Account Management", "Key Account Management", "Strategic Accounts",
+      "Sales Strategy", "Territory Planning", "Pipeline Management",
+      "Sales Forecasting", "Quota Setting", "Commission Plans",
+      "Consultative Selling", "Solution Selling", "SPIN Selling",
+      "Challenger Sale", "MEDDIC", "MEDDPICC", "BANT", "ANUM",
+      "Cold Calling", "Cold Emailing", "Social Selling",
+      "Proposal Writing", "RFP Response", "Contract Negotiation",
+      "Partnership Development", "Alliance Management", "Joint Go-to-Market"
+    ],
+    "Leadership & Management": [
+      "People Management", "Team Leadership", "Direct Report Management",
+      "Performance Management", "OKR Setting", "1:1 Meetings",
+      "Difficult Conversations", "Feedback Delivery", "Coaching",
+      "Mentoring", "Career Development", "Succession Planning",
+      "Talent Acquisition (Leadership)", "Employer Branding",
+      "Organizational Design", "Team Structure", "Spans & Layers",
+      "Culture Building", "Psychological Safety", "Trust Building",
+      "Diversity & Inclusion", "Equity & Belonging",
+      "Employee Engagement", "Retention Strategies",
+      "Remote Team Management", "Hybrid Team Management",
+      "Executive Presence", "Board Communication", "Investor Relations"
+    ]
+  },
+  "Soft Skills": {
+    "Communication": [
+      "Written Communication", "Verbal Communication", "Active Listening",
+      "Presentation Skills", "Public Speaking", "Storytelling",
+      "Technical Writing", "Documentation", "Report Writing",
+      "Negotiation", "Persuasion", "Influence", "Facilitation",
+      "Workshop Facilitation", "Meeting Management",
+      "Cross-cultural Communication", "Remote Communication",
+      "Asynchronous Communication", "Internal Communication",
+      "Executive Communication", "Stakeholder Communication"
+    ],
+    "Collaboration & Teamwork": [
+      "Teamwork", "Cross-functional Collaboration", "Partnership Building",
+      "Stakeholder Management", "Influencing Without Authority",
+      "Virtual Collaboration", "Remote Teamwork", "Distributed Team Work",
+      "Pair Programming", "Mob Programming", "Code Review",
+      "Design Review", "Consensus Building", "Conflict Resolution",
+      "Trust Building", "Psychological Safety", "Inclusive Collaboration"
+    ],
+    "Problem Solving & Analytical Thinking": [
+      "Critical Thinking", "Analytical Thinking", "Systems Thinking",
+      "Design Thinking", "Root Cause Analysis", "5 Whys",
+      "Decision Making", "Problem Framing", "Problem Decomposition",
+      "First Principles Thinking", "Lateral Thinking", "Creative Problem Solving",
+      "Hypothesis-Driven Thinking", "Data-Driven Decision Making",
+      "Structured Problem Solving (McKinsey)", "Issue Trees",
+      "Logical Reasoning", "Deductive Reasoning", "Inductive Reasoning"
+    ],
+    "Personal Effectiveness": [
+      "Time Management", "Prioritization", "Goal Setting", "Self-Management",
+      "Stress Management", "Resilience", "Adaptability", "Flexibility",
+      "Growth Mindset", "Continuous Learning", "Self-Motivation",
+      "Emotional Intelligence (EQ)", "Empathy", "Self-Awareness",
+      "Mindfulness", "Focus", "Deep Work", "Work-Life Balance",
+      "Attention to Detail", "Quality Orientation", "Deadline Management"
+    ],
+    "Leadership & Influence": [
+      "Strategic Thinking", "Vision Setting", "Inspiring Others",
+      "Change Leadership", "Innovation", "Risk Tolerance",
+      "Building Trust", "Servant Leadership", "Situational Leadership",
+      "Transformational Leadership", "Transactional Leadership",
+      "Collective Intelligence", "Facilitative Leadership",
+      "Community Leadership", "Thought Leadership"
+    ]
+  },
+  "Finance & Accounting": {
+    "Financial Accounting": [
+      "GAAP", "IFRS", "Financial Reporting", "Financial Statements",
+      "Income Statement", "Balance Sheet", "Cash Flow Statement", "Equity Statement",
+      "Account Reconciliation", "Journal Entries", "General Ledger", "Chart of Accounts",
+      "Accounts Payable", "Accounts Receivable", "Payroll Processing",
+      "Fixed Assets", "Depreciation", "Amortization",
+      "Revenue Recognition (ASC 606)", "Lease Accounting (ASC 842)",
+      "Consolidation", "Intercompany Eliminations",
+      "Tax Compliance", "Corporate Tax", "VAT/GST", "Transfer Pricing",
+      "Deferred Tax", "Tax Provision",
+      "QuickBooks", "Xero", "Sage Intacct", "Sage 50", "FreshBooks",
+      "NetSuite", "SAP FI/CO", "Oracle Financials", "Workday Finance"
+    ],
+    "Corporate Finance": [
+      "Capital Budgeting", "NPV", "IRR", "Payback Period",
+      "Capital Structure", "WACC", "Optimal Capital Structure",
+      "Debt Financing", "Equity Financing", "Mezzanine Financing",
+      "IPO Process", "Secondary Offerings", "Convertible Notes",
+      "Venture Capital", "Private Equity", "Leveraged Buyout",
+      "M&A Process", "Due Diligence", "Synergies", "Accretion/Dilution",
+      "Working Capital Management", "Cash Management", "Treasury",
+      "Foreign Exchange Risk", "Interest Rate Risk", "Commodity Risk",
+      "Derivatives", "Hedging", "Forwards", "Futures", "Options", "Swaps"
+    ],
+    "Investment & Trading": [
+      "Equity Research", "Fixed Income Research", "Credit Analysis",
+      "Technical Analysis", "Fundamental Analysis", "Chart Patterns",
+      "Portfolio Management", "Asset Allocation", "Rebalancing",
+      "Risk Management (Investment)", "VaR", "CVaR", "Stress Testing",
+      "Algorithmic Trading", "Quantitative Finance", "Factor Investing",
+      "High-Frequency Trading", "Backtesting", "Paper Trading",
+      "Python (Finance)", "R (Finance)", "MATLAB (Finance)",
+      "Bloomberg Terminal", "Refinitiv Eikon", "FactSet", "Capital IQ", "PitchBook",
+      "CFA Level I", "CFA Level II", "CFA Level III", "CAIA", "FRM"
+    ],
+    "FinTech & Payments": [
+      "Payment Processing", "PCI DSS", "Stripe", "Braintree", "Square",
+      "Adyen", "PayPal", "Checkout.com", "Worldpay",
+      "Open Banking", "PSD2", "Open Finance",
+      "SWIFT", "ISO 20022", "SEPA", "ACH", "BACS", "CHAPS",
+      "Real-Time Payments", "FedNow", "Faster Payments",
+      "Cryptocurrency", "Bitcoin", "Ethereum", "Stablecoin", "CBDC",
+      "DeFi", "DEX", "Lending Protocols", "Yield Farming",
+      "KYC", "AML", "Identity Verification", "Fraud Detection",
+      "Neobanking", "Embedded Finance", "Buy Now Pay Later (BNPL)",
+      "RegTech", "InsurTech", "WealthTech"
+    ]
+  },
+  "Legal & Compliance": {
+    "Regulatory Frameworks": [
+      "GDPR", "ePrivacy Directive", "CCPA", "CPRA", "LGPD", "PDPA", "PIPL",
+      "HIPAA", "HITECH", "COPPA", "FERPA", "GLBA",
+      "PCI DSS", "SOX", "FINRA", "SEC Regulations",
+      "FCPA", "UK Bribery Act", "AML", "KYC", "OFAC Sanctions",
+      "Basel III", "Basel IV", "Dodd-Frank", "MiFID II", "DORA",
+      "CAN-SPAM", "CASL", "PECR",
+      "AI Act", "NIST AI RMF", "OECD AI Principles",
+      "Product Liability", "CE Marking", "FCC Regulations", "FDA Regulations"
+    ],
+    "Legal Domains": [
+      "Contract Law", "Contract Drafting", "Contract Negotiation",
+      "Intellectual Property Law", "Patent Law", "Trademark Law",
+      "Copyright Law", "Trade Secret Law", "FOSS Licensing",
+      "Open Source Compliance", "Software Licensing",
+      "Privacy Law", "Data Protection", "Cybersecurity Law",
+      "Employment Law", "Labor Law", "Wage & Hour",
+      "Corporate Law", "Company Formation", "Governance",
+      "M&A Due Diligence", "Investment Agreements", "Term Sheets",
+      "NDA", "MSA", "SLA", "EULA", "DPA", "BAA",
+      "Commercial Litigation", "Arbitration", "Mediation"
+    ],
+    "GRC (Governance, Risk, Compliance)": [
+      "Enterprise Risk Management (ERM)", "Risk Assessment", "Risk Register",
+      "Controls Design", "Controls Testing", "Internal Audit",
+      "External Audit", "Big Four Experience",
+      "Gap Analysis", "Remediation Planning", "Exception Management",
+      "Policy Development", "Procedure Writing", "Policy Governance",
+      "Business Continuity Planning", "Disaster Recovery Planning",
+      "Third-Party Risk Management", "Vendor Risk Assessment",
+      "Audit Committee", "Board Risk Committee",
+      "Whistleblower Programs", "Code of Conduct", "Ethics & Integrity",
+      "GRC Platforms", "MetricStream", "ServiceNow GRC", "RSA Archer", "Vanta"
+    ]
+  },
+  "Human Resources": {
+    "Talent Acquisition": [
+      "Talent Acquisition Strategy", "Full-Cycle Recruiting",
+      "Executive Search", "Technical Recruiting", "Campus Recruiting",
+      "Diversity Recruiting", "Inclusive Hiring", "Blind Hiring",
+      "Boolean Search", "X-Ray Search", "GitHub Sourcing",
+      "LinkedIn Recruiter", "LinkedIn Talent Insights",
+      "Indeed", "Glassdoor", "AngelList / Wellfound",
+      "Greenhouse", "Lever", "Ashby", "Workday Recruiting",
+      "BambooHR", "SmartRecruiters", "Jobvite",
+      "AI Recruiting Tools", "HireVue", "Pymetrics", "Vervoe",
+      "Candidate Experience", "Employer Branding", "EVP",
+      "Offer Management", "Reference Checks", "Background Checks",
+      "Compensation Benchmarking", "Total Rewards"
+    ],
+    "HR Operations & People Ops": [
+      "HRIS", "Workday HCM", "SAP SuccessFactors", "Oracle HCM",
+      "ADP", "Paychex", "Gusto", "Rippling", "Namely",
+      "Onboarding", "Offboarding", "Employee Lifecycle",
+      "Performance Reviews", "360-Degree Feedback", "Continuous Feedback",
+      "Performance Improvement Plans", "Disciplinary Process",
+      "Compensation Planning", "Pay Equity Analysis", "Salary Bands",
+      "Benefits Administration", "Open Enrollment", "COBRA",
+      "Leave Management", "FMLA", "Parental Leave",
+      "Workforce Planning", "Headcount Planning", "Attrition Analysis",
+      "Employee Engagement", "Pulse Surveys", "Culture Amp",
+      "Lattice", "15Five", "Peakon", "Leapsome",
+      "HR Compliance", "I-9 Verification", "E-Verify", "EEO Reporting"
+    ],
+    "Learning & Development": [
+      "Learning & Development Strategy", "Instructional Design",
+      "Adult Learning Theory", "Bloom's Taxonomy", "Kirkpatrick Model",
+      "eLearning Development", "Articulate Storyline", "Articulate Rise",
+      "Adobe Captivate", "Lectora", "iSpring",
+      "LMS Administration", "Cornerstone OnDemand", "SAP Litmos",
+      "Docebo", "TalentLMS", "Absorb LMS", "Canvas LMS",
+      "SCORM", "xAPI (Tin Can API)", "AICC", "Microlearning",
+      "Video-Based Learning", "Gamification", "Social Learning",
+      "Leadership Development", "High-Potential Programs",
+      "Coaching & Mentoring Programs", "Succession Planning",
+      "Skills Assessment", "Competency Frameworks", "Skills Gap Analysis"
+    ]
+  },
+  "Healthcare & Life Sciences": {
+    "Clinical Research & Regulatory": [
+      "Clinical Trials", "Phase I", "Phase II", "Phase III", "Phase IV",
+      "ICH E6 GCP", "ICH E9 (Statistical Principles)", "ICH M11",
+      "Protocol Design", "CRF Design", "Data Management Plan",
+      "IRB / Ethics Committee", "Informed Consent",
+      "FDA 21 CFR Part 11", "FDA 21 CFR Part 50", "EMA Guidelines",
+      "IND Application", "NDA", "BLA", "CE Marking (Medical Devices)",
+      "MDR (EU)", "IVDR (EU)", "ISO 13485", "ISO 14971",
+      "Pharmacovigilance", "Adverse Event Reporting", "MedWatch",
+      "Medical Writing", "Clinical Study Report", "Regulatory Submission",
+      "CONSORT", "PRISMA", "Systematic Review", "Meta-Analysis",
+      "REMS", "Risk Management Plan", "RWE", "Real-World Data"
+    ],
+    "Health IT & Informatics": [
+      "EHR Systems", "EMR Systems", "Epic", "Cerner", "Allscripts",
+      "athenahealth", "eClinicalWorks", "Meditech", "MEDITECH Expanse",
+      "HL7 FHIR", "HL7 v2", "DICOM", "SNOMED CT", "ICD-10", "ICD-11",
+      "CPT Codes", "LOINC", "RxNorm", "UMLS", "NDF-RT",
+      "CDA (Clinical Document Architecture)", "CCDA", "HIE",
+      "Interoperability", "Health Data Exchange", "API (FHIR)",
+      "Veeva Vault", "Medidata Rave", "Oracle Clinical", "SAS (Clinical)",
+      "CDISC", "CDASH", "SDTM", "ADaM", "TLG Programs",
+      "Telehealth", "Remote Patient Monitoring", "Digital Therapeutics",
+      "AI in Healthcare", "Clinical Decision Support", "Predictive Analytics"
+    ],
+    "Biotechnology & Life Sciences": [
+      "CRISPR-Cas9", "Gene Editing", "Gene Therapy", "Cell Therapy",
+      "CAR-T Therapy", "mRNA Technology", "Lipid Nanoparticles",
+      "Protein Engineering", "Antibody Development", "Bispecific Antibodies",
+      "ADC (Antibody-Drug Conjugate)", "Small Molecule Drug Discovery",
+      "ADMET", "High-Throughput Screening", "Lead Optimization",
+      "Bioinformatics", "Genomics", "Transcriptomics", "Proteomics", "Metabolomics",
+      "Next-Generation Sequencing", "Whole Genome Sequencing", "RNA-seq",
+      "Single-Cell Sequencing", "Spatial Transcriptomics",
+      "BLAST", "GATK", "BWA", "STAR", "Samtools", "DESeq2", "edgeR",
+      "R Bioconductor", "Biopython", "BioPandas",
+      "Flow Cytometry", "ELISA", "Western Blot", "PCR", "qPCR", "ddPCR",
+      "Cell Culture", "In Vitro", "In Vivo", "Animal Models", "GLP"
+    ]
+  },
+  "Engineering & Manufacturing": {
+    "Mechanical Engineering": [
+      "CAD", "SolidWorks", "AutoCAD", "CATIA V5/V6", "Siemens NX",
+      "Creo Parametric", "Inventor", "Fusion 360",
+      "FEA (Finite Element Analysis)", "ANSYS Mechanical", "Abaqus", "COMSOL",
+      "CFD (Computational Fluid Dynamics)", "ANSYS Fluent", "OpenFOAM", "Star-CCM+",
+      "GD&T", "Tolerance Analysis", "Stack-Up Analysis",
+      "DFMEA", "PFMEA", "FMEA", "Control Plan",
+      "Design for Manufacturability (DFM)", "Design for Assembly (DFA)",
+      "Rapid Prototyping", "3D Printing", "FDM", "SLA", "SLS", "MJF",
+      "CNC Machining", "Turning", "Milling", "EDM",
+      "Injection Molding", "Sheet Metal", "Welding", "Casting",
+      "Material Science", "Metals", "Plastics", "Composites", "Ceramics",
+      "Thermodynamics", "Heat Transfer", "Fluid Mechanics", "Statics", "Dynamics"
+    ],
+    "Electrical & Electronics Engineering": [
+      "PCB Design", "Schematic Capture", "Layout Design",
+      "Altium Designer", "KiCad", "Eagle", "OrCAD", "Cadence",
+      "SPICE Simulation", "LTspice", "Multisim", "ADS",
+      "VHDL", "Verilog", "SystemVerilog", "FPGA Design",
+      "Xilinx", "Intel FPGA", "Vivado", "Quartus Prime",
+      "Embedded Systems", "Microcontrollers", "SoC Design",
+      "RTOS", "FreeRTOS", "Zephyr", "Bare Metal Programming",
+      "Signal Processing", "DSP", "Filter Design", "FFT",
+      "Power Electronics", "Motor Drives", "Inverters", "Converters",
+      "Battery Management Systems", "EV Battery", "BMS",
+      "RF Engineering", "Antenna Design", "EMC", "EMI Compliance",
+      "Hardware Debugging", "Oscilloscope", "Logic Analyzer", "JTAG"
+    ],
+    "Civil & Structural Engineering": [
+      "AutoCAD Civil 3D", "Revit", "BIM (Building Information Modeling)",
+      "Navisworks", "Tekla Structures", "Bentley MicroStation",
+      "STAAD.Pro", "SAP2000", "ETABS", "RAM Structural System",
+      "Structural Analysis", "Load Calculations", "Seismic Design",
+      "Foundation Design", "Geotechnical Engineering", "Soil Mechanics",
+      "Concrete Design", "Steel Design", "Timber Design", "Masonry Design",
+      "Traffic Engineering", "Transportation Planning", "TransCAD",
+      "Hydrology", "HEC-RAS", "SWMM", "Hydraulic Modeling",
+      "Environmental Engineering", "Waste Management", "Remediation",
+      "Surveying", "GPS/GNSS", "Total Station", "LiDAR",
+      "GIS", "ArcGIS", "QGIS", "PostGIS", "Spatial Analysis",
+      "Primavera P6", "Microsoft Project (Civil)", "Construction Management",
+      "Cost Estimation", "QTO", "Scheduling", "CPM Scheduling"
+    ]
+  }
+}
