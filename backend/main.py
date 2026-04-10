@@ -15,12 +15,22 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-# ── Lifespan: preload the sentence-transformers model at startup ─────────────
+# ── Lifespan: create DB tables + preload sentence-transformer model ───────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Warm up heavy models on startup."""
+    """Initialise DB and warm up heavy models on startup."""
     import threading
+
+    # Create DB tables (no-op if they already exist)
+    try:
+        from db.session import create_tables
+        create_tables()
+        print("✅ Database tables created/verified.")
+    except Exception as e:
+        print(f"⚠️  DB init skipped: {e}")
+
     print("🚀 TalentGraph API starting...")
+
     # Pre-load the sentence transformer model in background (non-blocking)
     def _preload():
         try:
@@ -29,6 +39,7 @@ async def lifespan(app: FastAPI):
             print("✅ Sentence-transformer model loaded.")
         except Exception as e:
             print(f"⚠️  Model pre-load skipped: {e}")
+
     threading.Thread(target=_preload, daemon=True).start()
     yield
     print("👋 TalentGraph API shutting down.")
@@ -37,7 +48,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="TalentGraph API",
     description="Multi-Agent AI Resume Parser & Job Matcher",
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -50,8 +61,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── New routers (Tasks 1, 2, 3) ───────────────────────────────────────────────
+from api.routers.jobs import router as jobs_router
+from api.routers.parse import router as parse_router
 
-# ── Response Models ──────────────────────────────────────────────────────────
+app.include_router(jobs_router, prefix="/api/v1", tags=["Job Descriptions"])
+app.include_router(parse_router, prefix="/api/v1", tags=["Resume Parsing"])
+
+
+# ── Legacy response models (kept for backward compat with existing /api/v1/parse) ──
 
 class ExperienceItem(BaseModel):
     title: str | None = None
@@ -98,7 +116,7 @@ class AgentTraceItem(BaseModel):
     match_score: float | None = None
 
 
-class ParseResponse(BaseModel):
+class LegacyParseResponse(BaseModel):
     parsed_data: ParsedData
     match_score: float
     job_description: JobDescription
@@ -106,7 +124,7 @@ class ParseResponse(BaseModel):
     agent_trace: list[AgentTraceItem]
 
 
-# ── Available Job Descriptions ───────────────────────────────────────────────
+# ── Available Job Descriptions ────────────────────────────────────────────────
 
 class JobListItem(BaseModel):
     id: str
@@ -114,141 +132,26 @@ class JobListItem(BaseModel):
     company: str
 
 
-# ── Endpoints ────────────────────────────────────────────────────────────────
+# ── Legacy Endpoints ──────────────────────────────────────────────────────────
 
 @app.get("/")
 async def root():
     return {
         "service": "TalentGraph API",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "running",
         "docs": "/docs",
     }
 
 
-@app.get("/api/v1/jobs", response_model=list[JobListItem])
+@app.get("/api/v1/jobs", response_model=list[JobListItem], tags=["legacy"])
 async def list_jobs():
-    """List available job descriptions for matching."""
+    """List available built-in job descriptions for matching."""
     from agents.matcher_agent import JOB_DESCRIPTIONS
     return [
         JobListItem(id=k, title=v["title"], company=v["company"])
         for k, v in JOB_DESCRIPTIONS.items()
     ]
-
-
-@app.post("/api/v1/parse", response_model=ParseResponse)
-async def parse_resume(
-    file: UploadFile = File(...),
-    job_id: str = Form("senior_fullstack"),
-):
-    """
-    Upload a resume (PDF/DOCX) and run the full 3-agent pipeline:
-    Parser → Normalizer → Matcher.
-
-    Returns structured candidate data, normalised skills, and a semantic
-    match score against the selected job description.
-    """
-    # Validate file type
-    allowed_types = {
-        "application/pdf",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/msword",
-    }
-    if file.content_type and file.content_type not in allowed_types:
-        # Also allow by extension
-        ext = (file.filename or "").rsplit(".", 1)[-1].lower()
-        if ext not in ("pdf", "docx", "doc"):
-            raise HTTPException(
-                status_code=400,
-                detail=f"Unsupported file type: {file.content_type}. Upload a PDF or DOCX.",
-            )
-
-    # Read file bytes
-    file_bytes = await file.read()
-    if len(file_bytes) == 0:
-        raise HTTPException(status_code=400, detail="Empty file uploaded.")
-
-    if len(file_bytes) > 10 * 1024 * 1024:  # 10 MB max
-        raise HTTPException(status_code=400, detail="File too large. Max 10 MB.")
-
-    # Check API key
-    if not os.getenv("OPENAI_API_KEY"):
-        raise HTTPException(
-            status_code=500,
-            detail="OPENAI_API_KEY not configured. Set it in .env file.",
-        )
-
-    # Run pipeline
-    try:
-        print(f"📋 Starting pipeline for file: {file.filename}")
-        from graph.pipeline import run_pipeline
-
-        result = await run_pipeline(
-            file_bytes=file_bytes,
-            file_name=file.filename or "resume.pdf",
-            job_id=job_id,
-        )
-        print(f"✅ Pipeline completed successfully")
-    except Exception as e:
-        import traceback
-        error_msg = f"Pipeline error: {str(e)}"
-        print(f"❌ {error_msg}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=error_msg)
-
-    # Build response safely
-    try:
-        print(f"📦 Building response from pipeline result")
-        
-        # Ensure all required fields exist in the result
-        parsed_data = result.get("parsed_data", {})
-        if not isinstance(parsed_data, dict):
-            parsed_data = {}
-        
-        match_score = result.get("match_score", 0)
-        if not isinstance(match_score, (int, float)):
-            match_score = 0
-        
-        job_description = result.get("job_description", {
-            "title": "Unknown",
-            "company": "Unknown",
-            "description": "",
-            "required_skills": [],
-        })
-        if not isinstance(job_description, dict):
-            job_description = {
-                "title": "Unknown",
-                "company": "Unknown",
-                "description": "",
-                "required_skills": [],
-            }
-        
-        skill_overlap = result.get("skill_overlap", {"matched": [], "missing": []})
-        if not isinstance(skill_overlap, dict):
-            skill_overlap = {"matched": [], "missing": []}
-        
-        agent_trace = result.get("agent_trace", [])
-        if not isinstance(agent_trace, list):
-            agent_trace = []
-        
-        response = ParseResponse(
-            parsed_data=ParsedData(**parsed_data),
-            match_score=match_score,
-            job_description=JobDescription(**job_description),
-            skill_overlap=SkillOverlap(**skill_overlap),
-            agent_trace=[
-                AgentTraceItem(**item)
-                for item in agent_trace
-            ],
-        )
-        print(f"✅ Response built successfully")
-        return response
-    except Exception as e:
-        import traceback
-        error_msg = f"Response building error: {str(e)}"
-        print(f"❌ {error_msg}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=error_msg)
 
 
 if __name__ == "__main__":
@@ -258,6 +161,6 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8000,
         reload=True,
-        reload_dirs=[".", "agents", "graph"],
+        reload_dirs=[".", "agents", "graph", "api", "db", "workers"],
         reload_excludes=["venv/*"],
     )
