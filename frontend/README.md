@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
+# Smart-Hire — TalentGraph AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Multi-Agent AI system for intelligent resume parsing, skill normalization, and semantic job matching.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Project Structure
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+Smart-Hire 2.2/
+├── backend/          # FastAPI + Python AI pipeline
+│   ├── agents/       # Parser, Normalizer, Matcher agents
+│   ├── graph/        # LangGraph pipeline
+│   ├── main.py       # FastAPI entry point
+│   ├── requirements.txt
+│   └── .env          # API keys
+└── frontend/         # React + TypeScript + Vite
+    └── src/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Python** 3.11+ — [python.org](https://python.org)
+- **Node.js** 18+ — [nodejs.org](https://nodejs.org)
+
+---
+
+## Backend Setup & Run
+
+```bash
+# 1. Navigate to the backend directory
+cd "Smart-Hire 2.2/backend"
+
+# 2. Create a Python virtual environment
+python3 -m venv venv
+
+# 3. Activate the virtual environment
+source venv/bin/activate          # macOS / Linux
+# venv\Scripts\activate           # Windows
+
+# 4. Install dependencies
+pip install -r requirements.txt
+
+# 5. Configure your API key (edit the .env file)
+#    OPENAI_API_KEY=your-key-here
+
+# 6. Start the backend server
+python main.py
 ```
+
+The API will be available at **http://localhost:8000**  
+Interactive docs (Swagger UI): **http://localhost:8000/docs**
+
+---
+
+## Frontend Setup & Run
+
+```bash
+# 1. Navigate to the frontend directory
+cd "Smart-Hire 2.2/frontend"
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the development server
+npm run dev
+```
+
+The frontend will be available at **http://localhost:5173**
+
+---
+
+## Running the Full Project (Quick Reference)
+
+Open **two terminals** and run one command in each:
+
+**Terminal 1 — Backend:**
+```bash
+cd "Smart-Hire 2.2/backend"
+source venv/bin/activate    # macOS/Linux
+python main.py
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd "Smart-Hire 2.2/frontend"
+npm run dev
+```
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | Health check |
+| `GET` | `/api/v1/jobs` | List available job descriptions |
+| `POST` | `/api/v1/parse` | Upload resume (PDF/DOCX) and get match results |
+
+---
+
+## Notes
+
+- On **first run**, the sentence-transformer model will be downloaded automatically (~90 MB). This may take a minute.
+- Supported resume formats: **PDF**, **DOCX**
+- Max file size: **10 MB**
