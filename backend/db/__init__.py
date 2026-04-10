@@ -1,3 +1,4 @@
+# db package — exposes Jaimin's SQLAlchemy session alongside our aiosqlite layer
 from .session import engine, SessionLocal, create_tables
 from .models import Base, JobDescription, Candidate
 
