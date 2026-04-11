@@ -4,12 +4,13 @@ import type {
   JobListItem,
   TaxonomyResponse,
   CompareResponse,
+  MultiCompareResponse,
   StoredCandidate,
 } from '@/types';
 
 const api = axios.create({
   baseURL: '/api/v1',
-  timeout: 120_000, // 2 min for large resumes + model loading
+  timeout: 120_000,
 });
 
 // ── Parse ─────────────────────────────────────────────────────────────────────
@@ -18,11 +19,9 @@ export async function parseResume(file: File, jobId: string): Promise<ParseRespo
   const formData = new FormData();
   formData.append('file', file);
   formData.append('job_id', jobId);
-
   const { data } = await api.post<ParseResponse>('/parse', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-
   return data;
 }
 
@@ -55,6 +54,11 @@ export async function fetchCandidates(limit = 50): Promise<StoredCandidate[]> {
   return data.candidates;
 }
 
+export async function fetchCandidateById(id: string): Promise<ParseResponse> {
+  const { data } = await api.get<ParseResponse>(`/candidates/${id}`);
+  return data;
+}
+
 // ── Compare ───────────────────────────────────────────────────────────────────
 
 export async function compareCandidates(
@@ -68,4 +72,34 @@ export async function compareCandidates(
     job_id: jobId,
   });
   return data;
+}
+
+export async function compareCandidatesMulti(
+  candidateIds: string[],
+  jobId: string
+): Promise<MultiCompareResponse> {
+  const { data } = await api.post<MultiCompareResponse>('/compare/multi', {
+    candidate_ids: candidateIds,
+    job_id: jobId,
+  });
+  return data;
+}
+
+export async function parseResumesBulk(
+  files: File[],
+  jobId: string,
+  onProgress?: (done: number, total: number) => void
+): Promise<ParseResponse[]> {
+  const results: ParseResponse[] = [];
+  for (let i = 0; i < files.length; i++) {
+    const formData = new FormData();
+    formData.append('file', files[i]);
+    formData.append('job_id', jobId);
+    const { data } = await api.post<ParseResponse>('/parse', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    results.push(data);
+    onProgress?.(i + 1, files.length);
+  }
+  return results;
 }

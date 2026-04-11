@@ -2,6 +2,7 @@
 TASK 2 + TASK 3 — Candidates Router
 Endpoints:
   POST /api/v1/compare      — compare two candidates against a job
+  POST /api/v1/compare/multi — compare N candidates against a job (ranked)
   GET  /api/v1/candidates/{candidate_id} — retrieve stored candidate ParseResponse
 """
 
@@ -23,6 +24,11 @@ class CompareRequest(BaseModel):
     job_id: str
 
 
+class MultiCompareRequest(BaseModel):
+    candidate_ids: list[str]
+    job_id: str
+
+
 class CandidateSummary(BaseModel):
     candidate_id: str
     name: str
@@ -31,6 +37,18 @@ class CandidateSummary(BaseModel):
     missing_skills: list[str]
     experience_years: float
     education: str
+
+
+class RankedCandidate(BaseModel):
+    rank: int
+    candidate_id: str
+    name: str
+    overall_score: float
+    matched_skills: list[str]
+    missing_skills: list[str]
+    experience_years: float
+    education: str
+    unique_skills: list[str]
 
 
 class ComparisonResult(BaseModel):
@@ -42,10 +60,23 @@ class ComparisonResult(BaseModel):
     recommendation: str
 
 
+class MultiComparisonResult(BaseModel):
+    winner_id: str
+    winner_name: str
+    recommendation: str
+    skill_coverage_avg: float
+
+
 class CompareResponse(BaseModel):
     job_title: str
     candidates: list[CandidateSummary]
     comparison: ComparisonResult
+
+
+class MultiCompareResponse(BaseModel):
+    job_title: str
+    ranked_candidates: list[RankedCandidate]
+    comparison: MultiComparisonResult
 
 
 # ── Matching helpers ─────────────────────────────────────────────────────────────
@@ -127,6 +158,49 @@ async def _generate_recommendation(
             f"{winner_name} (score {winner_score:.1f}) outperforms {other_name} "
             f"(score {other_score:.1f}) for the {job_title} position, "
             f"with stronger coverage in {key_diff}."
+        )
+
+
+async def _generate_multi_recommendation(
+    ranked: list[dict],
+    job_title: str,
+) -> str:
+    """Generate a short paragraph summarising the top candidates."""
+    if not ranked:
+        return "No candidates to compare."
+
+    winner = ranked[0]
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    summary_lines = [
+        f"{i+1}. {c['name']} — score {c['score']:.1f}/100"
+        for i, c in enumerate(ranked[:5])
+    ]
+    summary_text = "\n".join(summary_lines)
+
+    if not api_key:
+        return (
+            f"{winner['name']} is the top candidate for the {job_title} role "
+            f"with a score of {winner['score']:.1f}/100."
+        )
+
+    try:
+        from langchain_openai import ChatOpenAI
+        from langchain_core.messages import HumanMessage
+
+        prompt = (
+            f"Given these candidates ranked for the '{job_title}' role:\n{summary_text}\n\n"
+            f"Write 2 concise sentences: (1) why the top candidate stands out, "
+            f"(2) what hiring managers should look for among the rest. Be professional."
+        )
+        llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3, api_key=api_key)
+        response = llm.invoke([HumanMessage(content=prompt)])
+        return response.content.strip()
+    except Exception as e:
+        print(f"[fallback] Multi-LLM recommendation fallback: {e}")
+        return (
+            f"{winner['name']} leads the pack for the {job_title} role "
+            f"with a score of {winner['score']:.1f}/100. Review the full rankings below."
         )
 
 
@@ -258,6 +332,121 @@ async def compare_candidates(body: CompareRequest):
             skills_only_in_2=skills_only_in_2,
             shared_skills=shared_skills,
             recommendation=recommendation,
+        ),
+    )
+
+
+# ── POST /api/v1/compare/multi ──────────────────────────────────────────────────
+
+@router.post("/compare/multi", response_model=MultiCompareResponse, summary="Rank N candidates against a job")
+async def compare_multi_candidates(body: MultiCompareRequest):
+    """
+    Compare and rank multiple stored candidates (2-50) against a job description.
+
+    Returns a sorted leaderboard with scores, skill overlap, and an AI summary.
+    """
+    if len(body.candidate_ids) < 2:
+        raise HTTPException(status_code=400, detail="Provide at least 2 candidate IDs.")
+    if len(body.candidate_ids) > 50:
+        raise HTTPException(status_code=400, detail="Maximum 50 candidates per comparison.")
+
+    from db.sqlite_db import get_candidate, get_job
+    from agents.matcher_agent import JOB_DESCRIPTIONS
+
+    # ── Load job description ────────────────────────────────────────────────────
+    job_row = await get_job(body.job_id)
+    if job_row is not None:
+        job = job_row
+    elif body.job_id in JOB_DESCRIPTIONS:
+        jd = JOB_DESCRIPTIONS[body.job_id]
+        job = {
+            "id": body.job_id,
+            "title": jd["title"],
+            "company": jd["company"],
+            "description": jd["description"],
+            "required_skills": jd["required_skills"],
+        }
+    else:
+        raise HTTPException(status_code=404, detail=f"Job '{body.job_id}' not found.")
+
+    required_skills: list[str] = job.get("required_skills", [])
+    job_description_text: str = job.get("description", "")
+
+    # ── Load & score all candidates ─────────────────────────────────────────────
+    scored: list[dict] = []
+    all_skill_sets: list[set] = []
+
+    for cid in body.candidate_ids:
+        row = await get_candidate(cid)
+        if row is None:
+            print(f"[multi-compare] Candidate {cid} not found, skipping.")
+            continue
+
+        pd = row.get("parsed_data", {})
+        if "parsed_data" in pd:
+            pd = pd["parsed_data"]
+
+        skills: list[str] = pd.get("technical_skills", [])
+        name: str = pd.get("name") or row.get("name") or f"Candidate {cid[:6]}..."
+        score = _compute_score(skills, job_description_text)
+        overlap = _compute_skill_overlap(skills, required_skills)
+        exp_years = _estimate_experience_years(pd.get("experience", []))
+        edu = _format_education(pd.get("education", []))
+
+        scored.append({
+            "candidate_id": cid,
+            "name": name,
+            "score": score,
+            "skills": skills,
+            "matched_skills": overlap["matched"],
+            "missing_skills": overlap["missing"],
+            "experience_years": exp_years,
+            "education": edu,
+        })
+        all_skill_sets.append({s.lower() for s in skills})
+
+    if not scored:
+        raise HTTPException(status_code=404, detail="None of the provided candidate IDs were found.")
+
+    # ── Sort by score descending ────────────────────────────────────────────────
+    scored.sort(key=lambda x: x["score"], reverse=True)
+
+    # ── Compute unique skills per candidate (not shared by all others) ──────────
+    ranked: list[RankedCandidate] = []
+    for i, c in enumerate(scored):
+        other_skills: set = set()
+        for j, s in enumerate(all_skill_sets):
+            if scored[j]["candidate_id"] != c["candidate_id"]:
+                other_skills |= s
+        unique = [s for s in c["skills"] if s.lower() not in other_skills]
+        ranked.append(RankedCandidate(
+            rank=i + 1,
+            candidate_id=c["candidate_id"],
+            name=c["name"],
+            overall_score=c["score"],
+            matched_skills=c["matched_skills"],
+            missing_skills=c["missing_skills"],
+            experience_years=c["experience_years"],
+            education=c["education"],
+            unique_skills=unique[:5],
+        ))
+
+    # ── Generate recommendation ─────────────────────────────────────────────────
+    winner = scored[0]
+    recommendation = await _generate_multi_recommendation(scored, job["title"])
+    avg_coverage = round(
+        sum(len(c["matched_skills"]) / max(len(required_skills), 1) * 100 for c in scored) / len(scored),
+        1,
+    ) if required_skills else 0.0
+
+    return MultiCompareResponse(
+        job_title=job["title"],
+        ranked_candidates=ranked,
+        comparison=MultiComparisonResult(
+            winner_id=winner["candidate_id"],
+            winner_name=winner["name"],
+            recommendation=recommendation,
+            skill_coverage_avg=avg_coverage,
         ),
     )
 

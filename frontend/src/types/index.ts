@@ -127,3 +127,39 @@ export interface StoredCandidate {
   email: string | null;
   created_at: string;
 }
+
+/* ── Multi-Compare Types ───────────────────────────────────── */
+
+export interface RankedCandidate {
+  rank: number;
+  candidate_id: string;
+  name: string;
+  overall_score: number;
+  matched_skills: string[];
+  missing_skills: string[];
+  experience_years: number;
+  education: string;
+  unique_skills: string[];
+}
+
+export interface MultiComparisonResult {
+  winner_id: string;
+  winner_name: string;
+  recommendation: string;
+  skill_coverage_avg: number;
+}
+
+export interface MultiCompareResponse {
+  job_title: string;
+  ranked_candidates: RankedCandidate[];
+  comparison: MultiComparisonResult;
+}
+
+/* ── Bulk Upload Types ────────────────────────────────────────── */
+
+export interface BulkUploadResult {
+  file: File;
+  result: ParseResponse | null;
+  error: string | null;
+  status: 'pending' | 'processing' | 'done' | 'error';
+}

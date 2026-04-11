@@ -168,6 +168,53 @@ body {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* ── Stagger helpers ─────────────────────────────────────────────────────── */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* ── Hero gradient mesh ─────────────────────────────────────────────────────── */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(139,92,246,0.12) 0%, transparent 70%),
+    var(--color-bg-primary);
+}
+
+/* ── Page fade-in ────────────────────────────────────────────────────────────── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: pageFadeIn 0.4s ease-out forwards;
+}
+
+/* ── No text select on UI cards ─────────────────────────────────────────────── */
+.no-select { user-select: none; }
+
+/* ── Gradient border utility ─────────────────────────────────────────────────── */
+.gradient-border {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-violet));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 /* ── React Flow custom overrides ────────────────────────────────────────────── */
 .react-flow__background {
   background: var(--color-bg-primary) !important;
