@@ -36,7 +36,7 @@ from api.schemas import (
     WorkExperience,
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/api/v1")
 
 
 # ─────────────────────────────────────────────────────────────

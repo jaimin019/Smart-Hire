@@ -98,60 +98,62 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* ── Navbar ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-bg-primary)]/80 border-b border-[var(--color-border-subtle)]">
-        <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-sm border-b border-[var(--color-border-subtle)]">
+        <div className="max-w-[1600px] mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-violet)] flex items-center justify-center shadow-lg shadow-[var(--color-accent-glow)]">
-              <Cpu className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 flex items-center justify-center">
+              <Cpu className="w-4 h-4 text-[var(--color-accent)]" />
             </div>
             <div>
-              <h1 className="text-base font-bold gradient-text leading-tight">TalentGraph</h1>
-              <p className="text-[10px] text-[var(--color-text-muted)] leading-tight -mt-0.5">
-                Multi-Agent Resume Intelligence
+              <h1 className="text-sm font-display font-bold text-[var(--color-text-primary)] leading-tight tracking-wide">
+                TalentGraph
+              </h1>
+              <p className="text-[9px] font-mono text-[var(--color-text-muted)] leading-tight tracking-widest uppercase">
+                Multi-Agent Intelligence
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
-              <Zap className="w-3 h-3 text-[var(--color-accent-light)]" />
-              <span className="text-[10px] text-[var(--color-text-muted)]">
-                Powered by LangGraph + GPT-4o-mini
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 border border-[var(--color-border-subtle)] rounded">
+              <Zap className="w-3 h-3 text-[var(--color-accent)]" />
+              <span className="text-[9px] font-mono text-[var(--color-text-muted)] tracking-wider">
+                LangGraph + GPT-4o-mini
               </span>
             </div>
             <a
               href="https://github.com/jaimin019/Smart-Hire"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-lg flex items-center justify-center
-                bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-                text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]
-                hover:border-[var(--color-accent)] transition-colors duration-200"
+              className="w-7 h-7 rounded flex items-center justify-center
+                border border-[var(--color-border)]
+                text-[var(--color-text-muted)] hover:text-[var(--color-accent)]
+                hover:border-[var(--color-accent)]/40 transition-colors duration-200"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
 
-        {/* ── Tab Bar ── */}
-        <div className="max-w-[1600px] mx-auto px-6 flex items-center gap-1 pb-0 border-t border-[var(--color-border-subtle)]">
+        {/* ── Tab Bar — minimal underline style ── */}
+        <div className="max-w-[1600px] mx-auto px-6 flex items-center gap-0">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
               className={`
-                flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold
-                border-b-2 transition-all duration-200
+                flex items-center gap-1.5 px-5 py-2.5 text-xs font-mono tracking-wider uppercase
+                border-b transition-all duration-200 relative
                 ${activeTab === id
-                  ? 'border-[var(--color-accent)] text-[var(--color-accent-light)]'
+                  ? 'border-[var(--color-accent)] text-[var(--color-accent)]'
                   : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
                 }
               `}
             >
-              <Icon className="w-3.5 h-3.5" />
+              <Icon className="w-3 h-3" />
               {label}
               {id === 'analyze' && result && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] ml-0.5" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] ml-1" />
               )}
             </button>
           ))}
@@ -161,32 +163,26 @@ export default function App() {
       {/* ── ANALYZE TAB ────────────────────────────────────────────────────── */}
       {activeTab === 'analyze' && (
         <>
-          {/* Agent Flow */}
-          <section className="max-w-[1600px] mx-auto w-full px-6 pt-6 pb-2">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-              <h2 className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-widest">
-                Agent Pipeline
-              </h2>
-            </div>
+          {/* Agent Pipeline Ticker */}
+          <section className="max-w-[1600px] mx-auto w-full px-6 pt-5 pb-1">
             <AgentFlow agentStates={agentStates} />
           </section>
 
           {/* Main Content */}
-          <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+          <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-5">
+            <div className="grid grid-cols-1 lg:grid-cols-2 h-full" style={{ gap: '24px' }}>
               {/* LEFT: Setup */}
-              <div className="flex flex-col gap-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] bg-[var(--color-accent)]/10 px-2.5 py-1 rounded-md">
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center gap-3">
+                  <span className="text-[9px] font-mono font-medium uppercase tracking-[0.2em] text-[var(--color-accent)] border-b border-[var(--color-accent)]/30 pb-0.5">
                     Setup
                   </span>
-                  <span className="text-xs text-[var(--color-text-muted)]">
-                    Upload & configure your resume analysis
+                  <span className="text-xs text-[var(--color-text-muted)] font-mono">
+                    Upload & configure analysis
                   </span>
                 </div>
 
-                <div className="glass-card p-6">
+                <div className="glass-card p-5">
                   <UploadPanel
                     onUpload={handleUpload}
                     isLoading={mutation.isPending}
@@ -201,23 +197,23 @@ export default function App() {
               </div>
 
               {/* RIGHT: Results */}
-              <div className="flex flex-col gap-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-emerald)] bg-[var(--color-emerald)]/10 px-2.5 py-1 rounded-md">
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center gap-3">
+                  <span className="text-[9px] font-mono font-medium uppercase tracking-[0.2em] text-[var(--color-emerald)] border-b border-[var(--color-emerald)]/30 pb-0.5">
                     Results
                   </span>
-                  <span className="text-xs text-[var(--color-text-muted)]">
-                    AI-powered analysis results
+                  <span className="text-xs text-[var(--color-text-muted)] font-mono">
+                    AI-powered analysis
                   </span>
                 </div>
 
                 {/* Candidate ID banner — shown after successful parse */}
                 {result?.candidate_id && (
-                  <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl
-                    bg-[var(--color-success)]/10 border border-[var(--color-success)]/20">
-                    <div className="w-2 h-2 rounded-full bg-[var(--color-success)] flex-shrink-0" />
+                  <div className="flex items-center gap-3 rounded
+                    bg-[var(--color-success)]/8 border border-[var(--color-success)]/20" style={{ padding: '10px 16px' }}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-success)]">
+                      <p className="text-[9px] font-mono font-medium uppercase tracking-[0.2em] text-[var(--color-success)]">
                         Candidate Saved
                       </p>
                       <p className="text-xs text-[var(--color-text-muted)] font-mono truncate">
@@ -226,9 +222,9 @@ export default function App() {
                     </div>
                     <button
                       onClick={() => handleCopyId(result.candidate_id!)}
-                      className="text-[10px] font-semibold px-2.5 py-1 rounded-lg
-                        bg-[var(--color-success)]/20 text-[var(--color-success)]
-                        hover:bg-[var(--color-success)]/30 transition-colors duration-200 flex-shrink-0"
+                      className="text-[10px] font-mono font-medium px-2.5 py-1 rounded
+                        bg-[var(--color-success)]/15 text-[var(--color-success)]
+                        hover:bg-[var(--color-success)]/25 transition-colors duration-200 flex-shrink-0"
                     >
                       {copiedId ? 'Copied!' : 'Copy ID'}
                     </button>
@@ -238,22 +234,21 @@ export default function App() {
                 {mutation.isPending ? (
                   <div className="glass-card p-12 flex-1 flex flex-col items-center justify-center gap-4">
                     <div className="relative">
-                      <div className="w-16 h-16 rounded-full border-4 border-[var(--color-border)] border-t-[var(--color-accent)] animate-spin" />
-                      <div className="absolute inset-0 w-16 h-16 rounded-full border-4 border-transparent border-b-[var(--color-violet)] animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+                      <div className="w-12 h-12 rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-accent)] animate-spin" />
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Agents are working...</p>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-1">Parsing → Normalizing → Matching</p>
+                      <p className="text-sm font-mono text-[var(--color-text-primary)]">Agents processing…</p>
+                      <p className="text-xs font-mono text-[var(--color-text-muted)] mt-1">Parser → Normalizer → Matcher</p>
                     </div>
                   </div>
                 ) : mutation.isError ? (
                   <div className="glass-card p-12 flex-1 flex flex-col items-center justify-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-[var(--color-error)]/15 flex items-center justify-center">
-                      <span className="text-2xl">⚠️</span>
+                    <div className="w-12 h-12 rounded border border-[var(--color-error)]/30 bg-[var(--color-error)]/10 flex items-center justify-center">
+                      <span className="text-lg">⚠</span>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-medium text-[var(--color-error)]">Analysis Failed</p>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-xs">
+                      <p className="text-sm font-mono text-[var(--color-error)]">Analysis Failed</p>
+                      <p className="text-xs font-mono text-[var(--color-text-muted)] mt-1 max-w-xs">
                         {(mutation.error as Error)?.message || 'An unexpected error occurred.'}
                       </p>
                     </div>
@@ -262,20 +257,15 @@ export default function App() {
                   <ResultsPanel data={result} />
                 ) : (
                   <div className="glass-card p-12 flex-1 flex flex-col items-center justify-center gap-4">
-                    <div className="relative">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-violet)]/10 flex items-center justify-center">
-                        <Cpu className="w-9 h-9 text-[var(--color-accent-light)]" />
-                      </div>
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[var(--color-bg-card)] border-2 border-[var(--color-border)] flex items-center justify-center">
-                        <Zap className="w-3 h-3 text-[var(--color-accent-light)]" />
-                      </div>
+                    <div className="w-14 h-14 rounded border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] flex items-center justify-center">
+                      <Cpu className="w-7 h-7 text-[var(--color-accent)]/50" />
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Ready to Analyze</p>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-xs leading-relaxed">
-                        Upload a resume on the left, select a job description, and click
-                        <span className="text-[var(--color-accent-light)] font-medium"> Analyze Resume </span>
-                        to see the magic happen.
+                      <p className="text-sm font-mono text-[var(--color-text-primary)]">Ready to Analyze</p>
+                      <p className="text-xs font-mono text-[var(--color-text-muted)] mt-1.5 max-w-xs leading-relaxed">
+                        Upload a resume, select a job description, and press
+                        <span className="text-[var(--color-accent)] font-medium"> Analyze Resume </span>
+                        to begin.
                       </p>
                     </div>
                   </div>
@@ -295,18 +285,18 @@ export default function App() {
 
       {/* ── COMPARE TAB ────────────────────────────────────────────────────── */}
       {activeTab === 'compare' && (
-        <main className="flex-1 max-w-[900px] mx-auto w-full px-6 py-6">
+        <main className="flex-1 max-w-[1200px] mx-auto w-full px-6 py-6">
           <CandidateCompare />
         </main>
       )}
 
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-[var(--color-border-subtle)] py-4">
+      <footer className="border-t border-[var(--color-border-subtle)] py-4 mt-auto">
         <div className="max-w-[1600px] mx-auto px-6 flex items-center justify-between">
-          <p className="text-[10px] text-[var(--color-text-muted)]">
+          <p className="text-[10px] font-mono text-[var(--color-text-muted)] tracking-wider">
             Built with LangGraph · FastAPI · React · Sentence-Transformers
           </p>
-          <p className="text-[10px] text-[var(--color-text-muted)]">
+          <p className="text-[10px] font-mono text-[var(--color-text-muted)] tracking-wider">
             TalentGraph © {new Date().getFullYear()}
           </p>
         </div>

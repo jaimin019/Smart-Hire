@@ -1,48 +1,54 @@
 @import "tailwindcss";
 
-/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+/* ── Design Tokens · Obsidian & Amber ──────────────────────────────────────── */
 @theme {
-  --font-sans: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --font-display: 'Playfair Display', 'Georgia', serif;
 
-  /* Dark theme palette */
-  --color-bg-primary: #0a0a0f;
-  --color-bg-secondary: #12121a;
-  --color-bg-tertiary: #1a1a28;
-  --color-bg-card: #141422;
-  --color-bg-card-hover: #1c1c30;
-  --color-bg-elevated: #1e1e32;
+  /* Obsidian backgrounds */
+  --color-bg-primary: #0D0D0D;
+  --color-bg-secondary: #111111;
+  --color-bg-tertiary: #1A1814;
+  --color-bg-card: #14120F;
+  --color-bg-card-hover: #1E1B16;
+  --color-bg-elevated: #222019;
 
-  --color-border: #2a2a3e;
-  --color-border-subtle: #1f1f33;
-  --color-border-accent: #6c63ff33;
+  /* Borders */
+  --color-border: #2E2A22;
+  --color-border-subtle: #1E1B17;
+  --color-border-accent: #F5A62333;
 
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #a0a0b8;
-  --color-text-muted: #6b6b80;
+  /* Text */
+  --color-text-primary: #F0EDE6;
+  --color-text-secondary: #B5AFA3;
+  --color-text-muted: #6B6560;
 
-  --color-accent: #6c63ff;
-  --color-accent-light: #8b83ff;
-  --color-accent-dark: #5046e5;
-  --color-accent-glow: #6c63ff40;
+  /* Amber accent */
+  --color-accent: #F5A623;
+  --color-accent-light: #FFB942;
+  --color-accent-dark: #D4880A;
+  --color-accent-glow: #F5A62340;
 
-  --color-success: #22c55e;
-  --color-success-glow: #22c55e30;
-  --color-warning: #f59e0b;
-  --color-warning-glow: #f59e0b30;
-  --color-error: #ef4444;
-  --color-error-glow: #ef444430;
-  --color-info: #3b82f6;
-  --color-info-glow: #3b82f630;
+  /* Status */
+  --color-success: #7CB342;
+  --color-success-glow: #7CB34230;
+  --color-warning: #F5A623;
+  --color-warning-glow: #F5A62330;
+  --color-error: #C75B4A;
+  --color-error-glow: #C75B4A30;
+  --color-info: #E8940A;
+  --color-info-glow: #E8940A30;
 
-  --color-cyan: #06b6d4;
-  --color-cyan-glow: #06b6d430;
-  --color-emerald: #10b981;
-  --color-emerald-glow: #10b98130;
-  --color-violet: #8b5cf6;
-  --color-violet-glow: #8b5cf630;
-  --color-rose: #f43f5e;
-  --color-rose-glow: #f43f5e30;
+  /* Semantic accents (mapped to amber family) */
+  --color-cyan: #E8940A;
+  --color-cyan-glow: #E8940A30;
+  --color-emerald: #7CB342;
+  --color-emerald-glow: #7CB34230;
+  --color-violet: #CB7B38;
+  --color-violet-glow: #CB7B3830;
+  --color-rose: #C75B4A;
+  --color-rose-glow: #C75B4A30;
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────────── */
@@ -61,7 +67,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-bg-primary);
+  background-color: var(--color-bg-primary);
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L40 40M40 0L0 40' stroke='%23F5A623' stroke-width='0.4' fill='none' opacity='0.03'/%3E%3C/svg%3E");
   color: var(--color-text-primary);
   min-height: 100vh;
   overflow-x: hidden;
@@ -69,8 +76,8 @@ body {
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -83,30 +90,24 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--color-accent-dark);
 }
 
-/* ── Glass Card utility ─────────────────────────────────────────────────────── */
+/* ── Glass Card (editorial, no blur) ───────────────────────────────────────── */
 .glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(20, 20, 34, 0.8) 0%,
-    rgba(26, 26, 40, 0.6) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.5);
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
 }
 
 .glass-card:hover {
   border-color: var(--color-border-accent);
-  box-shadow: 0 0 30px var(--color-accent-glow);
 }
 
-/* ── Gradient text ──────────────────────────────────────────────────────────── */
+/* ── Gradient text (amber) ─────────────────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-cyan) 50%, var(--color-emerald) 100%);
+  background: linear-gradient(135deg, #FFB942 0%, #F5A623 40%, #E8940A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -114,19 +115,24 @@ body {
 
 /* ── Glow effects ───────────────────────────────────────────────────────────── */
 .glow-accent {
-  box-shadow: 0 0 15px var(--color-accent-glow),
-              0 0 30px rgba(108, 99, 255, 0.1);
+  box-shadow: 0 0 12px var(--color-accent-glow),
+              0 0 24px rgba(245, 166, 35, 0.08);
 }
 
 .glow-success {
-  box-shadow: 0 0 15px var(--color-success-glow),
-              0 0 30px rgba(34, 197, 94, 0.1);
+  box-shadow: 0 0 12px var(--color-success-glow),
+              0 0 24px rgba(124, 179, 66, 0.08);
 }
 
-/* ── Pulse animation ────────────────────────────────────────────────────────── */
+/* ── Animations ─────────────────────────────────────────────────────────────── */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px var(--color-accent-glow); }
-  50% { box-shadow: 0 0 25px var(--color-accent-glow), 0 0 50px rgba(108, 99, 255, 0.15); }
+  0%, 100% { box-shadow: 0 0 4px var(--color-accent-glow); }
+  50% { box-shadow: 0 0 18px var(--color-accent-glow), 0 0 36px rgba(245, 166, 35, 0.12); }
+}
+
+@keyframes amber-dot-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
 }
 
 @keyframes shimmer {
@@ -137,7 +143,7 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -148,7 +154,7 @@ body {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
@@ -157,40 +163,47 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.6s ease-out forwards;
+  animation: slideInRight 0.5s ease-out forwards;
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* ── React Flow custom overrides ────────────────────────────────────────────── */
-.react-flow__background {
-  background: var(--color-bg-primary) !important;
+.animate-amber-dot {
+  animation: amber-dot-pulse 1.5s ease-in-out infinite;
 }
 
-.react-flow__controls button {
-  background: var(--color-bg-card) !important;
-  border: 1px solid var(--color-border) !important;
-  color: var(--color-text-secondary) !important;
-  fill: var(--color-text-secondary) !important;
+/* ── Select styling ─────────────────────────────────────────────────────────── */
+select {
+  cursor: pointer;
 }
 
-.react-flow__controls button:hover {
-  background: var(--color-bg-elevated) !important;
+select option {
+  background: #14120F;
+  color: #F0EDE6;
 }
 
-.react-flow__edge-path {
-  stroke: var(--color-border) !important;
-  stroke-width: 2;
+/* ── Upload grain overlay ───────────────────────────────────────────────────── */
+.upload-grain-hover {
+  position: relative;
 }
 
-.react-flow__minimap {
-  background: var(--color-bg-secondary) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: 8px !important;
+.upload-grain-hover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' x='3' y='7' fill='%23F5A623' opacity='0.06'/%3E%3Crect width='1' height='1' x='13' y='3' fill='%23F5A623' opacity='0.04'/%3E%3Crect width='1' height='1' x='8' y='15' fill='%23F5A623' opacity='0.05'/%3E%3Crect width='1' height='1' x='17' y='11' fill='%23F5A623' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.upload-grain-hover:hover::after {
+  opacity: 1;
 }

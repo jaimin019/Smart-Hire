@@ -41,29 +41,30 @@ export default function UploadPanel({ onUpload, isLoading, jobs, uploadedFile }:
   const selectedJobData = jobs.find(j => j.id === selectedJob);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">
+        <h2 className="text-base font-display font-bold text-[var(--color-text-primary)] mb-0.5 tracking-wide">
           Upload Resume
         </h2>
-        <p className="text-sm text-[var(--color-text-muted)]">
-          Drop a PDF or DOCX file to begin AI analysis
+        <p className="text-xs font-mono text-[var(--color-text-muted)]">
+          Drop a PDF or DOCX to begin AI analysis
         </p>
       </div>
 
-      {/* Dropzone */}
+      {/* Dropzone — dashed amber border with grain texture */}
       <div
         {...getRootProps()}
         className={`
-          relative group cursor-pointer rounded-2xl border-2 border-dashed p-8
+          upload-grain-hover
+          relative group cursor-pointer rounded border-2 border-dashed p-7
           transition-all duration-300 ease-out
-          flex flex-col items-center justify-center min-h-[200px]
+          flex flex-col items-center justify-center min-h-[180px]
           ${isDragActive
-            ? 'border-[var(--color-accent)] bg-[var(--color-accent-glow)] scale-[1.02]'
+            ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5 scale-[1.01]'
             : file
-              ? 'border-[var(--color-success)] bg-[var(--color-success-glow)]'
-              : 'border-[var(--color-border)] bg-[var(--color-bg-tertiary)] hover:border-[var(--color-accent)] hover:bg-[var(--color-bg-elevated)]'
+              ? 'border-[var(--color-accent)]/50 bg-[var(--color-accent)]/3'
+              : 'border-[var(--color-border)] bg-[var(--color-bg-tertiary)] hover:border-[var(--color-accent)]/60'
           }
           ${isLoading ? 'opacity-50 pointer-events-none' : ''}
         `}
@@ -71,35 +72,35 @@ export default function UploadPanel({ onUpload, isLoading, jobs, uploadedFile }:
         <input {...getInputProps()} />
 
         <div className={`
-          w-16 h-16 rounded-2xl flex items-center justify-center mb-4
+          w-12 h-12 rounded border flex items-center justify-center mb-3
           transition-all duration-300
           ${file
-            ? 'bg-[var(--color-success)]'
-            : 'bg-[var(--color-bg-card)] group-hover:bg-[var(--color-accent-dark)]'
+            ? 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10'
+            : 'border-[var(--color-border)] bg-[var(--color-bg-card)] group-hover:border-[var(--color-accent)]/40'
           }
         `}>
           {file ? (
-            <FileText className="w-7 h-7 text-white" />
+            <FileText className="w-5 h-5 text-[var(--color-accent)]" />
           ) : (
-            <Upload className={`w-7 h-7 transition-colors duration-300 ${isDragActive ? 'text-[var(--color-accent-light)]' : 'text-[var(--color-text-muted)] group-hover:text-white'}`} />
+            <Upload className={`w-5 h-5 transition-colors duration-300 ${isDragActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]'}`} />
           )}
         </div>
 
         {file ? (
           <div className="text-center">
-            <p className="text-sm font-medium text-[var(--color-text-primary)] mb-1">
+            <p className="text-sm font-mono text-[var(--color-accent)] mb-0.5">
               {file.name}
             </p>
-            <p className="text-xs text-[var(--color-text-muted)]">
+            <p className="text-[10px] font-mono text-[var(--color-text-muted)]">
               {(file.size / 1024).toFixed(1)} KB · Click to replace
             </p>
           </div>
         ) : (
           <div className="text-center">
-            <p className="text-sm font-medium text-[var(--color-text-primary)] mb-1">
+            <p className="text-sm font-mono text-[var(--color-text-primary)] mb-0.5">
               {isDragActive ? 'Drop your resume here' : 'Drag & drop your resume'}
             </p>
-            <p className="text-xs text-[var(--color-text-muted)]">
+            <p className="text-[10px] font-mono text-[var(--color-text-muted)]">
               PDF or DOCX · Max 10 MB
             </p>
           </div>
@@ -108,26 +109,27 @@ export default function UploadPanel({ onUpload, isLoading, jobs, uploadedFile }:
 
       {/* Job Selector */}
       <div className="relative">
-        <label className="block text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wider mb-2">
+        <label className="block text-[9px] font-mono font-medium text-[var(--color-text-muted)] uppercase tracking-[0.2em] mb-1.5">
           Match Against
         </label>
         <button
           onClick={() => setIsJobDropdownOpen(!isJobDropdownOpen)}
-          className="w-full flex items-center justify-between px-4 py-3 rounded-xl
-            bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-            text-sm text-[var(--color-text-primary)]
-            hover:border-[var(--color-accent)] transition-colors duration-200"
+          className="w-full flex items-center justify-between rounded
+            bg-[var(--color-bg-tertiary)]
+            text-sm font-mono text-[var(--color-text-primary)]
+            hover:border-[var(--color-accent)]/40 transition-colors duration-200"
+          style={{ padding: '10px 14px', border: '1px solid rgba(245, 166, 35, 0.3)' }}
         >
           <span>
             {selectedJobData
               ? `${selectedJobData.title} — ${selectedJobData.company}`
               : 'Select a job description'}
           </span>
-          <ChevronDown className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform duration-200 ${isJobDropdownOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform duration-200 ${isJobDropdownOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {isJobDropdownOpen && (
-          <div className="absolute z-50 w-full mt-2 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] shadow-2xl overflow-hidden">
+          <div className="absolute z-50 w-full mt-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] shadow-2xl overflow-hidden">
             {jobs.map(job => (
               <button
                 key={job.id}
@@ -135,10 +137,10 @@ export default function UploadPanel({ onUpload, isLoading, jobs, uploadedFile }:
                   setSelectedJob(job.id);
                   setIsJobDropdownOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 text-sm transition-colors duration-150
+                className={`w-full text-left px-3 py-2.5 text-sm font-mono transition-colors duration-150
                   ${selectedJob === job.id
-                    ? 'bg-[var(--color-accent-dark)] text-white'
-                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-elevated)]'
+                    ? 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
+                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-elevated)] hover:text-[var(--color-accent)]'
                   }`}
               >
                 <span className="font-medium">{job.title}</span>
@@ -155,23 +157,24 @@ export default function UploadPanel({ onUpload, isLoading, jobs, uploadedFile }:
         onClick={handleSubmit}
         disabled={!file || isLoading}
         className={`
-          relative w-full py-3.5 rounded-xl font-semibold text-sm
+          relative w-full rounded font-mono font-medium text-sm
           flex items-center justify-center gap-2
-          transition-all duration-300 ease-out
+          transition-all duration-300 ease-out border
           ${!file || isLoading
-            ? 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)] cursor-not-allowed'
-            : 'bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-violet)] text-white hover:shadow-lg hover:shadow-[var(--color-accent-glow)] hover:scale-[1.02] active:scale-[0.98]'
+            ? 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)] border-[var(--color-border)] cursor-not-allowed'
+            : 'bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/20 hover:border-[var(--color-accent)]/60 active:scale-[0.99]'
           }
         `}
+        style={{ padding: '14px' }}
       >
         {isLoading ? (
           <>
-            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Processing...
+            <div className="w-3.5 h-3.5 border-2 border-[var(--color-accent)]/30 border-t-[var(--color-accent)] rounded-full animate-spin" />
+            Processing…
           </>
         ) : (
           <>
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-3.5 h-3.5" />
             Analyze Resume
           </>
         )}

@@ -22,7 +22,7 @@ from api.schemas import JobDescriptionCreate, JobDescriptionResponse, JobDescrip
 from db.models import JobDescription
 from db.session import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/api/v1")
 
 
 def _row_to_response(row: JobDescription) -> JobDescriptionResponse:

@@ -1,82 +1,40 @@
 import { useMemo } from 'react';
-import { User, Mail, Phone, Briefcase, GraduationCap, Award, Target, CheckCircle2, XCircle } from 'lucide-react';
+import { User, Mail, Phone, Briefcase, GraduationCap, Award, Target, XCircle } from 'lucide-react';
 import type { ParseResponse } from '@/types';
+import MatchGauge from '@/components/MatchGauge';
 
 interface ResultsPanelProps {
   data: ParseResponse;
 }
 
-function ScoreRing({ score }: { score: number }) {
-  const radius = 54;
-  const circumference = 2 * Math.PI * radius;
-  const progress = (score / 100) * circumference;
-  const dashOffset = circumference - progress;
+/* ── Skill with amber underline (matched) or red strikethrough (missing) ──── */
 
-  const color = score >= 75
-    ? 'var(--color-success)'
-    : score >= 50
-      ? 'var(--color-warning)'
-      : 'var(--color-error)';
-
-  const glowColor = score >= 75
-    ? 'var(--color-success-glow)'
-    : score >= 50
-      ? 'var(--color-warning-glow)'
-      : 'var(--color-error-glow)';
-
+function SkillTag({ skill, isMatched }: { skill: string; isMatched: boolean }) {
+  if (isMatched) {
+    return (
+      <span className="inline-flex items-center px-2 py-1 text-xs font-mono text-[var(--color-text-primary)] border-b-2 border-[var(--color-accent)]/50 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition-colors duration-200" style={{ border: '1px solid rgba(245, 166, 35, 0.25)', borderBottom: '2px solid rgba(245, 166, 35, 0.5)', marginRight: '8px', marginBottom: '6px' }}>
+        {skill}
+      </span>
+    );
+  }
   return (
-    <div className="relative w-36 h-36 flex-shrink-0">
-      <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
-        {/* Background ring */}
-        <circle
-          cx="60" cy="60" r={radius}
-          fill="none"
-          stroke="var(--color-border)"
-          strokeWidth="8"
-        />
-        {/* Progress ring */}
-        <circle
-          cx="60" cy="60" r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth="8"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={dashOffset}
-          style={{
-            transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-            filter: `drop-shadow(0 0 8px ${glowColor})`,
-          }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold" style={{ color }}>{score}</span>
-        <span className="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Match</span>
-      </div>
-    </div>
+    <span className="inline-flex items-center px-2 py-1 text-xs font-mono text-[var(--color-text-muted)]" style={{ border: '1px solid var(--color-border)', marginRight: '8px', marginBottom: '6px' }}>
+      {skill}
+    </span>
   );
 }
 
-function SkillBadge({ skill, isMatched }: { skill: string; isMatched: boolean }) {
+function MissingSkillTag({ skill }: { skill: string }) {
   return (
-    <span
-      className={`
-        inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium
-        transition-all duration-200 hover:scale-105
-        ${isMatched
-          ? 'bg-[var(--color-success)]/15 text-[var(--color-success)] border border-[var(--color-success)]/25'
-          : 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] border border-[var(--color-border)]'
-        }
-      `}
-    >
-      {isMatched && <CheckCircle2 className="w-3 h-3" />}
+    <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[var(--color-error)]/70 line-through" style={{ border: '1px solid rgba(199, 91, 74, 0.25)', marginRight: '8px', marginBottom: '6px' }}>
+      <XCircle className="w-3 h-3 flex-shrink-0" style={{ textDecoration: 'none' }} />
       {skill}
     </span>
   );
 }
 
 export default function ResultsPanel({ data }: ResultsPanelProps) {
-  const { parsed_data, match_score, skill_overlap, job_description } = data;
+  const { personal_info, work_experience, education, skills, certifications, match_score, skill_overlap, job_description } = data;
 
   const matchedSkillsSet = useMemo(
     () => new Set(skill_overlap.matched.map(s => s.toLowerCase())),
@@ -84,43 +42,37 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
   );
 
   return (
-    <div className="flex flex-col gap-5 animate-fade-in-up">
-      {/* ── Header: Candidate Info + Score ───────────────────────────────── */}
-      <div className="glass-card p-6 flex items-start gap-6">
+    <div className="flex flex-col gap-4 animate-fade-in-up">
+      {/* ── Header: Candidate Info + Gauge ────────────────────────────────── */}
+      <div className="glass-card p-5 flex items-start gap-5">
         {/* Candidate Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <User className="w-4 h-4 text-[var(--color-accent-light)]" />
-            <h2 className="text-xl font-bold text-[var(--color-text-primary)] truncate">
-              {parsed_data.name || 'Unknown Candidate'}
+            <User className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+            <h2 className="text-lg font-display font-bold text-[var(--color-text-primary)] truncate tracking-wide">
+              {personal_info.name || 'Unknown Candidate'}
             </h2>
           </div>
 
-          {parsed_data.summary && (
-            <p className="text-sm text-[var(--color-text-secondary)] mt-2 leading-relaxed line-clamp-2">
-              {parsed_data.summary}
-            </p>
-          )}
-
-          <div className="flex flex-wrap gap-4 mt-3">
-            {parsed_data.email && (
-              <span className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
-                <Mail className="w-3.5 h-3.5" /> {parsed_data.email}
+          <div className="flex flex-wrap gap-4 mt-2">
+            {personal_info.email && (
+              <span className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-muted)]">
+                <Mail className="w-3 h-3" /> {personal_info.email}
               </span>
             )}
-            {parsed_data.phone && (
-              <span className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
-                <Phone className="w-3.5 h-3.5" /> {parsed_data.phone}
+            {personal_info.phone && (
+              <span className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-muted)]">
+                <Phone className="w-3 h-3" /> {personal_info.phone}
               </span>
             )}
           </div>
 
           {/* Job Description being matched */}
-          <div className="mt-3 px-3 py-2 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">
+          <div className="mt-3 px-3 py-2 rounded bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
+            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
               Matched Against
             </span>
-            <p className="text-sm font-medium text-[var(--color-accent-light)]">
+            <p className="text-sm font-mono text-[var(--color-accent)]">
               {job_description.title}
               <span className="text-[var(--color-text-muted)] font-normal ml-1.5">
                 at {job_description.company}
@@ -129,48 +81,46 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
           </div>
         </div>
 
-        {/* Score Ring */}
-        <ScoreRing score={match_score} />
+        {/* Precision Gauge */}
+        <div className="flex-shrink-0" style={{ margin: '16px' }}>
+          <MatchGauge score={match_score} />
+        </div>
       </div>
 
-      {/* ── Skills ── */}
-      <div className="glass-card p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Target className="w-4 h-4 text-[var(--color-cyan)]" />
-          <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
+      {/* ── Technical Skills ── */}
+      <div className="glass-card p-5" style={{ marginTop: '24px' }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: '12px' }}>
+          <Target className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+          <h3 className="text-xs font-mono font-medium text-[var(--color-text-primary)] uppercase tracking-[0.15em]">
             Technical Skills
           </h3>
-          <span className="ml-auto text-xs text-[var(--color-text-muted)]">
-            {skill_overlap.matched.length}/{job_description.required_skills.length} matched
+          <span className="ml-auto text-xs font-mono text-[var(--color-accent)]">
+            {skill_overlap.matched.length}/{job_description.required_skills.length}
           </span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {parsed_data.technical_skills.map(skill => (
-            <SkillBadge
-              key={skill}
-              skill={skill}
-              isMatched={matchedSkillsSet.has(skill.toLowerCase())}
+
+        {/* Matched skills — amber underline */}
+        <div className="flex flex-wrap" style={{ gap: '0px' }}>
+          {skills.map(skill => (
+            <SkillTag
+              key={skill.raw}
+              skill={skill.canonical || skill.raw}
+              isMatched={matchedSkillsSet.has((skill.canonical || skill.raw).toLowerCase())}
             />
           ))}
         </div>
 
-        {/* Missing Skills */}
+        {/* Missing Skills — muted red with strikethrough */}
         {skill_overlap.missing.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[var(--color-border-subtle)]">
-            <div className="flex items-center gap-1.5 mb-2">
-              <XCircle className="w-3.5 h-3.5 text-[var(--color-error)]" />
-              <span className="text-xs font-medium text-[var(--color-error)]">Missing Skills</span>
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--color-border-subtle)' }}>
+            <div className="flex items-center gap-1.5" style={{ marginBottom: '12px' }}>
+              <span className="text-[9px] font-mono font-medium text-[var(--color-error)] uppercase tracking-[0.15em]">
+                Missing Skills
+              </span>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap" style={{ gap: '0px' }}>
               {skill_overlap.missing.map(skill => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium
-                    bg-[var(--color-error)]/10 text-[var(--color-error)]/70
-                    border border-[var(--color-error)]/15"
-                >
-                  {skill}
-                </span>
+                <MissingSkillTag key={skill} skill={skill} />
               ))}
             </div>
           </div>
@@ -178,36 +128,36 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
       </div>
 
       {/* ── Experience ── */}
-      {parsed_data.experience.length > 0 && (
+      {work_experience.length > 0 && (
         <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Briefcase className="w-4 h-4 text-[var(--color-violet)]" />
-            <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
+            <Briefcase className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+            <h3 className="text-xs font-mono font-medium text-[var(--color-text-primary)] uppercase tracking-[0.15em]">
               Experience
             </h3>
           </div>
           <div className="space-y-4">
-            {parsed_data.experience.map((exp, i) => (
+            {work_experience.map((exp, i) => (
               <div
                 key={i}
-                className="relative pl-4 border-l-2 border-[var(--color-border)]
+                className="relative pl-4 border-l border-[var(--color-accent)]/20
                   animate-slide-in-right"
                 style={{ animationDelay: `${i * 0.1}s` }}
               >
-                <h4 className="text-sm font-semibold text-[var(--color-text-primary)]">
-                  {exp.title}
+                <h4 className="text-sm font-mono font-medium text-[var(--color-text-primary)]">
+                  {exp.role}
                 </h4>
-                <p className="text-xs text-[var(--color-accent-light)]">
+                <p className="text-xs font-mono text-[var(--color-accent)]">
                   {exp.company}
-                  {exp.duration && (
-                    <span className="text-[var(--color-text-muted)] ml-2">· {exp.duration}</span>
+                  {(exp.start_date || exp.end_date) && (
+                    <span className="text-[var(--color-text-muted)] ml-2">· {exp.start_date} – {exp.end_date || 'Present'}</span>
                   )}
                 </p>
-                {exp.highlights.length > 0 && (
+                {exp.responsibilities && exp.responsibilities.length > 0 && (
                   <ul className="mt-1.5 space-y-0.5">
-                    {exp.highlights.slice(0, 3).map((h, j) => (
-                      <li key={j} className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-                        • {h}
+                    {exp.responsibilities.slice(0, 3).map((h, j) => (
+                      <li key={j} className="text-xs font-mono text-[var(--color-text-secondary)] leading-relaxed">
+                        — {h}
                       </li>
                     ))}
                   </ul>
@@ -219,23 +169,23 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
       )}
 
       {/* ── Education ── */}
-      {parsed_data.education.length > 0 && (
+      {education.length > 0 && (
         <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-4">
-            <GraduationCap className="w-4 h-4 text-[var(--color-emerald)]" />
-            <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
+            <GraduationCap className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+            <h3 className="text-xs font-mono font-medium text-[var(--color-text-primary)] uppercase tracking-[0.15em]">
               Education
             </h3>
           </div>
           <div className="space-y-3">
-            {parsed_data.education.map((edu, i) => (
+            {education.map((edu, i) => (
               <div key={i} className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-[var(--color-emerald)] mt-1.5 flex-shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]/50 mt-1.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                  <p className="text-sm font-mono text-[var(--color-text-primary)]">
                     {edu.degree}
                   </p>
-                  <p className="text-xs text-[var(--color-text-muted)]">
+                  <p className="text-xs font-mono text-[var(--color-text-muted)]">
                     {edu.institution}
                     {edu.year && <span> · {edu.year}</span>}
                   </p>
@@ -247,21 +197,20 @@ export default function ResultsPanel({ data }: ResultsPanelProps) {
       )}
 
       {/* ── Certifications ── */}
-      {parsed_data.certifications && parsed_data.certifications.length > 0 && (
+      {certifications && certifications.length > 0 && (
         <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Award className="w-4 h-4 text-[var(--color-warning)]" />
-            <h3 className="text-sm font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
+            <Award className="w-3.5 h-3.5 text-[var(--color-accent)]" />
+            <h3 className="text-xs font-mono font-medium text-[var(--color-text-primary)] uppercase tracking-[0.15em]">
               Certifications
             </h3>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {parsed_data.certifications.map(cert => (
+          <div className="flex flex-wrap" style={{ gap: '0px' }}>
+            {certifications.map(cert => (
               <span
                 key={cert}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium
-                  bg-[var(--color-warning)]/10 text-[var(--color-warning)]
-                  border border-[var(--color-warning)]/20"
+                className="inline-flex items-center px-2 py-1 text-xs font-mono text-[var(--color-accent)] border-b-2 border-[var(--color-accent)]/30"
+                style={{ border: '1px solid rgba(245, 166, 35, 0.2)', borderBottom: '2px solid rgba(245, 166, 35, 0.3)', marginRight: '8px', marginBottom: '6px' }}
               >
                 {cert}
               </span>

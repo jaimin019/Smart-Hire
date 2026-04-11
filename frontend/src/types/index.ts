@@ -1,10 +1,12 @@
 /* ── Types for the TalentGraph application ─────────────────────────────────── */
 
-export interface ExperienceItem {
-  title: string | null;
-  company: string | null;
-  duration: string | null;
-  highlights: string[];
+export interface WorkExperience {
+  company: string;
+  role: string;
+  start_date: string | null;
+  end_date: string | null;
+  duration_months: number | null;
+  responsibilities: string[];
 }
 
 export interface EducationItem {
@@ -13,15 +15,20 @@ export interface EducationItem {
   year: string | null;
 }
 
-export interface ParsedData {
+export interface NormalizedSkill {
+  raw: string;
+  canonical: string;
+  category: string;
+  proficiency: string;
+  is_emerging: boolean;
+}
+
+export interface PersonalInfo {
   name: string | null;
   email: string | null;
   phone: string | null;
-  summary: string | null;
-  experience: ExperienceItem[];
-  education: EducationItem[];
-  technical_skills: string[];
-  certifications: string[];
+  location: string | null;
+  linkedin: string | null;
 }
 
 export interface SkillOverlap {
@@ -45,9 +52,21 @@ export interface AgentTraceItem {
   match_score?: number;
 }
 
+export interface Project {
+  title: string;
+  description: string | null;
+  technologies: string[];
+}
+
 export interface ParseResponse {
   candidate_id?: string | null;
-  parsed_data: ParsedData;
+  personal_info: PersonalInfo;
+  work_experience: WorkExperience[];
+  education: EducationItem[];
+  skills: NormalizedSkill[];
+  certifications: string[];
+  projects: Project[];
+  publications: string[];
   match_score: number;
   job_description: JobDescription;
   skill_overlap: SkillOverlap;
