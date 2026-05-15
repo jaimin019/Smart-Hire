@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-  Cpu, FileSearch, Users, GitCompare, BookOpen,
-  Menu, X, Zap, ExternalLink,
+  BrainCircuit, FileSearch, Users, GitCompare, BookOpen,
+  Menu, X
 } from 'lucide-react';
 
 const NAV_LINKS = [
@@ -15,106 +15,127 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const isLanding = location.pathname === '/';
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [menuOpen]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300
-        backdrop-blur-xl border-b
-        ${isLanding
-          ? 'bg-transparent border-transparent'
-          : 'bg-[var(--color-bg-primary)]/85 border-[var(--color-border-subtle)]'
-        }`}
-    >
-      <div className="max-w-[1700px] mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-violet)] flex items-center justify-center shadow-lg shadow-[var(--color-accent-glow)] group-hover:scale-110 transition-transform duration-200">
-            <Cpu className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="text-base font-bold gradient-text leading-tight">Smart Hire</p>
-            <p className="text-[10px] text-[var(--color-text-muted)] leading-tight -mt-0.5">
-              Multi-Agent Resume Intelligence
-            </p>
-          </div>
-        </NavLink>
+    <>
+      <header className="sticky top-0 z-[100] h-[56px] bg-[var(--bg-base)] border-b border-[var(--border)] w-full">
+        <div className="max-w-[1400px] mx-auto px-6 h-full flex items-center justify-between">
+          
+          {/* Logo */}
+          <NavLink to="/" className="flex items-center gap-3 group shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center shadow-accent transition-transform duration-200 group-hover:scale-105">
+              <BrainCircuit className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-display font-bold text-base leading-tight tracking-tight text-[var(--text-primary)]">
+                Smart Hire
+              </span>
+              <span className="text-[10px] leading-tight text-[var(--text-muted)] tracking-wide font-medium uppercase">
+                AI Recruitment Intelligence
+              </span>
+            </div>
+          </NavLink>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1.5 h-full">
+            {NAV_LINKS.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  `px-3 py-1.5 rounded-[var(--radius-sm)] text-[14px] font-medium transition-all duration-200
+                  ${isActive
+                    ? 'text-[var(--accent-bright)] bg-[var(--accent-muted)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
+                  }`
+                }
+                style={({ isActive }) => 
+                  isActive ? { boxShadow: 'inset 2px 0 0 var(--accent)' } : {}
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* API Status Pill */}
+            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-[var(--bg-surface)] border border-[var(--border)]">
+              <div className="w-1.5 h-1.5 rounded-full bg-[var(--success)] animate-pulse" />
+              <span className="text-[11px] font-medium text-[var(--text-secondary)] uppercase tracking-wider">
+                API Live
+              </span>
+            </div>
+
+
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden w-8 h-8 flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200"
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Overlay */}
+      <div 
+        className={`fixed inset-0 top-[56px] z-[90] bg-[var(--bg-base)] md:hidden transition-all duration-300 ease-in-out ${
+          menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+      >
+        <nav className="flex flex-col p-6 gap-2">
           {NAV_LINKS.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200
+                `flex items-center gap-4 px-5 py-4 rounded-[var(--radius-md)] text-base font-medium transition-all duration-200
                 ${isActive
-                  ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent-light)] border border-[var(--color-accent)]/20'
-                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]'
+                  ? 'text-[var(--accent-bright)] bg-[var(--accent-muted)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)]'
                 }`
               }
+              style={({ isActive }) => 
+                isActive ? { boxShadow: 'inset 3px 0 0 var(--accent)' } : {}
+              }
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-5 h-5" />
               {label}
             </NavLink>
           ))}
-        </nav>
-
-        {/* Right side */}
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
-            <Zap className="w-3 h-3 text-[var(--color-accent-light)]" />
-            <span className="text-[10px] text-[var(--color-text-muted)]">LangGraph + GPT-4o</span>
+          
+          <div className="mt-8 pt-8 border-t border-[var(--border)] flex items-center justify-between px-5">
+            <span className="text-sm font-medium text-[var(--text-secondary)]">System Status</span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--success-muted)] border border-[var(--success)]/20">
+              <div className="w-1.5 h-1.5 rounded-full bg-[var(--success)]" />
+              <span className="text-[11px] font-bold text-[var(--success)] uppercase tracking-wider">
+                Online
+              </span>
+            </div>
           </div>
-          <a
-            href="https://github.com/jaimin019/Smart-Hire"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-8 h-8 rounded-lg flex items-center justify-center
-              bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-              text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]
-              hover:border-[var(--color-accent)] transition-all duration-200"
-          >
-            <ExternalLink className="w-4 h-4" />
-          </a>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMenuOpen(v => !v)}
-            className="md:hidden w-9 h-9 rounded-xl flex items-center justify-center
-              bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-              text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]
-              transition-all duration-200"
-          >
-            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        </nav>
       </div>
-
-      {/* Mobile Dropdown */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]/95 backdrop-blur-xl">
-          <nav className="max-w-[1700px] mx-auto px-4 py-3 flex flex-col gap-1">
-            {NAV_LINKS.map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
-                  ${isActive
-                    ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent-light)]'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]'
-                  }`
-                }
-              >
-                <Icon className="w-4 h-4" />
-                {label}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-      )}
-    </header>
+    </>
   );
 }

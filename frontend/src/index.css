@@ -1,48 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
+
 
 /* ── Design Tokens ─────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  /* Using standard CSS variables but passing them to Tailwind v4 */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Dark theme palette */
-  --color-bg-primary: #0a0a0f;
-  --color-bg-secondary: #12121a;
-  --color-bg-tertiary: #1a1a28;
-  --color-bg-card: #141422;
-  --color-bg-card-hover: #1c1c30;
-  --color-bg-elevated: #1e1e32;
+  /* We'll map Tailwind's base colors to our CSS variables if needed, 
+     but mostly we will use var(--bg-surface) directly in classnames 
+     or define them here as custom properties for tailwind.
+     In Tailwind v4, we can just use the vars directly like bg-[var(--bg-base)]
+  */
+}
 
-  --color-border: #2a2a3e;
-  --color-border-subtle: #1f1f33;
-  --color-border-accent: #6c63ff33;
+:root {
+  /* Background layers */
+  --bg-base: #080B11;         /* deepest dark, page background */
+  --bg-surface: #0D1117;      /* card/panel backgrounds */
+  --bg-card: #111827;         
+  --bg-elevated: #161b22;     /* elevated panels, dropdowns */
+  --bg-overlay: #1c2333;      /* hover states, selected rows */
 
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #a0a0b8;
-  --color-text-muted: #6b6b80;
+  /* New Design System */
+  --accent-cyan: #00E5FF;
+  --accent-amber: #FF9500;
+  --accent-cyan-dim: rgba(0, 229, 255, 0.12);
+  --accent-amber-dim: rgba(255, 149, 0, 0.12);
+  --text-primary: #F0F6FF;
+  --text-secondary: #8b949e;
+  --text-muted: #6B7A99;
+  --border-subtle: rgba(0, 229, 255, 0.15);
+  --glow-cyan: 0 0 24px rgba(0, 229, 255, 0.35);
+  --glow-amber: 0 0 24px rgba(255, 149, 0, 0.35);
 
-  --color-accent: #6c63ff;
-  --color-accent-light: #8b83ff;
-  --color-accent-dark: #5046e5;
-  --color-accent-glow: #6c63ff40;
+  /* Brand / Accent (Legacy for compatibility) */
+  --accent: var(--accent-cyan);
+  --accent-glow: var(--glow-cyan);
+  --accent-muted: var(--accent-cyan-dim);
+  --accent-bright: #00E5FF;
 
-  --color-success: #22c55e;
-  --color-success-glow: #22c55e30;
-  --color-warning: #f59e0b;
-  --color-warning-glow: #f59e0b30;
-  --color-error: #ef4444;
-  --color-error-glow: #ef444430;
-  --color-info: #3b82f6;
-  --color-info-glow: #3b82f630;
+  /* Status colors */
+  --success: #22c55e;
+  --success-muted: rgba(34, 197, 94, 0.12);
+  --warning: #f59e0b;
+  --warning-muted: rgba(245, 158, 11, 0.12);
+  --error: #ef4444;
+  --error-muted: rgba(239, 68, 68, 0.12);
 
-  --color-cyan: #06b6d4;
-  --color-cyan-glow: #06b6d430;
-  --color-emerald: #10b981;
-  --color-emerald-glow: #10b98130;
-  --color-violet: #8b5cf6;
-  --color-violet-glow: #8b5cf630;
-  --color-rose: #f43f5e;
-  --color-rose-glow: #f43f5e30;
+  /* Neutrals */
+  --border: rgba(0, 229, 255, 0.10);
+  --border-strong: rgba(0, 229, 255, 0.20);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(0, 229, 255, 0.1);
+  --shadow-accent: var(--glow-cyan);
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────────── */
@@ -61,10 +81,16 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
+  background: var(--bg-base);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.15;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────────── */
@@ -74,59 +100,43 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
+  background: var(--bg-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: var(--border-strong);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--text-muted);
 }
 
-/* ── Glass Card utility ─────────────────────────────────────────────────────── */
-.glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(20, 20, 34, 0.8) 0%,
-    rgba(26, 26, 40, 0.6) 100%
-  );
-  backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
 
-.glass-card:hover {
-  border-color: var(--color-border-accent);
-  box-shadow: 0 0 30px var(--color-accent-glow);
-}
-
-/* ── Gradient text ──────────────────────────────────────────────────────────── */
+/* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-cyan) 50%, var(--color-emerald) 100%);
+  background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ── Glow effects ───────────────────────────────────────────────────────────── */
+/* Glow effects */
 .glow-accent {
-  box-shadow: 0 0 15px var(--color-accent-glow),
-              0 0 30px rgba(108, 99, 255, 0.1);
+  box-shadow: 0 0 15px var(--accent-glow),
+              0 0 30px rgba(59, 130, 246, 0.1);
 }
 
 .glow-success {
-  box-shadow: 0 0 15px var(--color-success-glow),
+  box-shadow: 0 0 15px var(--success-muted),
               0 0 30px rgba(34, 197, 94, 0.1);
 }
 
-/* ── Pulse animation ────────────────────────────────────────────────────────── */
+/* Pulse animation */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px var(--color-accent-glow); }
-  50% { box-shadow: 0 0 25px var(--color-accent-glow), 0 0 50px rgba(108, 99, 255, 0.15); }
+  0%, 100% { box-shadow: 0 0 5px var(--accent-glow); }
+  50% { box-shadow: 0 0 25px var(--accent-glow), 0 0 50px rgba(59, 130, 246, 0.15); }
 }
 
 @keyframes shimmer {
@@ -137,7 +147,7 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -157,18 +167,18 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.2s ease-out forwards;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.6s ease-out forwards;
+  animation: slideInRight 0.4s ease-out forwards;
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* ── Stagger helpers ─────────────────────────────────────────────────────── */
+/* Stagger helpers */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -176,68 +186,40 @@ body {
 .stagger-5 { animation-delay: 0.25s; }
 .stagger-6 { animation-delay: 0.30s; }
 
-/* ── Hero gradient mesh ─────────────────────────────────────────────────────── */
-.hero-gradient {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(108,99,255,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(139,92,246,0.12) 0%, transparent 70%),
-    var(--color-bg-primary);
-}
-
-/* ── Page fade-in ────────────────────────────────────────────────────────────── */
+/* Page fade-in */
 @keyframes pageFadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .page-enter {
-  animation: pageFadeIn 0.4s ease-out forwards;
+  animation: pageFadeIn 0.2s ease-out forwards;
 }
 
-/* ── No text select on UI cards ─────────────────────────────────────────────── */
 .no-select { user-select: none; }
-
-/* ── Gradient border utility ─────────────────────────────────────────────────── */
-.gradient-border {
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--color-accent), var(--color-violet));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
 
 /* ── React Flow custom overrides ────────────────────────────────────────────── */
 .react-flow__background {
-  background: var(--color-bg-primary) !important;
+  background: var(--bg-base) !important;
 }
 
 .react-flow__controls button {
-  background: var(--color-bg-card) !important;
-  border: 1px solid var(--color-border) !important;
-  color: var(--color-text-secondary) !important;
-  fill: var(--color-text-secondary) !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-secondary) !important;
+  fill: var(--text-secondary) !important;
 }
 
 .react-flow__controls button:hover {
-  background: var(--color-bg-elevated) !important;
+  background: var(--bg-elevated) !important;
 }
 
 .react-flow__edge-path {
-  stroke: var(--color-border) !important;
+  stroke: var(--border) !important;
   stroke-width: 2;
 }
 
 .react-flow__minimap {
-  background: var(--color-bg-secondary) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: 8px !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
 }

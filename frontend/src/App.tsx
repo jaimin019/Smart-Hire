@@ -8,6 +8,7 @@ import CandidatesPage from '@/pages/CandidatesPage';
 import CandidateDetailPage from '@/pages/CandidateDetailPage';
 import ComparePage from '@/pages/ComparePage';
 import TaxonomyPage from '@/pages/TaxonomyPage';
+import AgentFlowPage from '@/pages/AgentFlowPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/analyze" element={<AnalyzePage />} />
+              <Route path="/agent-flow" element={<AgentFlowPage />} />
               <Route path="/candidates" element={<CandidatesPage />} />
               <Route path="/candidates/:id" element={<CandidateDetailPage />} />
               <Route path="/compare" element={<ComparePage />} />

@@ -3,91 +3,37 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   GitCompare, Trophy, TrendingUp, Users, Sparkles,
   ChevronDown, ChevronUp, Medal, Crown, Star, BarChart3,
-  CheckCircle2, XCircle, Zap,
+  CheckCircle2, XCircle, Zap, Search
 } from 'lucide-react';
 import { fetchCandidates, fetchJobs, compareCandidates, compareCandidatesMulti } from '@/lib/api';
 import type {
   CompareResponse, MultiCompareResponse, StoredCandidate, RankedCandidate,
 } from '@/types';
+import { ScoreRing } from '@/components/ui/ScoreRing';
+import { SkillChip } from '@/components/ui/SkillChip';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 
 /* ── Sub-components ──────────────────────────────────────────────────────── */
 
-function ScoreRing({ score, size = 56 }: { score: number; size?: number }) {
-  const r = (size / 2) - 5;
-  const circ = 2 * Math.PI * r;
-  const fill = (score / 100) * circ;
-  const color = score >= 70 ? 'var(--color-success)' : score >= 45 ? 'var(--color-warning)' : 'var(--color-error)';
-  return (
-    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }} className="flex-shrink-0">
-      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="var(--color-bg-tertiary)" strokeWidth={4} />
-      <circle
-        cx={size/2} cy={size/2} r={r} fill="none"
-        stroke={color} strokeWidth={4}
-        strokeDasharray={`${fill} ${circ}`}
-        strokeLinecap="round"
-        style={{ transition: 'stroke-dasharray 0.8s cubic-bezier(0.4,0,0.2,1)' }}
-      />
-      <text
-        x="50%" y="50%"
-        dominantBaseline="middle" textAnchor="middle"
-        style={{ transform: `rotate(90deg)`, transformOrigin: '50% 50%', fill: color, fontSize: size < 50 ? 9 : 11, fontWeight: 700, fontFamily: 'inherit' }}
-      >
-        {score}
-      </text>
-    </svg>
-  );
-}
-
-function ScoreBar({ score, winner }: { score: number; winner: boolean }) {
-  const color = winner ? 'var(--color-success)' : 'var(--color-accent)';
-  return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1 h-1.5 rounded-full bg-[var(--color-bg-tertiary)] overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700 ease-out"
-          style={{ width: `${score}%`, backgroundColor: color }}
-        />
-      </div>
-      <span className="text-xs font-bold w-10 text-right tabular-nums" style={{ color }}>
-        {score}
-      </span>
-    </div>
-  );
-}
-
-function SkillPill({ skill, variant }: { skill: string; variant: 'unique' | 'shared' | 'missing' | 'star' }) {
-  const styles = {
-    unique: 'bg-[var(--color-accent)]/10 text-[var(--color-accent-light)] border-[var(--color-accent)]/20',
-    shared: 'bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20',
-    missing: 'bg-[var(--color-error)]/8 text-[var(--color-error)]/60 border-[var(--color-error)]/12',
-    star: 'bg-[var(--color-warning)]/10 text-[var(--color-warning)] border-[var(--color-warning)]/20',
-  };
-  return (
-    <span className={`px-2 py-0.5 rounded-md text-[11px] font-medium border ${styles[variant]}`}>
-      {skill}
-    </span>
-  );
-}
-
 function RankBadge({ rank }: { rank: number }) {
   if (rank === 1) return (
-    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#FFD700]/20 to-[#FFA500]/20 border border-[#FFD700]/30 flex items-center justify-center flex-shrink-0">
-      <Crown className="w-3.5 h-3.5 text-[#FFD700]" />
+    <div className="w-8 h-8 rounded-lg bg-[var(--warning-muted)] border border-[var(--warning)]/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_var(--warning-muted)]">
+      <Crown className="w-4 h-4 text-[var(--warning)]" />
     </div>
   );
   if (rank === 2) return (
-    <div className="w-7 h-7 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] flex items-center justify-center flex-shrink-0">
-      <Medal className="w-3.5 h-3.5 text-[#C0C0C0]" />
+    <div className="w-8 h-8 rounded-lg bg-[var(--bg-elevated)] border border-[var(--text-muted)]/30 flex items-center justify-center flex-shrink-0">
+      <Medal className="w-4 h-4 text-[#C0C0C0]" />
     </div>
   );
   if (rank === 3) return (
-    <div className="w-7 h-7 rounded-lg bg-[#CD7F32]/10 border border-[#CD7F32]/20 flex items-center justify-center flex-shrink-0">
-      <Medal className="w-3.5 h-3.5 text-[#CD7F32]" />
+    <div className="w-8 h-8 rounded-lg bg-[#CD7F32]/10 border border-[#CD7F32]/20 flex items-center justify-center flex-shrink-0">
+      <Medal className="w-4 h-4 text-[#CD7F32]" />
     </div>
   );
   return (
-    <div className="w-7 h-7 rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)] flex items-center justify-center flex-shrink-0">
-      <span className="text-[10px] font-bold text-[var(--color-text-muted)]">#{rank}</span>
+    <div className="w-8 h-8 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center flex-shrink-0">
+      <span className="text-xs font-bold text-[var(--text-muted)]">#{rank}</span>
     </div>
   );
 }
@@ -97,79 +43,83 @@ function CandidateRow({
   c, jobTitle, isWinner,
 }: { c: RankedCandidate; jobTitle: string; isWinner: boolean }) {
   const [expanded, setExpanded] = useState(false);
-  const scoreColor = c.overall_score >= 70 ? 'var(--color-success)' : c.overall_score >= 45 ? 'var(--color-warning)' : 'var(--color-error)';
+  const scoreColor = c.overall_score >= 70 ? 'var(--success)' : c.overall_score >= 45 ? 'var(--warning)' : 'var(--error)';
 
   return (
-    <div className={`rounded-xl border transition-all duration-200 overflow-hidden
+    <div className={`rounded-[var(--radius-lg)] border transition-all duration-200 overflow-hidden shadow-sm
       ${isWinner
-        ? 'border-[var(--color-success)]/30 bg-[var(--color-success)]/4'
-        : 'border-[var(--color-border-subtle)] bg-[var(--color-bg-tertiary)]/40'
+        ? 'border-[var(--success)]/40 bg-[var(--success-muted)]'
+        : 'border-[var(--border)] bg-[var(--bg-surface)]'
       }`}>
       <button
         onClick={() => setExpanded(v => !v)}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.02] transition-colors duration-150"
+        className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-[var(--bg-elevated)] transition-colors duration-150"
       >
         <RankBadge rank={c.rank} />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-[var(--color-text-primary)] truncate">{c.name}</span>
+            <span className="text-base font-bold text-[var(--text-primary)] truncate">{c.name}</span>
             {isWinner && (
-              <span className="hidden sm:flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-[var(--color-success)] bg-[var(--color-success)]/10 px-2 py-0.5 rounded-full flex-shrink-0">
-                <Trophy className="w-2.5 h-2.5" /> Top Pick
+              <span className="hidden sm:flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-[var(--success)] bg-[var(--success)]/10 border border-[var(--success)]/20 px-2 py-0.5 rounded-full flex-shrink-0">
+                <Trophy className="w-3 h-3" /> Top Pick
               </span>
             )}
           </div>
-          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5 truncate">
+          <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate font-mono">
             {c.experience_years}y exp · {c.education}
           </p>
         </div>
 
         {/* Score ring */}
         <div className="hidden sm:block flex-shrink-0">
-          <ScoreRing score={Math.round(c.overall_score)} size={44} />
+          <ScoreRing score={Math.round(c.overall_score)} size={48} />
         </div>
 
         {/* Score text on mobile */}
-        <span className="sm:hidden text-sm font-bold flex-shrink-0" style={{ color: scoreColor }}>
+        <span className="sm:hidden text-lg font-bold flex-shrink-0" style={{ color: scoreColor }}>
           {Math.round(c.overall_score)}
         </span>
 
         {/* Match & Missing pills */}
-        <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-          <span className="flex items-center gap-1 text-[10px] font-semibold text-[var(--color-success)]">
-            <CheckCircle2 className="w-3 h-3" /> {c.matched_skills.length}
+        <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-[var(--success)]">
+            <CheckCircle2 className="w-4 h-4" /> {c.matched_skills.length}
           </span>
-          <span className="flex items-center gap-1 text-[10px] font-semibold text-[var(--color-error)]/70">
-            <XCircle className="w-3 h-3" /> {c.missing_skills.length}
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-[var(--error)]">
+            <XCircle className="w-4 h-4" /> {c.missing_skills.length}
           </span>
         </div>
 
-        <div className="flex-shrink-0 text-[var(--color-text-muted)]">
-          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        <div className="flex-shrink-0 text-[var(--text-muted)] ml-2">
+          {expanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
         </div>
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 pt-1 border-t border-[var(--color-border-subtle)] space-y-3 animate-fade-in-up">
+        <div className="px-5 pb-5 pt-2 border-t border-[var(--border)] bg-[var(--bg-surface)] space-y-4 animate-fade-in-up">
           {/* Score bar */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-2">
               Match Score — {jobTitle}
             </p>
-            <ScoreBar score={Math.round(c.overall_score)} winner={isWinner} />
+            <ProgressBar 
+              value={c.overall_score} 
+              color={isWinner ? 'var(--success)' : undefined}
+              showValue
+            />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             {c.matched_skills.length > 0 && (
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-success)] mb-1.5">
-                  Matched ({c.matched_skills.length})
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--success)] mb-2 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Matched ({c.matched_skills.length})
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {c.matched_skills.slice(0, 8).map(s => <SkillPill key={s} skill={s} variant="shared" />)}
+                  {c.matched_skills.slice(0, 8).map((s, i) => <SkillChip key={s} label={s} variant="matched" delayIndex={i} />)}
                   {c.matched_skills.length > 8 && (
-                    <span className="text-[10px] text-[var(--color-text-muted)] self-center">+{c.matched_skills.length - 8}</span>
+                    <span className="text-xs font-medium text-[var(--text-muted)] self-center ml-1">+{c.matched_skills.length - 8} more</span>
                   )}
                 </div>
               </div>
@@ -177,13 +127,13 @@ function CandidateRow({
 
             {c.missing_skills.length > 0 && (
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-error)]/70 mb-1.5">
-                  Missing ({c.missing_skills.length})
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--error)] mb-2 flex items-center gap-1">
+                  <XCircle className="w-3 h-3" /> Missing ({c.missing_skills.length})
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {c.missing_skills.slice(0, 6).map(s => <SkillPill key={s} skill={s} variant="missing" />)}
+                  {c.missing_skills.slice(0, 6).map((s, i) => <SkillChip key={s} label={s} variant="missing" delayIndex={i} />)}
                   {c.missing_skills.length > 6 && (
-                    <span className="text-[10px] text-[var(--color-text-muted)] self-center">+{c.missing_skills.length - 6}</span>
+                    <span className="text-xs font-medium text-[var(--text-muted)] self-center ml-1">+{c.missing_skills.length - 6} more</span>
                   )}
                 </div>
               </div>
@@ -191,11 +141,11 @@ function CandidateRow({
 
             {c.unique_skills.length > 0 && (
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-warning)] mb-1.5">
-                  Unique Skills
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--warning)] mb-2 flex items-center gap-1">
+                  <Star className="w-3 h-3" /> Unique Skills
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {c.unique_skills.map(s => <SkillPill key={s} skill={s} variant="star" />)}
+                  {c.unique_skills.map((s, i) => <SkillChip key={s} label={s} variant="neutral" delayIndex={i} />)}
                 </div>
               </div>
             )}
@@ -226,59 +176,62 @@ function CandidateSelector({
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {/* Search */}
-      <input
-        type="text"
-        placeholder="Search candidates..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        className="w-full px-3 py-2 rounded-lg text-xs
-          bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-          text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)]
-          focus:outline-none focus:border-[var(--color-accent)] transition-colors duration-150"
-      />
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+        <input
+          type="text"
+          placeholder="Search candidates..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-full pl-9 pr-3 py-2.5 rounded-[var(--radius-md)] text-sm
+            bg-[var(--bg-elevated)] border border-[var(--border)]
+            text-[var(--text-primary)] placeholder-[var(--text-muted)]
+            focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+        />
+      </div>
 
       {/* Candidate list */}
-      <div className="max-h-52 overflow-y-auto space-y-1 pr-1">
+      <div className="max-h-[300px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
         {filtered.map(c => {
           const isSelected = selected.has(c.id);
           return (
             <button
               key={c.id}
               onClick={() => onToggle(c.id)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-left
                 transition-all duration-150 border
                 ${isSelected
-                  ? 'bg-[var(--color-accent)]/10 border-[var(--color-accent)]/30 text-[var(--color-text-primary)]'
-                  : 'bg-[var(--color-bg-tertiary)] border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] hover:border-[var(--color-border)]'
+                  ? 'bg-[var(--accent-muted)] border-[var(--accent)] text-[var(--text-primary)]'
+                  : 'bg-[var(--bg-surface)] border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-strong)]'
                 }`}
             >
               {/* Checkbox */}
-              <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 border
-                ${isSelected ? 'bg-[var(--color-accent)] border-[var(--color-accent)]' : 'border-[var(--color-border)]'}`}>
-                {isSelected && <span className="text-white text-[9px] font-black">✓</span>}
+              <div className={`w-4 h-4 rounded-[var(--radius-sm)] flex items-center justify-center flex-shrink-0 border transition-colors
+                ${isSelected ? 'bg-[var(--accent)] border-[var(--accent)] text-white' : 'border-[var(--text-muted)] bg-[var(--bg-elevated)]'}`}>
+                {isSelected && <CheckCircle2 className="w-3 h-3" />}
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium truncate">{c.name ?? 'Unnamed'}</p>
-                {c.email && <p className="text-[10px] text-[var(--color-text-muted)] truncate">{c.email}</p>}
+              <div className="flex-1 min-w-0 flex flex-col">
+                <span className="text-sm font-semibold truncate text-[var(--text-primary)]">{c.name ?? 'Unnamed Candidate'}</span>
+                {c.email && <span className="text-xs text-[var(--text-muted)] font-mono truncate">{c.email}</span>}
               </div>
             </button>
           );
         })}
         {filtered.length === 0 && (
-          <p className="text-xs text-[var(--color-text-muted)] text-center py-3">No candidates match</p>
+          <p className="text-sm text-[var(--text-muted)] text-center py-6">No candidates match your search</p>
         )}
       </div>
 
-      <div className="flex items-center justify-between text-[10px] text-[var(--color-text-muted)]">
-        <span>{selected.size} selected of {candidates.length}</span>
+      <div className="flex items-center justify-between text-xs text-[var(--text-muted)] mt-1">
+        <span className="font-semibold">{selected.size} selected <span className="font-normal opacity-70">out of {candidates.length}</span></span>
         {selected.size > 0 && (
           <button
             onClick={() => candidates.forEach(c => selected.has(c.id) && onToggle(c.id))}
-            className="text-[var(--color-error)]/60 hover:text-[var(--color-error)] transition-colors"
+            className="text-[var(--error)] hover:underline font-medium transition-colors"
           >
-            Clear all
+            Clear selection
           </button>
         )}
       </div>
@@ -352,135 +305,82 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
   const error = mode === 'multi' ? multiMutation.error : duoMutation.error;
 
   return (
-    <div className="flex flex-col gap-5 max-w-[1400px] mx-auto w-full">
-
-      {/* ── Header (hideable when embedded in a page that has its own header) ── */}
-      {!hideHeader && (
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--color-violet)]/20 to-[var(--color-accent)]/20 border border-[var(--color-violet)]/20 flex items-center justify-center">
-              <BarChart3 className="w-4.5 h-4.5 text-[var(--color-violet)]" />
-            </div>
-            <div>
-              <h2 className="text-sm font-bold text-[var(--color-text-primary)] uppercase tracking-wider">
-                Candidate Comparison
-              </h2>
-              <p className="text-[10px] text-[var(--color-text-muted)]">
-                Rank up to 50 candidates against any job
-              </p>
-            </div>
-          </div>
-
-          {/* Mode toggle */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
-            {(['multi', 'duo'] as const).map(m => (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200
-                  ${mode === m
-                    ? 'bg-[var(--color-accent)] text-white shadow-sm'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
-                  }`}
-              >
-                {m === 'multi' ? 'Multi (N)' : '1 vs 1'}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+    <div className="flex flex-col gap-6 max-w-[1400px] mx-auto w-full">
 
       {/* Mode toggle shown in page header area when hideHeader is true */}
       {hideHeader && (
-        <div className="flex justify-end">
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border-subtle)]">
+        <div className="flex justify-end mb-2">
+          <div className="flex items-center gap-1 p-1 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] shadow-sm">
             {(['multi', 'duo'] as const).map(m => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200
                   ${mode === m
-                    ? 'bg-[var(--color-accent)] text-white shadow-sm'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
+                    ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-card border border-[var(--border)]'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-transparent'
                   }`}
               >
-                {m === 'multi' ? 'Multi (N)' : '1 vs 1'}
+                {m === 'multi' ? 'Leaderboard (N)' : 'Head-to-Head (1v1)'}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        {/* ── LEFT: Config Panel ── */}
-        <div className="glass-card p-5 flex flex-col gap-4 h-fit">
+        {/* ── LEFT: Config Panel (35%) ── */}
+        <div className="lg:col-span-4 bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 shadow-card flex flex-col gap-6 sticky top-24">
+          
+          <div className="flex items-center gap-3 border-b border-[var(--border)] pb-4">
+            <div className="w-10 h-10 rounded-[var(--radius-md)] bg-[var(--accent-muted)] border border-[var(--accent)]/20 flex items-center justify-center text-[var(--accent-bright)]">
+              <GitCompare className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-display font-bold text-[var(--text-primary)]">Configuration</h2>
+              <p className="text-xs text-[var(--text-secondary)]">Setup your comparison</p>
+            </div>
+          </div>
 
           {loadingCandidates ? (
-            <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] py-4 justify-center">
-              <div className="w-3 h-3 border border-[var(--color-border)] border-t-[var(--color-accent)] rounded-full animate-spin" />
-              Loading candidates...
+            <div className="flex flex-col items-center justify-center py-8 gap-3">
+              <div className="w-6 h-6 border-2 border-[var(--border)] border-t-[var(--accent)] rounded-full animate-spin" />
+              <span className="text-sm font-medium text-[var(--text-muted)]">Loading candidates...</span>
             </div>
           ) : candidatesError ? (
-            <div className="rounded-xl bg-[var(--color-error)]/8 border border-[var(--color-error)]/20 p-4 text-xs text-[var(--color-error)]">
-              <p className="font-semibold mb-1">Backend unreachable</p>
-              <p className="text-[var(--color-text-muted)] mb-3">
-                Could not connect to the API. Make sure the FastAPI server is running:
+            <div className="rounded-[var(--radius-md)] bg-[var(--error-muted)] border border-[var(--error)]/20 p-4">
+              <p className="text-sm font-bold text-[var(--error)] mb-1">Backend unreachable</p>
+              <p className="text-xs text-[var(--text-secondary)] mb-3">
+                Could not connect to the API. Make sure the FastAPI server is running.
               </p>
-              <code className="block font-mono bg-black/30 px-2 py-1.5 rounded text-[10px] text-[var(--color-text-secondary)] mb-3">
-                python backend/main.py
-              </code>
               <button
                 onClick={() => refetchCandidates()}
-                className="w-full py-2 rounded-lg text-xs font-semibold
-                  bg-[var(--color-error)]/10 text-[var(--color-error)]
-                  hover:bg-[var(--color-error)]/20 transition-colors duration-150"
+                className="w-full py-2 rounded-[var(--radius-md)] text-xs font-bold bg-[var(--error)] text-white hover:brightness-110 transition-colors"
               >
                 Retry Connection
               </button>
             </div>
           ) : candidates.length < 2 ? (
-            <div className="rounded-xl bg-[var(--color-warning)]/8 border border-[var(--color-warning)]/20 p-4 text-xs text-[var(--color-warning)]">
-              <p className="font-semibold mb-2">No candidates yet</p>
-              <div className="space-y-1.5 text-[var(--color-text-muted)]">
-                <p className="flex items-start gap-1.5">
-                  <span className="text-[var(--color-accent-light)] font-bold flex-shrink-0">1.</span>
-                  Go to the <span className="text-[var(--color-accent-light)] font-semibold mx-1">Analyze</span> tab
-                </p>
-                <p className="flex items-start gap-1.5">
-                  <span className="text-[var(--color-accent-light)] font-bold flex-shrink-0">2.</span>
-                  Upload 2+ resumes (use Bulk mode for many at once)
-                </p>
-                <p className="flex items-start gap-1.5">
-                  <span className="text-[var(--color-accent-light)] font-bold flex-shrink-0">3.</span>
-                  Click <span className="text-[var(--color-accent-light)] font-semibold mx-1">Analyze Resume</span> for each
-                </p>
-              </div>
-              <div className="mt-3 pt-3 border-t border-[var(--color-warning)]/15">
-                <p className="text-[var(--color-text-muted)] mb-1.5">Or seed demo data instantly:</p>
-                <code className="block font-mono bg-black/30 px-2 py-1.5 rounded text-[10px] text-[var(--color-text-secondary)] mb-2">
-                  python scripts/seed_demo.py
-                </code>
-                <button
-                  onClick={() => refetchCandidates()}
-                  className="w-full py-1.5 rounded-lg text-[10px] font-semibold
-                    bg-[var(--color-warning)]/10 text-[var(--color-warning)]
-                    hover:bg-[var(--color-warning)]/20 transition-colors duration-150"
-                >
-                  Refresh Candidates
-                </button>
-              </div>
+            <div className="rounded-[var(--radius-md)] bg-[var(--warning-muted)] border border-[var(--warning)]/20 p-4">
+              <p className="text-sm font-bold text-[var(--warning)] mb-2">Not enough candidates</p>
+              <p className="text-xs text-[var(--text-secondary)] mb-4">
+                You need at least 2 candidates to run a comparison. Head over to the Analyze page to process more resumes.
+              </p>
+              <button
+                onClick={() => refetchCandidates()}
+                className="w-full py-2 rounded-[var(--radius-md)] text-xs font-bold bg-[var(--warning)] text-white hover:brightness-110 transition-colors"
+              >
+                Refresh
+              </button>
             </div>
           ) : (
-            <>
+            <div className="flex flex-col gap-6">
               {/* Candidate selection */}
               {mode === 'multi' ? (
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] mb-2">
-                    Select Candidates
-                    <span className="ml-2 text-[var(--color-text-muted)] normal-case font-normal tracking-normal">
-                      (2–50)
-                    </span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">
+                    Select Candidates <span className="lowercase font-normal opacity-70">(2-50)</span>
                   </label>
                   <CandidateSelector
                     candidates={candidates}
@@ -489,52 +389,52 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
                   />
                 </div>
               ) : (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[var(--accent-bright)] mb-2">
                       Candidate A
                     </label>
                     <select
                       value={candidate1}
                       onChange={e => setCandidate1(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm
-                        bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-                        text-[var(--color-text-primary)]
-                        focus:outline-none focus:border-[var(--color-accent)]
+                      className="w-full px-4 py-3 rounded-[var(--radius-md)] text-sm font-medium
+                        bg-[var(--bg-elevated)] border border-[var(--border)]
+                        text-[var(--text-primary)]
+                        focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]
                         transition-colors duration-200"
                     >
                       <option value="">Select a candidate...</option>
                       {candidates.map(c => (
                         <option key={c.id} value={c.id} disabled={c.id === candidate2}>
-                          {candidateLabel(c)}{c.email ? ` · ${c.email}` : ''}
+                          {candidateLabel(c)}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-[var(--color-border-subtle)]" />
-                    <span className="text-[10px] font-black text-[var(--color-text-muted)] tracking-widest">VS</span>
-                    <div className="flex-1 h-px bg-[var(--color-border-subtle)]" />
+                  <div className="flex items-center gap-3 opacity-50">
+                    <div className="flex-1 h-px bg-[var(--border-strong)]" />
+                    <span className="text-xs font-black text-[var(--text-muted)]">VS</span>
+                    <div className="flex-1 h-px bg-[var(--border-strong)]" />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--color-violet)] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[var(--violet)] mb-2">
                       Candidate B
                     </label>
                     <select
                       value={candidate2}
                       onChange={e => setCandidate2(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm
-                        bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-                        text-[var(--color-text-primary)]
-                        focus:outline-none focus:border-[var(--color-violet)]
+                      className="w-full px-4 py-3 rounded-[var(--radius-md)] text-sm font-medium
+                        bg-[var(--bg-elevated)] border border-[var(--border)]
+                        text-[var(--text-primary)]
+                        focus:outline-none focus:border-[var(--violet)] focus:ring-1 focus:ring-[var(--violet)]
                         transition-colors duration-200"
                     >
                       <option value="">Select a candidate...</option>
                       {candidates.map(c => (
                         <option key={c.id} value={c.id} disabled={c.id === candidate1}>
-                          {candidateLabel(c)}{c.email ? ` · ${c.email}` : ''}
+                          {candidateLabel(c)}
                         </option>
                       ))}
                     </select>
@@ -543,17 +443,17 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
               )}
 
               {/* Job selector */}
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">
-                  Job Description
+              <div className="pt-4 border-t border-[var(--border)]">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
+                  Target Role
                 </label>
                 <select
                   value={selectedJob}
                   onChange={e => setSelectedJob(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl text-sm
-                    bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]
-                    text-[var(--color-text-primary)]
-                    focus:outline-none focus:border-[var(--color-accent)]
+                  className="w-full px-4 py-3 rounded-[var(--radius-md)] text-sm font-medium
+                    bg-[var(--bg-elevated)] border border-[var(--border)]
+                    text-[var(--text-primary)]
+                    focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]
                     transition-colors duration-200"
                 >
                   {jobs.map(j => (
@@ -567,12 +467,12 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
                 onClick={() => mode === 'multi' ? multiMutation.mutate() : duoMutation.mutate()}
                 disabled={mode === 'multi' ? (!canMulti || isPending) : (!canDuo || isPending)}
                 className={`
-                  relative w-full py-3 rounded-xl font-semibold text-sm
-                  flex items-center justify-center gap-2
-                  transition-all duration-300
+                  w-full py-3.5 rounded-[var(--radius-md)] font-bold text-sm
+                  flex items-center justify-center gap-2 mt-2
+                  transition-all duration-200 shadow-sm
                   ${(mode === 'multi' ? !canMulti : !canDuo) || isPending
-                    ? 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)] cursor-not-allowed'
-                    : 'bg-gradient-to-r from-[var(--color-violet)] to-[var(--color-accent)] text-white hover:shadow-lg hover:shadow-[var(--color-accent-glow)] hover:scale-[1.02] active:scale-[0.98]'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--text-muted)] cursor-not-allowed border border-[var(--border)]'
+                    : 'bg-[var(--accent)] text-white hover:brightness-110 shadow-accent active:scale-[0.98]'
                   }
                 `}
               >
@@ -586,54 +486,60 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
                     <GitCompare className="w-4 h-4" />
                     {mode === 'multi'
                       ? `Rank ${selectedIds.size > 0 ? selectedIds.size : ''} Candidates`
-                      : 'Compare Candidates'
+                      : 'Run 1v1 Comparison'
                     }
                   </>
                 )}
               </button>
 
               {isError && (
-                <p className="text-xs text-[var(--color-error)] text-center">
-                  {(error as Error)?.message || 'Comparison failed. Please try again.'}
-                </p>
+                <div className="p-3 rounded-[var(--radius-sm)] bg-[var(--error-muted)] border border-[var(--error)]/20">
+                  <p className="text-xs text-[var(--error)] font-medium text-center">
+                    {(error as Error)?.message || 'Comparison failed. Please try again.'}
+                  </p>
+                </div>
               )}
-            </>
+            </div>
           )}
         </div>
 
-        {/* ── RIGHT: Results ── */}
-        <div className="flex flex-col gap-4">
+        {/* ── RIGHT: Results (65%) ── */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
 
           {/* MULTI results */}
           {multiResult && mode === 'multi' && (
-            <div className="flex flex-col gap-4 animate-fade-in-up">
+            <div className="flex flex-col gap-6 animate-fade-in-up">
 
               {/* Stats row */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {[
-                  { label: 'Candidates', value: multiResult.ranked_candidates.length, icon: Users, color: 'var(--color-accent-light)' },
-                  { label: 'Top Score', value: `${Math.round(multiResult.ranked_candidates[0]?.overall_score ?? 0)}`, icon: Star, color: 'var(--color-success)' },
-                  { label: 'Avg Coverage', value: `${multiResult.comparison.skill_coverage_avg}%`, icon: BarChart3, color: 'var(--color-cyan)' },
+                  { label: 'Candidates Analyzed', value: multiResult.ranked_candidates.length, icon: Users, color: 'var(--accent-bright)' },
+                  { label: 'Highest Match Score', value: `${Math.round(multiResult.ranked_candidates[0]?.overall_score ?? 0)}%`, icon: Trophy, color: 'var(--success)' },
+                  { label: 'Average Skill Coverage', value: `${multiResult.comparison.skill_coverage_avg}%`, icon: BarChart3, color: 'var(--warning)' },
                 ].map(({ label, value, icon: Icon, color }) => (
-                  <div key={label} className="glass-card p-3 text-center">
-                    <Icon className="w-4 h-4 mx-auto mb-1.5" style={{ color }} />
-                    <p className="text-base font-bold text-[var(--color-text-primary)]">{value}</p>
-                    <p className="text-[10px] text-[var(--color-text-muted)]">{label}</p>
+                  <div key={label} className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-5 shadow-card flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `color-mix(in srgb, ${color} 15%, transparent)` }}>
+                      <Icon className="w-5 h-5" style={{ color }} />
+                    </div>
+                    <div>
+                      <p className="text-xl font-display font-bold text-[var(--text-primary)] leading-none mb-1">{value}</p>
+                      <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{label}</p>
+                    </div>
                   </div>
                 ))}
               </div>
 
               {/* AI Recommendation */}
-              <div className="glass-card p-4 border border-[var(--color-accent)]/15">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-violet)]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Sparkles className="w-4 h-4 text-[var(--color-accent-light)]" />
+              <div className="bg-[var(--bg-surface)] border border-[var(--accent)]/30 rounded-[var(--radius-lg)] p-6 shadow-[0_0_15px_var(--accent-muted)]">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-[var(--radius-md)] bg-[var(--accent-muted)] flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-5 h-5 text-[var(--accent-bright)]" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] mb-1">
-                      AI Recommendation · {multiResult.job_title}
-                    </p>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    <h3 className="text-sm font-display font-bold text-[var(--accent-bright)] uppercase tracking-wider mb-2">
+                      AI Recommendation Analysis
+                    </h3>
+                    <p className="text-sm text-[var(--text-primary)] leading-relaxed font-medium">
                       {multiResult.comparison.recommendation}
                     </p>
                   </div>
@@ -641,18 +547,18 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
               </div>
 
               {/* Leaderboard */}
-              <div className="glass-card p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Trophy className="w-4 h-4 text-[#FFD700]" />
-                  <h3 className="text-xs font-bold text-[var(--color-text-primary)] uppercase tracking-wider">
-                    Leaderboard
-                  </h3>
-                  <span className="ml-auto text-[10px] text-[var(--color-text-muted)]">
-                    Click to expand details
-                  </span>
+              <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] shadow-card overflow-hidden">
+                <div className="px-6 py-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--bg-base)]">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-5 h-5 text-[var(--warning)]" />
+                    <h3 className="text-sm font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                      Ranked Leaderboard
+                    </h3>
+                  </div>
+                  <span className="text-xs text-[var(--text-muted)]">Click rows to expand details</span>
                 </div>
 
-                <div className="space-y-2">
+                <div className="p-4 space-y-3 bg-[var(--bg-elevated)]">
                   {multiResult.ranked_candidates.map(c => (
                     <CandidateRow
                       key={c.candidate_id}
@@ -672,54 +578,66 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
             const c2 = duoResult.candidates[1];
             const winner = duoResult.comparison.winner;
             return (
-              <div className="flex flex-col gap-4 animate-fade-in-up">
+              <div className="flex flex-col gap-6 animate-fade-in-up">
 
                 {/* Score comparison */}
-                <div className="glass-card p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <TrendingUp className="w-4 h-4 text-[var(--color-success)]" />
-                    <h3 className="text-xs font-bold text-[var(--color-text-primary)] uppercase tracking-wider">
-                      Match Scores — {duoResult.job_title}
+                <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 shadow-card">
+                  <div className="flex items-center gap-2 mb-6 border-b border-[var(--border)] pb-4">
+                    <TrendingUp className="w-5 h-5 text-[var(--success)]" />
+                    <h3 className="text-sm font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                      Head-to-Head Match Scores
                     </h3>
+                    <div className="ml-auto flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]">
+                      <span>Target:</span>
+                      <span className="px-2 py-1 bg-[var(--bg-elevated)] rounded border border-[var(--border)]">{duoResult.job_title}</span>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                    {/* VS Divider for desktop */}
+                    <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[var(--bg-base)] border border-[var(--border-strong)] items-center justify-center text-[10px] font-black text-[var(--text-muted)] z-10">
+                      VS
+                    </div>
+
                     {[c1, c2].map((c, i) => (
-                      <div key={i}>
-                        <div className="flex items-center gap-2 mb-2">
-                          <ScoreRing score={Math.round(c.overall_score)} size={52} />
+                      <div key={i} className={`p-5 rounded-[var(--radius-md)] border ${c.candidate_id === winner ? 'bg-[var(--success-muted)] border-[var(--success)]/30' : 'bg-[var(--bg-elevated)] border-[var(--border)]'}`}>
+                        <div className="flex items-start justify-between mb-6">
                           <div>
-                            <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-tight">{c.name}</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)]">{c.experience_years}y exp</p>
+                            <h4 className="text-lg font-bold text-[var(--text-primary)]">{c.name}</h4>
+                            <p className="text-xs text-[var(--text-secondary)] font-mono mt-1">{c.experience_years}y exp · {c.education}</p>
                             {c.candidate_id === winner && (
-                              <span className="flex items-center gap-1 text-[9px] font-black text-[var(--color-success)] mt-0.5">
-                                <Trophy className="w-2.5 h-2.5" /> WINNER
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mt-3 text-[10px] font-bold uppercase tracking-wider text-[var(--success)] bg-[var(--success)]/10 border border-[var(--success)]/20 rounded-full">
+                                <Trophy className="w-3 h-3" /> Winner
                               </span>
                             )}
                           </div>
+                          <ScoreRing score={Math.round(c.overall_score)} size={64} />
                         </div>
-                        <ScoreBar score={Math.round(c.overall_score)} winner={c.candidate_id === winner} />
-                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 truncate">{c.education}</p>
+                        <ProgressBar value={Math.round(c.overall_score)} color={c.candidate_id === winner ? 'var(--success)' : 'var(--accent)'} />
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 pt-3 border-t border-[var(--color-border-subtle)] flex items-center gap-2">
-                    <Zap className="w-3 h-3 text-[var(--color-text-muted)]" />
-                    <span className="text-xs text-[var(--color-text-muted)]">Score difference:</span>
-                    <span className="text-xs font-bold text-[var(--color-accent-light)]">
+                  
+                  <div className="mt-6 pt-4 border-t border-[var(--border)] flex items-center justify-center gap-3">
+                    <Zap className="w-4 h-4 text-[var(--warning)]" />
+                    <span className="text-sm font-semibold text-[var(--text-secondary)]">Match score difference:</span>
+                    <span className="text-sm font-bold px-3 py-1 bg-[var(--warning-muted)] text-[var(--warning)] rounded-full">
                       {duoResult.comparison.score_diff} pts
                     </span>
                   </div>
                 </div>
 
                 {/* AI Recommendation */}
-                <div className="glass-card p-5 border border-[var(--color-accent)]/15">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-violet)]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Sparkles className="w-4 h-4 text-[var(--color-accent-light)]" />
+                <div className="bg-[var(--bg-surface)] border border-[var(--accent)]/30 rounded-[var(--radius-lg)] p-6 shadow-[0_0_15px_var(--accent-muted)]">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-[var(--radius-md)] bg-[var(--accent-muted)] flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-5 h-5 text-[var(--accent-bright)]" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] mb-1">AI Recommendation</p>
-                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                      <h3 className="text-sm font-display font-bold text-[var(--accent-bright)] uppercase tracking-wider mb-2">
+                        AI Verdict
+                      </h3>
+                      <p className="text-sm text-[var(--text-primary)] leading-relaxed font-medium">
                         {duoResult.comparison.recommendation}
                       </p>
                     </div>
@@ -727,37 +645,45 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
                 </div>
 
                 {/* Skill Diff */}
-                <div className="glass-card p-5">
-                  <h3 className="text-xs font-bold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">Skill Breakdown</h3>
-                  <div className="space-y-3">
+                <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 shadow-card">
+                  <h3 className="text-sm font-display font-bold text-[var(--text-primary)] uppercase tracking-wider mb-5 border-b border-[var(--border)] pb-3">
+                    Skill Comparison Breakdown
+                  </h3>
+                  
+                  <div className="space-y-6">
                     {duoResult.comparison.shared_skills.length > 0 && (
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-success)] mb-2">
-                          Shared ({duoResult.comparison.shared_skills.length})
+                      <div className="p-4 rounded-[var(--radius-md)] bg-[var(--bg-elevated)] border border-[var(--border)]">
+                        <p className="text-xs font-bold uppercase tracking-wider text-[var(--success)] mb-3 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4" /> 
+                          Shared Skills ({duoResult.comparison.shared_skills.length})
                         </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {duoResult.comparison.shared_skills.map(s => <SkillPill key={s} skill={s} variant="shared" />)}
+                        <div className="flex flex-wrap gap-2">
+                          {duoResult.comparison.shared_skills.map((s, i) => <SkillChip key={s} label={s} variant="matched" delayIndex={i} />)}
                         </div>
                       </div>
                     )}
-                    <div className="grid grid-cols-2 gap-4">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {duoResult.comparison.skills_only_in_1.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent-light)] mb-2">
-                            Only {c1.name.split(' ')[0]} ({duoResult.comparison.skills_only_in_1.length})
+                        <div className="p-4 rounded-[var(--radius-md)] bg-[var(--bg-elevated)] border border-[var(--border)]">
+                          <p className="text-xs font-bold uppercase tracking-wider text-[var(--accent-bright)] mb-3 flex items-center gap-2">
+                            <Star className="w-4 h-4" />
+                            Unique to {c1.name.split(' ')[0]} ({duoResult.comparison.skills_only_in_1.length})
                           </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {duoResult.comparison.skills_only_in_1.map(s => <SkillPill key={s} skill={s} variant="unique" />)}
+                          <div className="flex flex-wrap gap-2">
+                            {duoResult.comparison.skills_only_in_1.map((s, i) => <SkillChip key={s} label={s} variant="neutral" delayIndex={i} />)}
                           </div>
                         </div>
                       )}
+                      
                       {duoResult.comparison.skills_only_in_2.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-violet)] mb-2">
-                            Only {c2.name.split(' ')[0]} ({duoResult.comparison.skills_only_in_2.length})
+                        <div className="p-4 rounded-[var(--radius-md)] bg-[var(--bg-elevated)] border border-[var(--border)]">
+                          <p className="text-xs font-bold uppercase tracking-wider text-[var(--violet)] mb-3 flex items-center gap-2">
+                            <Star className="w-4 h-4" />
+                            Unique to {c2.name.split(' ')[0]} ({duoResult.comparison.skills_only_in_2.length})
                           </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {duoResult.comparison.skills_only_in_2.map(s => <SkillPill key={s} skill={s} variant="unique" />)}
+                          <div className="flex flex-wrap gap-2">
+                            {duoResult.comparison.skills_only_in_2.map((s, i) => <SkillChip key={s} label={s} variant="neutral" delayIndex={i} />)}
                           </div>
                         </div>
                       )}
@@ -770,32 +696,30 @@ export default function CandidateCompare({ hideHeader = false }: { hideHeader?: 
 
           {/* Empty state */}
           {!activeResult && !isPending && (
-            <div className="glass-card p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--color-violet)]/10 to-[var(--color-accent)]/10 flex items-center justify-center">
-                <GitCompare className="w-9 h-9 text-[var(--color-violet)]" />
+            <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-12 shadow-card flex flex-col items-center justify-center gap-4 flex-1 min-h-[400px]">
+              <div className="w-20 h-20 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-strong)] shadow-inner flex items-center justify-center mb-2">
+                <GitCompare className="w-10 h-10 text-[var(--accent-bright)]" />
               </div>
-              <div className="text-center">
-                <p className="text-sm font-medium text-[var(--color-text-primary)]">Ready to Compare</p>
-                <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-xs leading-relaxed">
-                  {mode === 'multi'
-                    ? 'Select 2 or more candidates from the list, pick a job, and click Rank.'
-                    : 'Select two candidates and a job to run a head-to-head comparison.'
-                  }
-                </p>
-              </div>
+              <p className="text-lg font-bold text-[var(--text-primary)]">Ready to Compare</p>
+              <p className="text-sm text-[var(--text-secondary)] mt-1 max-w-sm text-center leading-relaxed">
+                {mode === 'multi'
+                  ? 'Select 2 to 50 candidates from the list, choose a target role, and click Rank to see the leaderboard.'
+                  : 'Select exactly two candidates and a target role to run a detailed head-to-head comparison.'
+                }
+              </p>
             </div>
           )}
 
           {/* Loading state */}
           {isPending && (
-            <div className="glass-card p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
-              <div className="relative">
-                <div className="w-16 h-16 rounded-full border-4 border-[var(--color-border)] border-t-[var(--color-accent)] animate-spin" />
-                <div className="absolute inset-0 w-16 h-16 rounded-full border-4 border-transparent border-b-[var(--color-violet)] animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+            <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[var(--radius-lg)] p-12 shadow-card flex flex-col items-center justify-center gap-5 flex-1 min-h-[400px]">
+              <div className="relative mb-2">
+                <div className="w-20 h-20 rounded-full border-4 border-[var(--border)] border-t-[var(--accent)] animate-spin" />
+                <div className="absolute inset-0 w-20 h-20 rounded-full border-4 border-transparent border-b-[var(--violet)] animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
               </div>
               <div className="text-center">
-                <p className="text-sm font-medium text-[var(--color-text-primary)]">Ranking candidates...</p>
-                <p className="text-xs text-[var(--color-text-muted)] mt-1">Semantic scoring in progress</p>
+                <p className="text-lg font-bold text-[var(--text-primary)]">Ranking candidates...</p>
+                <p className="text-sm text-[var(--text-muted)] mt-2">Running semantic scoring algorithms across all skills and experience.</p>
               </div>
             </div>
           )}
