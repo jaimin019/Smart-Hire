@@ -469,11 +469,83 @@ async def get_candidate_by_id(candidate_id: str):
     return row["parsed_data"]
 
 
-# ── GET /api/v1/candidates ───────────────────────────────────────────────────────
-
 @router.get("/candidates", summary="List all stored candidates")
-async def list_all_candidates(limit: int = 50, offset: int = 0):
+async def list_all_candidates(search: str = "", skill: str = "", sort: str = "recent", page: int = 1, limit: int = 50):
     """List stored candidates with basic info (no full parsed_data)."""
     from db.sqlite_db import list_candidates
+    offset = (page - 1) * limit
+    # For now, just use the basic list_candidates. In a real app we'd add SQL filters for search/skill
     rows = await list_candidates(limit=limit, offset=offset)
-    return {"candidates": rows, "count": len(rows)}
+    # Simple Python-side filter for demonstration
+    if search:
+        s = search.lower()
+        rows = [r for r in rows if s in (r.get("name") or "").lower() or s in (r.get("email") or "").lower()]
+    return {"candidates": rows, "total": len(rows)}
+
+@router.delete("/candidates/{candidate_id}", summary="Delete a candidate")
+async def delete_candidate_by_id(candidate_id: str):
+    """Delete a candidate from the database."""
+    from db.sqlite_db import delete_candidate
+    deleted = await delete_candidate(candidate_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Candidate not found")
+    return {"status": "success", "message": f"Candidate {candidate_id} deleted"}
+
+# ── POST /api/v1/match ─────────────────────────────────────────────────────────
+
+class MatchRequest(BaseModel):
+    job_description: str
+    threshold: float = 0.0
+    top_k: int = 0
+    candidate_ids: list[str] | None = None
+
+@router.post("/match", summary="Match custom candidates against JD")
+async def match_candidates(body: MatchRequest):
+    """Match candidates and return leaderboard."""
+    from db.sqlite_db import list_candidates, get_candidate
+    
+    cids = body.candidate_ids
+    if not cids:
+        all_cands = await list_candidates(limit=100)
+        cids = [c["id"] for c in all_cands]
+        
+    if not cids:
+        return {"job_summary": body.job_description[:100], "total_candidates_evaluated": 0, "results": []}
+
+    scored = []
+    for cid in cids:
+        row = await get_candidate(cid)
+        if not row: continue
+        pd = row.get("parsed_data", {})
+        if "parsed_data" in pd: pd = pd["parsed_data"]
+        skills = pd.get("technical_skills", [])
+        score = _compute_score(skills, body.job_description)
+        if body.threshold > 0 and score < (body.threshold * 100):
+            continue
+            
+        exp_years = _estimate_experience_years(pd.get("experience", []))
+        edu = _format_education(pd.get("education", []))
+        
+        scored.append({
+            "candidate_id": cid,
+            "name": pd.get("name") or row.get("name") or "Unknown",
+            "current_title": pd.get("title") or "Unknown Role",
+            "overall_score": score,
+            "matched_skills": [],
+            "missing_skills": [],
+            "recommendation": "",
+            "experience_score": exp_years * 10,
+            "education_score": 50,
+            "skills": skills
+        })
+
+    scored.sort(key=lambda x: x["overall_score"], reverse=True)
+    if body.top_k > 0:
+        scored = scored[:body.top_k]
+        
+    return {
+        "job_summary": body.job_description[:100] + "...",
+        "total_candidates_evaluated": len(cids),
+        "results": scored
+    }
+

@@ -98,6 +98,15 @@ async def list_candidates(limit: int = 50, offset: int = 0) -> list[dict[str, An
             rows = await cursor.fetchall()
     return [dict(r) for r in rows]
 
+async def delete_candidate(candidate_id: str) -> bool:
+    """Delete a candidate. Returns True if deleted, False if not found."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute("DELETE FROM candidates WHERE id = ?", (candidate_id,))
+        deleted = cursor.rowcount > 0
+        await db.commit()
+    return deleted
+
+
 
 # ── Job Descriptions ────────────────────────────────────────────────────────────
 

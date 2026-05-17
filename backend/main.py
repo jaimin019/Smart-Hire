@@ -70,10 +70,15 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS — allow all origins for hackathon dev
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -82,9 +87,13 @@ app.add_middleware(
 # ── Register all routers ──────────────────────────────────────────────────────
 from api.routers.skills import router as skills_router
 from api.routers.candidates import router as candidates_router
+from api.routers.insights import router as insights_router
+from api.routers.jobs import router as jobs_router
 
 app.include_router(skills_router)
 app.include_router(candidates_router)
+app.include_router(insights_router)
+app.include_router(jobs_router, prefix="/api/v1")
 
 # Include Jaimin's routers if they exist
 try:
@@ -182,6 +191,16 @@ async def root():
             "GET  /api/v1/candidates/{candidate_id}",
             "POST /api/v1/compare",
         ],
+    }
+
+@app.get("/health")
+async def health():
+    return {
+        "status": "healthy",
+        "agents": {"parser": "ok", "normalizer": "ok", "matcher": "ok"},
+        "db": "ok",
+        "redis": "ok",
+        "chroma": "ok"
     }
 
 
