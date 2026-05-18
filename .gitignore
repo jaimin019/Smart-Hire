@@ -1,1 +1,28 @@
 backend/.env
+frontend/.env
+node_modules/
+dist/
+.DS_Store
+
+# Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.ipynb_checkpoints
+
+# Database files
+*.db
+*.sqlite
+talentgraph.db
+backend/talentgraph.db
+backend/data/talentgraph.db
+data/talentgraph.db

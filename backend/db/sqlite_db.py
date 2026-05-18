@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 
-DB_PATH = Path(__file__).parent.parent / "data" / "talentgraph.db"
+DB_PATH = Path(__file__).parent.parent / "talentgraph.db"
 
 
 async def create_tables() -> None:

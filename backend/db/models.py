@@ -38,6 +38,8 @@ class Candidate(Base):
     __tablename__ = "candidates"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    name = Column(String(255), nullable=True)
+    email = Column(String(255), nullable=True)
     filename = Column(String(255), nullable=True)
     match_score = Column(Float, nullable=True)
     job_id = Column(String(100), nullable=True)      # which JD was matched

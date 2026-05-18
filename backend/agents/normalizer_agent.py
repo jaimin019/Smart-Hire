@@ -149,9 +149,66 @@ def _extract_resume_demo(raw_text: str) -> dict:
         if skill in text_lower:
             technical_skills.append(_normalise_skill(skill))
     
-    # Remove duplicates while preserving order
-    technical_skills = list(dict.fromkeys(technical_skills))
+    # Extract projects from raw text in demo mode
+    projects = []
+    project_section = []
+    in_projects = False
     
+    for line in raw_text.split('\n'):
+        line_s = line.strip()
+        line_l = line_s.lower()
+        if any(h in line_l for h in ["projects", "personal projects", "academic projects", "key projects"]):
+            in_projects = True
+            continue
+        if in_projects:
+            if any(h in line_l for h in ["education", "experience", "skills", "certifications", "employment", "summary", "languages"]):
+                in_projects = False
+            elif line_s:
+                project_section.append(line_s)
+                
+    # Parse the collected project lines
+    current_project = None
+    for item in project_section:
+        if len(item) < 60 and not item.endswith('.') and any(keyword in item.lower() for keyword in ["system", "app", "platform", "website", "application", "tool", "bot", "engine", "classifier", "model", "analyzer"]):
+            if current_project:
+                projects.append(current_project)
+            
+            proj_skills = []
+            for skill in technical_skills:
+                if skill.lower() in item.lower():
+                    proj_skills.append(skill)
+            
+            current_project = {
+                "name": item.strip(" -•*"),
+                "description": "",
+                "technologies": proj_skills
+            }
+        elif current_project:
+            current_project["description"] = (current_project["description"] + " " + item).strip()
+            for skill in technical_skills:
+                if skill.lower() in item.lower() and skill not in current_project["technologies"]:
+                    current_project["technologies"].append(skill)
+
+    if current_project:
+        projects.append(current_project)
+        
+    # Fallback to extract technology-related lines if no structured projects found
+    if not projects:
+        project_keywords = ["built", "developed", "created", "implemented", "designed", "engineered"]
+        for line in raw_text.split('\n'):
+            line_s = line.strip()
+            if any(kw in line_s.lower() for kw in project_keywords) and len(line_s) > 20:
+                proj_skills = [skill for skill in technical_skills if skill.lower() in line_s.lower()]
+                if proj_skills:
+                    name_words = [w for w in line_s.split()[:4] if w.istitle() or w.lower() in project_keywords]
+                    projects.append({
+                        "name": " ".join(name_words) or f"{proj_skills[0]} Project",
+                        "description": line_s,
+                        "technologies": proj_skills
+                    })
+                    if len(projects) >= 3:
+                        break
+
     return {
         "name": name,
         "email": email,
@@ -161,8 +218,8 @@ def _extract_resume_demo(raw_text: str) -> dict:
         "education": [],
         "technical_skills": technical_skills,
         "certifications": [],
+        "projects": projects,
     }
-
 
 
 SYSTEM_PROMPT = """You are an expert resume parser. Given raw resume text, extract the following information as a JSON object:
@@ -188,7 +245,14 @@ SYSTEM_PROMPT = """You are an expert resume parser. Given raw resume text, extra
     }
   ],
   "technical_skills": ["Skill1", "Skill2", "Skill3"],
-  "certifications": ["Certification Name"]
+  "certifications": ["Certification Name"],
+  "projects": [
+    {
+      "name": "Project Name",
+      "description": "Short description of what was built and accomplished",
+      "technologies": ["React", "Python"]
+    }
+  ]
 }
 
 Rules:

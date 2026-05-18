@@ -333,6 +333,8 @@ async def parse_resume(
         try:
             c = Candidate(
                 id=candidate_id,
+                name=result.get("parsed_data", {}).get("name", "Unknown"),
+                email=result.get("parsed_data", {}).get("email", None),
                 filename=file.filename,
                 match_score=result.get("match_score"),
                 job_id=job_id,
