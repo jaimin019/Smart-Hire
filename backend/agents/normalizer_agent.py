@@ -1,6 +1,6 @@
 """
 Normalizer Agent — Node 2 of the LangGraph pipeline.
-Uses OpenAI LLM to extract structured JSON from raw resume text,
+Uses Gemini LLM to extract structured JSON from raw resume text,
 normalising skill names to canonical forms.
 """
 
@@ -8,7 +8,7 @@ import json
 import os
 from typing import Any
 
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
 
@@ -277,12 +277,12 @@ def normalizer_agent(state: dict[str, Any]) -> dict[str, Any]:
     raw_text: str = state["raw_text"]
     trace: list = state.get("agent_trace", [])
 
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("GOOGLE_API_KEY")
     print(f"🤖 Normalizer: Starting extraction (raw_text length: {len(raw_text)})")
     
     # Fallback to demo mode if no API key
     if not api_key:
-        print("⚠️  No OpenAI API key found. Using demo extraction mode.")
+        print("⚠️  No Google API key found. Using demo extraction mode.")
         parsed = _extract_resume_demo(raw_text)
         trace.append({
             "agent": "Normalizer",
@@ -296,10 +296,10 @@ def normalizer_agent(state: dict[str, Any]) -> dict[str, Any]:
             "agent_trace": trace,
         }
 
-    llm = ChatOpenAI(
-        model="gpt-4o-mini",
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-3.6-flash",
         temperature=0,
-        api_key=api_key,
+        google_api_key=api_key,
     )
 
     messages = [

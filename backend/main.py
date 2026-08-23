@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from database import engine
-from models.resume import Base
+from db.session import engine, create_tables
+from db.models import Base
 from routes.resume import router as resume_router
 
 # Load environment variables
@@ -15,7 +15,7 @@ load_dotenv()
 async def lifespan(app: FastAPI):
     # Ensure database tables are created on startup
     print("[startup] Initializing database tables...")
-    Base.metadata.create_all(bind=engine)
+    create_tables()
     print("[startup] Database tables ready.")
     
     # Self-healing database migration for candidates table columns
@@ -38,14 +38,6 @@ async def lifespan(app: FastAPI):
         conn.close()
     except Exception as migration_err:
         print(f"[startup] SQLite self-healing migration warning: {migration_err}")
-    
-    # Try importing legacy DB init if it exists
-    try:
-        from db.session import create_tables
-        create_tables()
-        print("[startup] Legacy SQLAlchemy tables ready.")
-    except Exception as e:
-        print(f"[startup] Legacy DB init warning: {e}")
         
     try:
         from db.sqlite_db import create_tables as create_async_tables

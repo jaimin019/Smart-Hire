@@ -4,8 +4,8 @@ from typing import List
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from database import get_db
-from models.resume import Resume
+from db.session import get_db
+from db.models import Candidate as Resume
 from schemas.resume import SingleUploadResponse, MultiUploadResponse, MultiUploadResultItem, ResumeResponseData
 from utils.file_handler import validate_and_save_file, cleanup_file
 from services.parser import parse_resume_file
@@ -22,17 +22,13 @@ async def upload_single(file: UploadFile = File(...), db: Session = Depends(get_
         # Parse resume
         parsed_data = parse_resume_file(temp_path)
 
+        import json
         # Save to database
         db_resume = Resume(
-            file_name=file.filename or "resume.pdf",
+            filename=file.filename or "resume.pdf",
             name=parsed_data.get("name"),
             email=parsed_data.get("email"),
-            phone=parsed_data.get("phone"),
-            skills=parsed_data.get("skills"),
-            education=parsed_data.get("education"),
-            experience=parsed_data.get("experience"),
-            raw_text=parsed_data.get("raw_text"),
-            status="success"
+            parsed_data=json.dumps(parsed_data)
         )
         db.add(db_resume)
         db.commit()
@@ -41,13 +37,13 @@ async def upload_single(file: UploadFile = File(...), db: Session = Depends(get_
         # Build and return response
         response_data = ResumeResponseData(
             id=db_resume.id,
-            file_name=db_resume.file_name,
+            file_name=db_resume.filename,
             name=db_resume.name,
             email=db_resume.email,
-            phone=db_resume.phone,
-            skills=db_resume.skills or [],
-            education=db_resume.education or [],
-            experience=db_resume.experience or [],
+            phone=parsed_data.get("phone"),
+            skills=parsed_data.get("skills") or [],
+            education=parsed_data.get("education") or [],
+            experience=parsed_data.get("experience") or [],
             created_at=db_resume.created_at
         )
         return SingleUploadResponse(status="success", data=response_data)
@@ -79,16 +75,10 @@ async def upload_multiple(files: List[UploadFile] = File(...), db: Session = Dep
 
             # Save successful parse to database
             db_resume = Resume(
-                file_name=file.filename or "resume.pdf",
+                filename=file.filename or "resume.pdf",
                 name=parsed_data.get("name"),
                 email=parsed_data.get("email"),
-                phone=parsed_data.get("phone"),
-                skills=parsed_data.get("skills"),
-                education=parsed_data.get("education"),
-                experience=parsed_data.get("experience"),
-                raw_text=parsed_data.get("raw_text"),
-                upload_batch_id=batch_id,
-                status="success"
+                parsed_data=json.dumps(parsed_data)
             )
             db.add(db_resume)
             db.commit()
@@ -96,13 +86,13 @@ async def upload_multiple(files: List[UploadFile] = File(...), db: Session = Dep
 
             response_data = ResumeResponseData(
                 id=db_resume.id,
-                file_name=db_resume.file_name,
+                file_name=db_resume.filename,
                 name=db_resume.name,
                 email=db_resume.email,
-                phone=db_resume.phone,
-                skills=db_resume.skills or [],
-                education=db_resume.education or [],
-                experience=db_resume.experience or [],
+                phone=parsed_data.get("phone"),
+                skills=parsed_data.get("skills") or [],
+                education=parsed_data.get("education") or [],
+                experience=parsed_data.get("experience") or [],
                 created_at=db_resume.created_at
             )
 
@@ -114,19 +104,10 @@ async def upload_multiple(files: List[UploadFile] = File(...), db: Session = Dep
             successful += 1
 
         except Exception as e:
-            # Save failed parse to database
+            # Handle failed parse
             error_msg = str(e)
             if hasattr(e, 'detail'):
                 error_msg = e.detail
-
-            db_resume = Resume(
-                file_name=file.filename or "resume.pdf",
-                upload_batch_id=batch_id,
-                status="failed",
-                error_message=error_msg
-            )
-            db.add(db_resume)
-            db.commit()
 
             results.append(MultiUploadResultItem(
                 file_name=file.filename or "resume.pdf",
