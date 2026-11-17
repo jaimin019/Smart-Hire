@@ -1,6 +1,6 @@
 """
-Async SQLite database layer for TalentGraph.
-Uses aiosqlite directly (no extra ORM needed for hackathon speed).
+Async SQLite database layer for Smart Hire.
+Uses aiosqlite directly for maximum async performance.
 Tables:
   - candidates  (id TEXT PK, name TEXT, email TEXT, parsed_data JSON, created_at TEXT)
   - job_descriptions (id TEXT PK, title TEXT, company TEXT, description TEXT,
@@ -9,12 +9,13 @@ Tables:
 
 import json
 import sqlite3
+import shutil
 import aiosqlite
 from pathlib import Path
 from typing import Any
 
-
-DB_PATH = Path(__file__).parent.parent / "talentgraph.db"
+_base_dir = Path(__file__).parent.parent
+DB_PATH = _base_dir / "smarthire.db"
 
 
 async def create_tables() -> None:
@@ -121,15 +122,16 @@ async def upsert_job(
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
             """
-            INSERT INTO job_descriptions (id, title, company, description, required_skills)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO job_descriptions (id, title, company, description, raw_text, required_skills)
+            VALUES (?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
                 title           = excluded.title,
                 company         = excluded.company,
                 description     = excluded.description,
+                raw_text        = excluded.raw_text,
                 required_skills = excluded.required_skills
             """,
-            (job_id, title, company, description, json.dumps(required_skills)),
+            (job_id, title, company, description, description, json.dumps(required_skills)),
         )
         await db.commit()
 
@@ -231,15 +233,16 @@ def sync_upsert_job(
     )
     con.execute(
         """
-        INSERT INTO job_descriptions (id, title, company, description, required_skills)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO job_descriptions (id, title, company, description, raw_text, required_skills)
+        VALUES (?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
             title           = excluded.title,
             company         = excluded.company,
             description     = excluded.description,
+            raw_text        = excluded.raw_text,
             required_skills = excluded.required_skills
         """,
-        (job_id, title, company, description, json.dumps(required_skills)),
+        (job_id, title, company, description, description, json.dumps(required_skills)),
     )
     con.commit()
     con.close()

@@ -22,6 +22,8 @@ env/
 *.db
 *.sqlite
 *.sqlite3
+smarthire.db
+talentgraph.db
 data/talentgraph.db
 
 # Sentence-transformers model cache

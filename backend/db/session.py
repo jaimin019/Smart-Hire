@@ -1,7 +1,7 @@
 """
 SQLAlchemy engine and session factory.
 Uses SQLite for zero-infrastructure local dev (same ORM API as PostgreSQL).
-Database file: backend/talentgraph.db
+Database file: backend/smarthire.db
 """
 
 import os
@@ -12,7 +12,7 @@ from .models import Base
 
 # Allow override via env var; default to SQLite file in backend dir
 _db_dir = os.path.dirname(os.path.abspath(__file__))
-_default_url = f"sqlite:///{os.path.join(_db_dir, '..', 'talentgraph.db')}"
+_default_url = f"sqlite:///{os.path.join(_db_dir, '..', 'smarthire.db')}"
 DATABASE_URL = os.getenv("DATABASE_URL", _default_url)
 
 # connect_args only needed for SQLite (thread safety)

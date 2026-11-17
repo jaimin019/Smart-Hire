@@ -9,7 +9,7 @@ A high-performance, robust resume parsing backend built with **FastAPI**, **SQLA
 - **Multiple Resume Upload (`POST /api/resume/upload/multiple`)**: Accepts batches of resumes, processes each file individually in a loop, saves each parse to the database, and returns a compiled JSON list. If one file in the batch fails, the other files are parsed successfully without crashing the request.
 - **Robust Parsing Engine**: Uses `pyresparser` with a fail-safe fallback to a Regex-powered text extraction suite using `pdfminer.six` and `python-docx`.
 - **CORS Configured**: Fully enabled for all origins to interface with the web frontend seamlessly.
-- **Database Storage**: Persists all uploaded and parsed information automatically to the SQLAlchemy-configured SQLite database (`talentgraph.db`).
+- **Database Storage**: Persists all uploaded and parsed information automatically to the SQLAlchemy-configured SQLite database (`smarthire.db`).
 - **File Validation & Protection**: Automatically rejects invalid file formats (HTTP 400) and limits upload size to 5MB (HTTP 413) to protect server bandwidth.
 
 ---
@@ -37,7 +37,7 @@ pip install -r requirements.txt
 ### 4. Environment Variables Configuration
 Configure environment variables inside `backend/.env`. A default `.env` is provided:
 ```env
-DATABASE_URL=sqlite:///./backend/talentgraph.db
+DATABASE_URL=sqlite:///./smarthire.db
 MAX_FILE_SIZE_MB=5
 ```
 

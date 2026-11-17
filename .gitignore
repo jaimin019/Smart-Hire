@@ -22,7 +22,9 @@ pip-delete-this-directory.txt
 # Database files
 *.db
 *.sqlite
+smarthire.db
 talentgraph.db
+backend/smarthire.db
 backend/talentgraph.db
 backend/data/talentgraph.db
 data/talentgraph.db

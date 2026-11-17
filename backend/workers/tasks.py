@@ -26,7 +26,7 @@ from typing import Any, Dict, Optional
 _store: Dict[str, Dict[str, Any]] = {}
 _store_lock = threading.Lock()
 
-_executor = ThreadPoolExecutor(max_workers=8, thread_name_prefix="talentgraph-batch")
+_executor = ThreadPoolExecutor(max_workers=8, thread_name_prefix="smarthire-batch")
 
 
 # ── Store helpers ─────────────────────────────────────────────────────────────

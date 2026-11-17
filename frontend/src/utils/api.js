@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-const API_KEY = import.meta.env.VITE_API_KEY || localStorage.getItem('talentiq_api_key') || 'dev-talentiq-2024'
+const API_KEY = import.meta.env.VITE_API_KEY || localStorage.getItem('smarthire_api_key') || 'dev-smarthire-2025'
 
 const headers = (isForm = false) => {
   const h = { 'X-API-Key': API_KEY }

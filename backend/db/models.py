@@ -1,5 +1,5 @@
 """
-SQLAlchemy ORM models for TalentGraph.
+SQLAlchemy ORM models for Smart Hire.
 
 Uses SQLite-compatible types. On PostgreSQL, swap:
   - JSON  → JSONB

@@ -1,6 +1,6 @@
 # Smart Hire — Frontend Build Plan
 
-A production-grade, fully-styled multi-page frontend for **Smart Hire**, a Multi-Agent AI Resume Intelligence platform. All UI only — wired to an external API via `VITE_API_URL` and `localStorage["talentiq_api_key"]`.
+A production-grade, fully-styled multi-page frontend for **Smart Hire**, a Multi-Agent AI Resume Intelligence platform. All UI only — wired to an external API via `VITE_API_URL` and `localStorage["smarthire_api_key"]`.
 
 ## Stack adjustments (vs. your spec)
 
@@ -57,7 +57,7 @@ Each route gets its own `head()` metadata (title, description, og:*).
 
 ## API layer (`src/lib/api.ts`)
 
-- `apiFetch(path, init)` — reads `VITE_API_URL` + `localStorage.talentiq_api_key`, attaches `Authorization` header, `try/catch` → `toast.error` on failure, returns parsed JSON.
+- `apiFetch(path, init)` — reads `VITE_API_URL` + `localStorage.smarthire_api_key`, attaches `Authorization` header, `try/catch` → `toast.error` on failure, returns parsed JSON.
 - Typed helpers: `getCandidates`, `deleteCandidate`, `getJobs`, `uploadResumes`, `analyze`, `getAIInsights`, `rankCandidates`, `getTaxonomy`, `searchSkills`.
 - All list views show skeletons while loading and an EmptyState when results are empty.
 

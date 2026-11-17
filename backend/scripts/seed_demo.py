@@ -27,6 +27,23 @@ fake = Faker()
 
 JOB_SEEDS = [
     {
+        "id": "elip_ai_engineer",
+        "title": "Software Engineer — AI Career Agent",
+        "company": "Elip (YC W25)",
+        "description": (
+            "Join Elip, a YC W25 startup, and build an AI career agent used by thousands of job seekers. "
+            "Build LLM-powered agents that use tools and remember context. "
+            "Match people to jobs through retrieval, ranking and personalisation. "
+            "Run semantic search over a large, constantly changing jobs index. "
+            "Evaluate and improve LLM output quality. Ship backend features to production and keep them reliable. "
+            "Requires hands-on LLM work with prompting, tool use, structured outputs, Python backends, SQL, APIs, and embeddings."
+        ),
+        "required_skills": [
+            "Python", "LLMs", "LangGraph", "FastAPI", "SQL", "REST APIs", "Embeddings",
+            "Semantic Search", "Vector Search", "Docker", "Git", "Prompt Engineering",
+        ],
+    },
+    {
         "id": "senior_fullstack",
         "title": "Senior Full-Stack Engineer",
         "company": "TechCorp Inc.",
@@ -235,7 +252,7 @@ def _try_semantic_match(skills: list[str], description: str) -> float | None:
 
 def main():
     print("=" * 65)
-    print("  TalentGraph -- Demo Data Seed Script")
+    print("  Smart Hire -- Demo Data Seed Script")
     print("=" * 65)
 
     # ── Insert job descriptions ───────────────────────────────────────────────

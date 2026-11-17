@@ -1,5 +1,5 @@
 """
-api/schemas.py — All Pydantic v2 schemas for TalentGraph API.
+api/schemas.py — All Pydantic v2 schemas for Smart Hire API.
 
 ────────────────────────────────────────────────────────────────
 FINAL ParseResponse JSON SCHEMA (for frontend / Het)

@@ -18,13 +18,15 @@ async def lifespan(app: FastAPI):
     create_tables()
     print("[startup] Database tables ready.")
     
-    # Self-healing database migration for candidates table columns
+    # Self-healing database migration for candidates and job_descriptions tables
     try:
         import sqlite3
         _db_dir = os.path.dirname(os.path.abspath(__file__))
-        db_path = os.path.join(_db_dir, 'talentgraph.db')
+        db_path = os.path.join(_db_dir, 'smarthire.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
+        
+        # Ensure candidates columns
         cursor.execute("PRAGMA table_info(candidates)")
         cols = [c[1] for c in cursor.fetchall()]
         if cols:
@@ -34,7 +36,21 @@ async def lifespan(app: FastAPI):
             if "email" not in cols:
                 cursor.execute("ALTER TABLE candidates ADD COLUMN email TEXT")
                 print("[startup] Successfully migrated: added 'email' column to candidates table.")
-            conn.commit()
+                
+        # Ensure job_descriptions has both description and raw_text
+        cursor.execute("PRAGMA table_info(job_descriptions)")
+        jcols = [c[1] for c in cursor.fetchall()]
+        if jcols:
+            if "description" not in jcols:
+                cursor.execute("ALTER TABLE job_descriptions ADD COLUMN description TEXT")
+                cursor.execute("UPDATE job_descriptions SET description = raw_text WHERE description IS NULL")
+                print("[startup] Successfully migrated: added 'description' column to job_descriptions table.")
+            if "raw_text" not in jcols:
+                cursor.execute("ALTER TABLE job_descriptions ADD COLUMN raw_text TEXT")
+                cursor.execute("UPDATE job_descriptions SET raw_text = description WHERE raw_text IS NULL")
+                print("[startup] Successfully migrated: added 'raw_text' column to job_descriptions table.")
+
+        conn.commit()
         conn.close()
     except Exception as migration_err:
         print(f"[startup] SQLite self-healing migration warning: {migration_err}")
@@ -134,4 +150,6 @@ async def health():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", 8000))
+    is_prod = os.getenv("RENDER") is not None or os.getenv("ENVIRONMENT") == "production"
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=not is_prod)

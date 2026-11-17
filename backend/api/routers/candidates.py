@@ -525,18 +525,42 @@ async def match_candidates(body: MatchRequest):
             
         exp_years = _estimate_experience_years(pd.get("experience", []))
         edu = _format_education(pd.get("education", []))
-        
+
+        # Derive a meaningful current title from work experience
+        work_exp = pd.get("work_experience", pd.get("experience", []))
+        current_title = pd.get("title") or ""
+        if not current_title and work_exp and isinstance(work_exp, list) and len(work_exp) > 0:
+            first_exp = work_exp[0]
+            current_title = first_exp.get("role") or first_exp.get("title") or ""
+            if first_exp.get("company"):
+                current_title = f"{current_title} at {first_exp['company']}" if current_title else first_exp["company"]
+        if not current_title:
+            # Fallback: show top skills
+            if skills:
+                current_title = " · ".join(skills[:3])
+            else:
+                current_title = edu if edu != "Not specified" else ""
+
+        # Compute matched/missing skills from JD text (extract keywords)
+        jd_lower = body.job_description.lower()
+        matched_skills = [s for s in skills if s.lower() in jd_lower]
+        missing_common = [kw for kw in ["python", "java", "javascript", "react", "node", "sql", "aws", "docker", "kubernetes", "typescript", "go", "rust", "c++", "machine learning", "deep learning", "api", "rest", "graphql", "git", "ci/cd", "agile"]
+                          if kw in jd_lower and kw not in [s.lower() for s in skills]]
+
         scored.append({
             "candidate_id": cid,
             "name": pd.get("name") or row.get("name") or "Unknown",
-            "current_title": pd.get("title") or "Unknown Role",
+            "email": pd.get("email") or pd.get("personal_info", {}).get("email") or row.get("email") or "",
+            "current_title": current_title,
             "overall_score": score,
-            "matched_skills": [],
-            "missing_skills": [],
+            "matched_skills": matched_skills[:10],
+            "missing_skills": missing_common[:8],
             "recommendation": "",
             "experience_score": exp_years * 10,
             "education_score": 50,
-            "skills": skills
+            "skills": skills,
+            "experience_years": exp_years,
+            "education": edu
         })
 
     scored.sort(key=lambda x: x["overall_score"], reverse=True)

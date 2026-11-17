@@ -131,7 +131,7 @@ for _category, _subcats in TAXONOMY.items():
             for _syn in _SYNONYMS.get(_skill, []):
                 skill_index[_syn.lower()] = _entry
 
-print(f"[TalentGraph] Skill index built: {len(skill_index)} keys ({TOTAL_SKILLS} canonical skills)")
+print(f"[Smart-Hire] Skill index built: {len(skill_index)} keys ({TOTAL_SKILLS} canonical skills)")
 
 
 # ── Response Models ─────────────────────────────────────────────────────────────
